@@ -2,3 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 @import './app.scss';
+
+body {
+  background-color: #f3f3f3;
+}

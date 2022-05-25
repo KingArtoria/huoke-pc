@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="header">
     <!-- 导航 -->
     <nav class="nav">
       <div class="center">
@@ -62,6 +62,10 @@ const keyword = ref('')
 </script>
 
 <style lang="scss" scoped>
+.header {
+  background-color: white;
+}
+
 .nav {
   height: 56px;
   font-size: 14px;
@@ -100,9 +104,11 @@ const keyword = ref('')
   display: flex;
   justify-content: space-between;
   margin-top: 25px;
+
   .logo {
     margin-top: -14px;
   }
+
   .logo-img {
     width: 155px;
     height: 72px;
