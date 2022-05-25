@@ -84,7 +84,7 @@
 import { ref } from 'vue';
 import tipImg from '@/assets/tishi@2x.png';
 import wxImg from '@/assets/weixin@2x.png';
-import { loginApi, smsApi, loginnopassApi, forgetPassApi, signApi } from '@/utils/api';
+import { loginApi, loginnopassApi, forgetPassApi, signApi } from '@/utils/api';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus'
 import { TOKEN, USER } from '@/utils/const'

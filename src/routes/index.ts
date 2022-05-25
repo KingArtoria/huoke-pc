@@ -16,14 +16,14 @@ export const router = createRouter({
 router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized) => {
 
   // 检查token
-  if (!sessionStorage.getItem(TOKEN) && !localStorage.getItem(TOKEN)) {
-    if (to.path !== '/login') {
-      return {
-        path: '/login',
-        replace: true
-      }
-    }
-  }
+  // if (!sessionStorage.getItem(TOKEN) && !localStorage.getItem(TOKEN)) {
+  //   if (to.path !== '/login') {
+  //     return {
+  //       path: '/login',
+  //       replace: true
+  //     }
+  //   }
+  // }
   // return false 取消导航
   // 不返回或返回 true 放行
 })
