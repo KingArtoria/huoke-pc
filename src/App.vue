@@ -1,21 +1,24 @@
+<template>
+  <!-- 通知栏 -->
+  <Banner v-if="isShowBanner" />
+
+  <RouterView />
+
+  <!-- 底部 -->
+  <Footer />
+</template>
 <script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import HelloWorld from './components/HelloWorld.vue'
+import Banner from './components/Banner.vue';
+import Footer from './components/Footer.vue';
+import { computed } from 'vue';
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+// 通知栏在某些页面不显示
+const isShowBanner = computed(() => {
+  return !['/login'].includes(route.path)
+})
 </script>
 
-<template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
-</template>
-
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
