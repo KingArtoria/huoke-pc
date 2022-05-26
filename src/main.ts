@@ -3,6 +3,7 @@ import App from './App.vue'
 import './styles/index.scss';
 import { router } from '@/routes';
 import ElementPlus from 'element-plus'
+import locale from "element-plus/lib/locale/lang/zh-cn";
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import "swiper/css";
@@ -16,7 +17,7 @@ const app = createApp(App)
 // 安装路由模块
 app.use(router)
 // 安装UI库
-app.use(ElementPlus)
+app.use(ElementPlus, { locale })
 /* -------- 安装模块 end ---------- */
 
 /* -------- 注册全局组件 start -------- */

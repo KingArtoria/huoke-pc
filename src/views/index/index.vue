@@ -1,6 +1,32 @@
 <template>
+  <header class="header">
+    <div class="app-page">
+      <div class="title">合作分类</div>
+      <div class="nav-item">
+        <span>平台交易</span>
+        <img :src="newImg" alt="" class="tag">
+      </div>
+      <div class="nav-item">
+        <span>资质办理</span>
+        <img :src="newImg" alt="" class="tag">
+      </div>
+      <div class="nav-item">
+        <span>商务名片</span>
+        <img :src="newImg" alt="" class="tag">
+      </div>
+      <div class="nav-item">
+        <span>业务订阅</span>
+      </div>
+      <div class="nav-item">
+        <span>找人脉</span>
+      </div>
+      <div class="nav-item">
+        <span>查企业</span>
+      </div>
+    </div>
+
+  </header>
   <div class="app-page">
-    <header></header>
     <div class="main">
       <section class="section">
         <!-- 导航 -->
@@ -42,6 +68,12 @@
         </div>
         <!-- 列表 -->
         <List />
+        <!-- 底部 -->
+        <div class="main-bottom">
+          <img :src="bottomImg1" alt="" class="img">
+          <img :src="bottomImg2" alt="" class="img">
+          <img :src="bottomImg3" alt="" class="img">
+        </div>
       </section>
 
       <aside class="aside">
@@ -80,7 +112,19 @@
         <div class="top">
           <img :src="topImg" alt="" class="top-img">
           <div class="top-content">
-            <div>
+            <div class="top-item">
+              <p class="title">
+                【柯莉银】爆款、新品自带流量热度的优势品牌产品，寻实力销售渠道支持一件代发，代销分销集采优先！
+              </p>
+              <p class="flex">
+                <span>杨悦</span>
+                <span class="line"></span>
+                <span>产品经理</span>
+                <span class="line"></span>
+                <span>徐州星跃联动网络</span>
+              </p>
+            </div>
+            <div class="top-item">
               <p class="title">
                 【柯莉银】爆款、新品自带流量热度的优势品牌产品，寻实力销售渠道支持一件代发，代销分销集采优先！
               </p>
@@ -95,23 +139,130 @@
           </div>
         </div>
         <!-- 推荐人脉 -->
-        <div class="recommend"></div>
+        <div class="recommend">
+          <img :src="recommendImg" alt="" class="img">
+          <div class="wrap">
+            <div class="item">
+              <div class="flex">
+                <img :src="recommendImg" alt="" class="photo">
+                <div>
+                  <p class="title">徐州星跃联动网络</p>
+                  <p class="sub">
+                    <span>杨悦</span>
+                    <span class="line"></span>
+                    <span>产品经理</span>
+                  </p>
+                </div>
+              </div>
+              <div class="flex bottom justify-between">
+                <span><span class="light">2</span>条合作信息</span>
+                <span class="tag app-flex-center">互联网</span>
+              </div>
+            </div>
+            <div class="item">
+              <div class="flex">
+                <img :src="recommendImg" alt="" class="photo">
+                <div>
+                  <p class="title">徐州星跃联动网络</p>
+                  <p class="sub">
+                    <span>杨悦</span>
+                    <span class="line"></span>
+                    <span>产品经理</span>
+                  </p>
+                </div>
+              </div>
+              <div class="flex bottom justify-between">
+                <span><span class="light">2</span>条合作信息</span>
+                <span class="tag app-flex-center">互联网</span>
+              </div>
+            </div>
+            <div class="item">
+              <div class="flex">
+                <img :src="recommendImg" alt="" class="photo">
+                <div>
+                  <p class="title">徐州星跃联动网络</p>
+                  <p class="sub">
+                    <span>杨悦</span>
+                    <span class="line"></span>
+                    <span>产品经理</span>
+                  </p>
+                </div>
+              </div>
+              <div class="flex bottom justify-between">
+                <span><span class="light">2</span>条合作信息</span>
+                <span class="tag app-flex-center">互联网</span>
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- 下载app -->
-        <div class="download"></div>
+        <div class="download">
+          <div class="name">火客 APP</div>
+          <div class="code"></div>
+          <div class="text">手机版下载</div>
+        </div>
       </aside>
+    </div>
+    <div class="fix left">
+      <img :src="adImg" alt="" class="ad-img">
+      <div class="close">关闭</div>
+    </div>
+    <div class="fix right">
+      <img :src="adImg" alt="" class="ad-img">
+      <div class="close">关闭</div>
+    </div>
+    <!-- 联系客服 -->
+    <div class="concat">
+      <ul>
+        <li class="concat-item">
+          <img :src="signImg" alt="" class="normal img">
+          <img :src="signImgActive" alt="" class="active img">
+          <span>签到</span>
+        </li>
+        <li class="concat-item">
+          <img :src="concatImg" alt="" class="normal img">
+          <img :src="concatImgActive" alt="" class="active img">
+          <span>客服</span>
+        </li>
+        <li class="concat-item">
+          <img :src="propImg" alt="" class="normal img">
+          <img :src="propImgActive" alt="" class="active img">
+          <span>道具</span>
+        </li>
+        <li class="concat-item">
+          <img :src="feedbackImg" alt="" class="normal img">
+          <img :src="feedbackImgActive" alt="" class="active img">
+          <span>反馈</span>
+        </li>
+      </ul>
+      <img :src="preferenceImg" alt="" class="vip-img">
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import adImg1 from '@/assets/ggwzs_h@2x.png'
-import arrowImg from '@/assets/XIAYY@2x.png'
 import { getVipOrder, getBanner, getMenu } from '@/utils/api'
 import { ref } from 'vue'
 import List from './components/List.vue'
 import photoImg from '@/assets/default.png'
 import vipImg from '@/assets/huiyuan-rk@2x.png'
 import topImg from '@/assets/jinrrm@2x.png'
+import recommendImg from '@/assets/tuijianrenma@2x.png'
+import bottomImg1 from '@/assets/pingtaijiapy@2x.png'
+import bottomImg2 from '@/assets/yaoqihy@2x.png'
+import bottomImg3 from '@/assets/heika@2x.png'
+import adImg from '@/assets/guangg@2x.png';
+import signImg from '@/assets/qiandoa_lan@2x.png';
+import signImgActive from '@/assets/qiandoa_bai@2x.png';
+import concatImg from '@/assets/kefu_lan@2x.png';
+import concatImgActive from '@/assets/kefu_bai@2x.png';
+import propImg from '@/assets/daoju_lan@2x.png';
+import propImgActive from '@/assets/daoju_bai@2x.png';
+import feedbackImg from '@/assets/fankui_lan@2x.png';
+import feedbackImgActive from '@/assets/fankui_bai@2x.png';
+import preferenceImg from '@/assets/xianshith@2x.png'
+import newImg from '@/assets/NEW@2x.png';
 
 // 分类菜单
 const navItems = ref([])
@@ -141,9 +292,66 @@ const vipUserList = ref([
   { name: '用户彼得沃克斯芬克斯开通了年会员', time: '1小时前' },
   { name: '用户彼得沃克斯芬克斯开通了年会员', time: '1小时前' },
 ])
+
+// 广告
+const isShowLeft = ref(true)
+const isShowRight = ref(true)
 </script>
 
 <style lang="scss" scoped>
+.fix {
+  width: 200px;
+  height: 200px;
+  background: red;
+  top: 56px;
+  width: 100px;
+  background: white;
+  z-index: 10;
+  position: fixed;
+
+  &.left {
+    left: 0;
+  }
+
+  &.right {
+    right: 0;
+  }
+
+  .ad-img {
+    height: 300px;
+  }
+
+  .close {
+    font-size: 12px;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #545454;
+    line-height: 33px;
+    text-align: center;
+  }
+}
+
+.side-banner {
+  position: fixed;
+  top: 56px;
+  width: 100px;
+  background: white;
+  z-index: 1;
+  display: block !important;
+
+  .ad-img {
+    height: 300px;
+  }
+
+  &.left-ad {
+    left: 0;
+  }
+
+  &.right-ad {
+    right: 0;
+  }
+}
+
 .main {
   display: flex;
 
@@ -343,9 +551,14 @@ const vipUserList = ref([
       font-weight: 400;
       color: #FFFFFF;
       margin: 25px 0 31px;
+      cursor: pointer;
 
       &:first-of-type {
         margin-right: 34px;
+      }
+
+      &:hover {
+        background: #348fff;
       }
     }
   }
@@ -429,10 +642,265 @@ const vipUserList = ref([
     }
 
     .top-content {
-      padding: 46px 14px;
+      padding: 26px 14px;
       background: white;
+    }
+
+    .top-item {
+      border-bottom: 1px solid rgba(234, 234, 234, 0.32);
+      cursor: pointer;
+
+      &:last-of-type {
+        border-bottom: 0;
+      }
+    }
+
+    .top-item:hover {
+
+      .line {
+        background: #0071FA;
+      }
+
+      .title,
+      .flex {
+        color: #0071FA;
+      }
+
+      .title {
+        text-decoration: underline;
+      }
+    }
+
+    .title {
+      font-size: 14px;
+      font-family: PingFang SC;
+      font-weight: 400;
+      color: #303030;
+      margin-bottom: 16px;
+      margin-top: 20px;
+      line-height: 18px;
+    }
+
+    .flex {
+      font-size: 14px;
+      font-family: PingFang SC;
+      font-weight: 400;
+      color: #B7B7B7;
+      margin-bottom: 26px;
+    }
+
+    .line {
+      width: 1px;
+      height: 14px;
+      background: #B7B7B7;
+      margin: 0 9px;
     }
   }
 
+  .recommend {
+    margin-top: 35px;
+
+    .img {
+      width: 305px;
+      height: 112px;
+    }
+
+    .wrap {
+      padding: 0 12px;
+      background: white;
+    }
+
+    .item {
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(234, 234, 234, 0.32);
+
+      &:last-of-type {
+        border-bottom: 0;
+      }
+    }
+
+    .photo {
+      width: 45px;
+      height: 45px;
+      border-radius: 23px;
+      margin-right: 10px;
+    }
+
+    .title {
+      font-size: 16px;
+      font-family: PingFang SC;
+      font-weight: 400;
+      color: #4B4B4B;
+      margin-bottom: 11px;
+    }
+
+    .sub {
+      font-size: 14px;
+      font-family: PingFang SC;
+      font-weight: 400;
+      color: #B7B7B7;
+      display: flex;
+    }
+
+    .line {
+      width: 1px;
+      height: 14px;
+      background: #B7B7B7;
+      margin: 0 9px;
+    }
+
+    .bottom {
+      margin-top: 11px;
+      font-size: 14px;
+      font-family: PingFang SC;
+      font-weight: 500;
+      color: #949494;
+    }
+
+    .light {
+      color: #0071FA;
+      margin-right: 3px;
+    }
+
+    .tag {
+      width: 71px;
+      height: 24px;
+      background: #F7F7F7;
+      font-size: 14px;
+      font-family: PingFang SC;
+      font-weight: 500;
+      color: #56689B;
+    }
+  }
+
+  .download {
+    width: 305px;
+    height: 448px;
+    margin-top: 35px;
+    background-size: cover;
+    background: url('@/assets/xaizait@2x.png') no-repeat;
+    background-size: cover;
+
+    .name {
+      font-size: 18px;
+      font-family: PingFang SC;
+      font-weight: 500;
+      color: #0081FF;
+      padding-top: 12px;
+      text-align: center;
+    }
+
+    .text {
+      font-size: 20px;
+      font-family: PingFang SC;
+      font-weight: 500;
+      color: #FEFFFF;
+      margin-top: 44px;
+      text-align: center;
+    }
+  }
+}
+
+.main-bottom {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 17px;
+
+  .img {
+    height: 110px;
+  }
+}
+
+.concat {
+  position: fixed;
+  right: 13px;
+  top: 401px;
+  width: 55px;
+
+  .concat-item {
+    padding: 12px 0 16px 0;
+    background: white;
+    font-size: 14px;
+    font-family: PingFang SC;
+    font-weight: 500;
+    color: #0071FA;
+    text-align: center;
+    cursor: pointer;
+
+    .img {
+      width: 28px;
+      height: 28px;
+      margin: 0 auto 7px;
+    }
+
+    .active {
+      display: none;
+    }
+
+    &:hover {
+      background: #0071FA;
+      color: white;
+
+      .normal {
+        display: none;
+      }
+
+      .active {
+        display: block;
+      }
+    }
+  }
+
+  .vip-img {
+    width: 55px;
+    height: 65px;
+    margin-top: 11px;
+    cursor: pointer;
+  }
+}
+
+.header {
+  border-bottom: 2px solid #0071FA;
+  background: white;
+  padding-top: 32px;
+
+  .app-page {
+    display: flex;
+  }
+
+  .title {
+    width: 238px;
+    height: 43px;
+    background: #0071FA;
+    border-radius: 5px 5px 0px 0px;
+    font-size: 20px;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #FFFFFF;
+    padding: 11px 0 0 21px;
+  }
+
+  .nav-item {
+    font-size: 20px;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: #484848;
+    position: relative;
+    padding-bottom: 10px;
+    margin-left: 58px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    cursor: pointer;
+
+    .tag {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 29px;
+      height: 16px;
+      top: -7px;
+    }
+  }
 }
 </style>

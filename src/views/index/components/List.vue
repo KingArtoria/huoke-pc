@@ -7,6 +7,9 @@
         }}</span>
       </div>
     </header>
+    <footer class="footer flex justify-center">
+      <el-pagination background layout="prev, pager, next, jumper, total" :total="1000" />
+    </footer>
   </div>
 </template>
 <script setup lang="ts">
@@ -61,5 +64,11 @@ const switchTab = (item: any) => {
       font-weight: bold;
     }
   }
+}
+
+.footer {
+  padding: 22px 0px;
+  background-color: white;
+  margin: 25px 0 27px;
 }
 </style>
