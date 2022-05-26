@@ -3,6 +3,10 @@
 @tailwind utilities;
 @import './app.scss';
 
+html {
+  line-height: 1;
+}
+
 body {
   background-color: #f3f3f3;
 }

@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter, RouteRecordRaw, RouteLocationNormalized } from 'vue-router'
 import { TOKEN } from '@/utils/const'
 const routes: RouteRecordRaw[] = [
-  { path: '/', component: () => import('@/views/index.vue') },
+  { path: '/', component: () => import('@/views/index/index.vue') },
   { path: '/login', component: () => import('@/views/login/index.vue') },
 ]
 

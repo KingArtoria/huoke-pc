@@ -177,3 +177,26 @@ export const putDelFriend = (params: any): AxiosPromise<any> => {
     params,
   });
 };
+
+// 获取会员记录
+export const getVipOrder = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/index/getVipOrder',
+    data,
+  });
+};
+// 获取Banner
+export const getBanner = (): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/index/getBanner',
+  });
+};
+// 获取分类菜单
+export const getMenu = (): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/index/getMenu',
+  });
+};
