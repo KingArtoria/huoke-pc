@@ -101,8 +101,8 @@
           <div class="vip-list">
             <ul>
               <li v-for="item in vipUserList" class="record flex justify-between">
-                <span class="truncate">{{ item.name }}</span>
-                <span class="time">{{ item.time }}</span>
+                <span class="truncate">{{ `${item.nick_name}开通了${item.title}` }}</span>
+                <span class="time">{{ item.end_time }}</span>
               </li>
             </ul>
           </div>
@@ -112,28 +112,16 @@
         <div class="top">
           <img :src="topImg" alt="" class="top-img">
           <div class="top-content">
-            <div class="top-item">
+            <div v-for="item in todayHot" class="top-item">
               <p class="title">
-                【柯莉银】爆款、新品自带流量热度的优势品牌产品，寻实力销售渠道支持一件代发，代销分销集采优先！
+                {{ item.title }}
               </p>
-              <p class="flex">
-                <span>杨悦</span>
-                <span class="line"></span>
-                <span>产品经理</span>
-                <span class="line"></span>
-                <span>徐州星跃联动网络</span>
-              </p>
-            </div>
-            <div class="top-item">
-              <p class="title">
-                【柯莉银】爆款、新品自带流量热度的优势品牌产品，寻实力销售渠道支持一件代发，代销分销集采优先！
-              </p>
-              <p class="flex">
-                <span>杨悦</span>
-                <span class="line"></span>
-                <span>产品经理</span>
-                <span class="line"></span>
-                <span>徐州星跃联动网络</span>
+              <p class="flex desc">
+                <span class="truncate">{{ item.nick_name }}</span>
+                <span v-if="item.position" class="line"></span>
+                <span class="truncate">{{ item.position }}</span>
+                <span v-if="item.company" class="line"></span>
+                <span class="truncate">{{ item.company }}</span>
               </p>
             </div>
           </div>
@@ -142,55 +130,21 @@
         <div class="recommend">
           <img :src="recommendImg" alt="" class="img">
           <div class="wrap">
-            <div class="item">
+            <div v-for="item in people" class="item">
               <div class="flex">
-                <img :src="recommendImg" alt="" class="photo">
+                <img :src="item.head" alt="" class="photo">
                 <div>
-                  <p class="title">徐州星跃联动网络</p>
+                  <p class="title">{{ item.company }}</p>
                   <p class="sub">
-                    <span>杨悦</span>
+                    <span>{{ item.nick_name }}</span>
                     <span class="line"></span>
-                    <span>产品经理</span>
+                    <span>{{ item.position }}</span>
                   </p>
                 </div>
               </div>
               <div class="flex bottom justify-between">
-                <span><span class="light">2</span>条合作信息</span>
-                <span class="tag app-flex-center">互联网</span>
-              </div>
-            </div>
-            <div class="item">
-              <div class="flex">
-                <img :src="recommendImg" alt="" class="photo">
-                <div>
-                  <p class="title">徐州星跃联动网络</p>
-                  <p class="sub">
-                    <span>杨悦</span>
-                    <span class="line"></span>
-                    <span>产品经理</span>
-                  </p>
-                </div>
-              </div>
-              <div class="flex bottom justify-between">
-                <span><span class="light">2</span>条合作信息</span>
-                <span class="tag app-flex-center">互联网</span>
-              </div>
-            </div>
-            <div class="item">
-              <div class="flex">
-                <img :src="recommendImg" alt="" class="photo">
-                <div>
-                  <p class="title">徐州星跃联动网络</p>
-                  <p class="sub">
-                    <span>杨悦</span>
-                    <span class="line"></span>
-                    <span>产品经理</span>
-                  </p>
-                </div>
-              </div>
-              <div class="flex bottom justify-between">
-                <span><span class="light">2</span>条合作信息</span>
-                <span class="tag app-flex-center">互联网</span>
+                <span><span class="light">{{ item.count }}</span>条合作信息</span>
+                <!-- <span class="tag app-flex-center">互联网</span> -->
               </div>
             </div>
           </div>
@@ -242,7 +196,7 @@
 
 <script setup lang="ts">
 import adImg1 from '@/assets/ggwzs_h@2x.png'
-import { getVipOrder, getBanner, getMenu } from '@/utils/api'
+import { getVipOrder, getBanner, getMenu, getRecommendList, getHot } from '@/utils/api'
 import { ref } from 'vue'
 import List from './components/List.vue'
 import photoImg from '@/assets/default.png'
@@ -265,7 +219,7 @@ import preferenceImg from '@/assets/xianshith@2x.png'
 import newImg from '@/assets/NEW@2x.png';
 
 // 分类菜单
-const navItems = ref([])
+const navItems = ref<any>([])
 getMenu().then(res => {
   navItems.value = res.data.data
 })
@@ -286,12 +240,25 @@ getBanner().then(res => {
 })
 
 // 开通会员的用户
-const vipUserList = ref([
-  { name: '用户彼得沃克斯芬克斯开通了年会员年会员年会员', time: '刚刚' },
-  { name: '用户彼得沃克斯芬克斯开通了年会员', time: '刚刚' },
-  { name: '用户彼得沃克斯芬克斯开通了年会员', time: '1小时前' },
-  { name: '用户彼得沃克斯芬克斯开通了年会员', time: '1小时前' },
-])
+const vipUserList = ref<any>([])
+getVipOrder().then(res => {
+  vipUserList.value = (res.data.data || []).slice(0, 5)
+})
+
+// 今日热门
+const todayHot = ref<any>([])
+getHot().then(res => {
+  todayHot.value = (res.data.data || []).slice(0, 2)
+})
+
+// 推荐人脉
+const people = ref<any>([])
+getRecommendList().then(res => {
+  people.value = (res.data.data || []).slice(0, 3).map((v: any) => {
+    v.head = 'https://admin.bdhuoke.com/' + v.head
+    return v;
+  })
+})
 
 // 广告
 const isShowLeft = ref(true)
@@ -622,7 +589,7 @@ const isShowRight = ref(true)
 
       .time {
         flex-shrink: 0;
-        width: 50px;
+        width: 55px;
         text-align: right;
       }
     }
@@ -645,7 +612,9 @@ const isShowRight = ref(true)
       padding: 26px 14px;
       background: white;
     }
-
+    .desc {
+      width: 277px;
+    }
     .top-item {
       border-bottom: 1px solid rgba(234, 234, 234, 0.32);
       cursor: pointer;
