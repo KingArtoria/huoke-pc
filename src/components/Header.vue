@@ -9,12 +9,50 @@
             <span>请<a href="javascript:;">登录</a><a href="javascript:;">注册</a></span>
           </li>
           <li class="nav-item">个人中心</li>
-          <li class="nav-item">
-            <span>普通会员</span>
-            <div class="vip-wrap normal"></div>
+          <li class="nav-item drop">
+            <span class="item-text">普通会员</span>
+            <div class="vip-wrap super normal">
+              <div class="top">
+                <p class="title">限时抢购</p>
+                <div class="flex justify-between content">
+                  <p class="flex items-end">
+                    <span class="time">一年普通会员</span>
+                    <span class="price"><span class="money">998</span>元/年</span>
+                  </p>
+                  <div class="btn">立即开通</div>
+                </div>
+                <p class="present ml">每月赠送道具卡（置顶卡*1、变色卡*1）</p>
+              </div>
+              <div class="more">
+                <p class="more-text ml">更多会员套餐</p>
+                <div class="meal-list">
+                  <div class="meal">
+                    <div class="tag app-flex-center">体验会员</div>
+                    <p class="meal-price">
+                      <span>1个月</span>
+                      <span class="price-money">￥<span class="num">298</span></span>
+                    </p>
+                  </div>
+                  <div class="meal">
+                    <div class="tag app-flex-center">体验会员</div>
+                    <p class="meal-price">
+                      <span>半年</span>
+                      <span class="price-money">￥<span class="num">298</span></span>
+                    </p>
+                  </div>
+                  <div class="meal">
+                    <div class="tag app-flex-center">体验会员</div>
+                    <p class="meal-price">
+                      <span>一年</span>
+                      <span class="price-money">￥<span class="num">298</span></span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </li>
-          <li class="nav-item">
-            <span>超级会员</span>
+          <li class="nav-item drop">
+            <span class="item-text">超级会员</span>
             <div class="vip-wrap super">
               <p class="title">本站力推</p>
               <div class="flex justify-between content">
@@ -24,11 +62,25 @@
                 </p>
                 <div class="btn">立即开通</div>
               </div>
-              <p class="desc">专属客服，专属资源</p>
-              <p class="present">每月赠送道具卡（置顶卡*1、变色卡*1、超级置顶卡*1）</p>
+              <p class="desc ml">专属客服，专属资源</p>
+              <p class="present ml">每月赠送道具卡（置顶卡*1、变色卡*1、超级置顶卡*1）</p>
             </div>
           </li>
-          <li class="nav-item">企业会员</li>
+          <li class="nav-item drop">
+            <span class="item-text">企业会员</span>
+            <div class="vip-wrap super company">
+              <p class="title">企业专享</p>
+              <div class="flex justify-between content">
+                <p class="flex items-end">
+                  <span class="time">一年企业会员</span>
+                  <span class="price"><span class="money">3998</span>元/年</span>
+                </p>
+                <div class="btn">立即开通</div>
+              </div>
+              <p class="desc ml">专属客服，专属资源，多设备登录</p>
+              <p class="present ml">每月赠送道具卡（置顶卡*1、变色卡*1、超级置顶卡*1）</p>
+            </div>
+          </li>
           <li class="nav-item">黑卡</li>
           <li class="nav-item">帮助中心</li>
           <li class="nav-item">APP下载</li>
@@ -122,17 +174,34 @@ const keyword = ref('')
 
   .nav-item {
     position: relative;
+
+    .item-text {
+      cursor: pointer;
+    }
+  }
+
+  .drop:hover {
+    .vip-wrap {
+      display: block;
+    }
   }
 
   .vip-wrap {
     position: absolute;
+    display: none;
+    left: 50%;
+    transform: translateX(-50%);
+
+    .ml {
+      margin-left: 18px;
+    }
 
     &.super {
       width: 481px;
       height: 216px;
       background: url('@/assets/svip_stc@2x.png') no-repeat;
-      z-index: 10;
       background-size: contain;
+      z-index: 10;
       padding: 20px;
 
       .title {
@@ -142,8 +211,9 @@ const keyword = ref('')
         color: #FFFFFF;
         margin: 3px 0 0 7px;
       }
+
       .content {
-        margin: 26px 28px 0 18px;
+        margin: 23px 28px 0 18px;
       }
 
       .time {
@@ -176,6 +246,7 @@ const keyword = ref('')
         color: #FFFFFF;
         text-align: center;
         line-height: 31px;
+        cursor: pointer;
       }
 
       .desc {
@@ -191,7 +262,99 @@ const keyword = ref('')
         font-family: PingFang SC;
         font-weight: 400;
         color: #FD4E25;
-        margin-top: 41px;
+        margin-top: 36px;
+      }
+    }
+
+    &.company {
+      background: url('@/assets/qyhy_stc@2x.png') no-repeat;
+      background-size: contain;
+
+      .price {
+        color: #0078FF;
+      }
+
+      .btn {
+        background: linear-gradient(90deg, #015EEA 0%, #188AFF 100%);
+      }
+
+      .desc {
+        color: #0E76F6;
+      }
+    }
+
+    &.normal {
+      min-height: 362px;
+      background: url('@/assets/pthy-stcc@2x.png') no-repeat;
+      background-size: contain;
+
+      .meal-list {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0 20px 20px;
+        margin-top: 23px;
+      }
+
+      .meal {
+        margin: 0 20px 20px 0;
+        width: 180px;
+        height: 79px;
+        background: #FFFFFF;
+        border: 1px solid #EBE8E9;
+        border-radius: 5px;
+        color: #767376;
+        font-size: 16px;
+        cursor: pointer;
+        padding: 0 15px 0 12px;
+
+        &:hover {
+          color: #0078FF;
+          border-color: #0078FF;
+        }
+      }
+
+      .present {
+        margin-top: 30px;
+      }
+
+      .more {
+        background: white;
+      }
+
+      .more-text {
+        font-size: 16px;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #242424;
+        margin-top: 52px;
+      }
+
+      .tag {
+        width: 58px;
+        height: 19px;
+        background: #F66161;
+        border-radius: 5px 0px 5px 0px;
+        font-size: 12px;
+        font-family: PingFang SC;
+        font-weight: 500;
+        color: #FFFFFF;
+        margin-left: -12px;
+      }
+
+      .meal-price {
+        margin-top: 13px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+      }
+
+      .price-money {
+        font-size: 13px;
+      }
+
+      .num {
+        font-size: 30px;
+        margin-left: 6px;
       }
     }
   }
