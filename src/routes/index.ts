@@ -3,6 +3,8 @@ import { TOKEN } from '@/utils/const'
 const routes: RouteRecordRaw[] = [
   { path: '/', component: () => import('@/views/index/index.vue') },
   { path: '/login', component: () => import('@/views/login/index.vue') },
+  { path: '/search', component: () => import('@/views/search/index.vue') },
+  { path: '/detail', component: () => import('@/views/detail/index.vue') },
 ]
 
 // 创建路由

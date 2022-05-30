@@ -221,3 +221,11 @@ export const getListData = (data: any): AxiosPromise<any> => {
     data
   });
 };
+// 搜索
+export const searchApi = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/index/search',
+    data
+  });
+};

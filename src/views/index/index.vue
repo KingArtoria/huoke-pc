@@ -150,20 +150,16 @@
           </div>
         </div>
         <!-- 下载app -->
-        <div class="download">
-          <div class="name">火客 APP</div>
-          <div class="code"></div>
-          <div class="text">手机版下载</div>
-        </div>
+        <Download class="download" />
       </aside>
     </div>
-    <div class="fix left">
+    <div v-if="isShowLeft" class="fix left">
       <img :src="adImg" alt="" class="ad-img">
-      <div class="close">关闭</div>
+      <div class="close" @click="isShowLeft = false">关闭</div>
     </div>
-    <div class="fix right">
+    <div v-if="isShowRight" class="fix right">
       <img :src="adImg" alt="" class="ad-img">
-      <div class="close">关闭</div>
+      <div class="close" @click="isShowRight = false">关闭</div>
     </div>
     <!-- 联系客服 -->
     <div class="concat">
@@ -217,6 +213,7 @@ import feedbackImg from '@/assets/fankui_lan@2x.png';
 import feedbackImgActive from '@/assets/fankui_bai@2x.png';
 import preferenceImg from '@/assets/xianshith@2x.png'
 import newImg from '@/assets/NEW@2x.png';
+import Download from '@/components/Download.vue'
 
 // 分类菜单
 const navItems = ref<any>([])
@@ -268,7 +265,6 @@ const isShowRight = ref(true)
 <style lang="scss" scoped>
 .fix {
   width: 200px;
-  height: 200px;
   background: red;
   top: 56px;
   width: 100px;
@@ -293,8 +289,10 @@ const isShowRight = ref(true)
     font-family: PingFang SC;
     font-weight: 500;
     color: #545454;
-    line-height: 33px;
+    height: 20px;
+    line-height: 20px;
     text-align: center;
+    cursor: pointer;
   }
 }
 
@@ -336,6 +334,7 @@ const isShowRight = ref(true)
   display: grid;
   column-gap: 9px;
   grid-template-columns: 238px 819px;
+  height: 525px;
 
   .nav {
     height: 525px;
@@ -609,15 +608,18 @@ const isShowRight = ref(true)
     }
 
     .top-content {
-      padding: 26px 14px;
+      padding: 0 14px;
       background: white;
     }
+
     .desc {
       width: 277px;
     }
+
     .top-item {
       border-bottom: 1px solid rgba(234, 234, 234, 0.32);
       cursor: pointer;
+      padding: 20px 0;
 
       &:last-of-type {
         border-bottom: 0;
@@ -646,7 +648,6 @@ const isShowRight = ref(true)
       font-weight: 400;
       color: #303030;
       margin-bottom: 16px;
-      margin-top: 20px;
       line-height: 18px;
     }
 
@@ -655,7 +656,6 @@ const isShowRight = ref(true)
       font-family: PingFang SC;
       font-weight: 400;
       color: #B7B7B7;
-      margin-bottom: 26px;
     }
 
     .line {
@@ -742,38 +742,17 @@ const isShowRight = ref(true)
     }
   }
 
-  .download {
-    width: 305px;
-    height: 448px;
-    margin-top: 35px;
-    background-size: cover;
-    background: url('@/assets/xaizait@2x.png') no-repeat;
-    background-size: cover;
+}
 
-    .name {
-      font-size: 18px;
-      font-family: PingFang SC;
-      font-weight: 500;
-      color: #0081FF;
-      padding-top: 12px;
-      text-align: center;
-    }
-
-    .text {
-      font-size: 20px;
-      font-family: PingFang SC;
-      font-weight: 500;
-      color: #FEFFFF;
-      margin-top: 44px;
-      text-align: center;
-    }
-  }
+.download {
+  margin-top: 35px;
 }
 
 .main-bottom {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   column-gap: 17px;
+  margin-bottom: 30px;
 
   .img {
     height: 110px;
@@ -831,7 +810,7 @@ const isShowRight = ref(true)
 .header {
   border-bottom: 2px solid #0071FA;
   background: white;
-  padding-top: 32px;
+  // padding-top: 32px;
 
   .app-page {
     display: flex;
@@ -840,17 +819,18 @@ const isShowRight = ref(true)
   .title {
     width: 238px;
     height: 43px;
+    line-height: 43px;
     background: #0071FA;
     border-radius: 5px 5px 0px 0px;
-    font-size: 20px;
+    font-size: 18px;
     font-family: PingFang SC;
     font-weight: 400;
     color: #FFFFFF;
-    padding: 11px 0 0 21px;
+    padding-left: 21px;
   }
 
   .nav-item {
-    font-size: 20px;
+    font-size: 18px;
     font-family: PingFang SC;
     font-weight: 400;
     color: #484848;

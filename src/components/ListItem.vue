@@ -5,28 +5,28 @@
     </div>
     <div class="flex-1 overflow-hidden">
       <div class="top">
-        <p class="title" :title="item.title">{{ item.title }}</p>
+        <p class="title" :style="{color: item.color}" :title="item.title">{{ item.title }}</p>
         <p class="flex sub-title">
-          <span>杨月</span>
-          <span class="line"></span>
-          <span>产品经理</span>
-          <span class="line"></span>
-          <span>公司</span>
+          <span>{{ item.nick_name }}</span>
+          <span v-if="item.position" class="line"></span>
+          <span>{{ item.position }}</span>
+          <span v-if="item.company" class="line"></span>
+          <span>{{ item.company }}</span>
           <img src="" alt="" class="vip-icon">
-          <span class="date">2021-06-29</span>
+          <span class="date">{{ fmtDate(item.addtime) }}</span>
         </p>
-        <div class="type">广告甲方</div>
+        <div class="type">{{ fmtType(item.type) }}</div>
       </div>
       <div class="bottom">
-        <span class="tag">日结</span>
-        <span class="tag">结算方式：CPS</span>
-        <span class="tag">地推</span>
-        <span>合作区域：全国</span>
+        <span v-if="item.settcycle_id" class="tag">{{ item.settcycle_id }}</span>
+        <span v-if="item.settmod_id" class="tag">结算方式：{{ item.settmod_id }}</span>
+        <span v-if="item.promotion" class="tag">{{ item.promotion }}</span>
+        <span>合作区域：{{ item.area }}</span>
         <span class="right flex items-center">
           <el-icon class="icon">
             <View />
           </el-icon>
-          <span>255</span>
+          <span>{{ item.viewcount }}</span>
         </span>
       </div>
 
@@ -34,17 +34,27 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import dayjs from 'dayjs'
+import { COOPERATION_TYPES } from '@/utils/const'
+import { matchLabel } from '@/utils/index'
 defineProps<{
   item: any
 }>()
 // 图片地址前缀
 const host = 'https://admin.bdhuoke.com/'
+// 格式化日期
+const fmtDate = (val: string) => {
+  return val ? dayjs(val).format('YYYY-MM-DD-HH:mm') : ''
+}
+// 格式化合作类型
+const fmtType = (val: number) => {
+  return val ? matchLabel(val, COOPERATION_TYPES) : val
+}
 </script>
 
 <style lang="scss" scoped>
 .item {
-  padding: 28px 19px 32px 15px;
+  padding: 26px 19px 32px 15px;
   display: flex;
   background-color: white;
   border-bottom: 1px solid #F6F6F6;
@@ -58,6 +68,7 @@ const host = 'https://admin.bdhuoke.com/'
 
   .photo-wrap {
     margin-right: 10px;
+    padding-top: 5px;
 
     .photo {
       width: 45px;
@@ -67,11 +78,12 @@ const host = 'https://admin.bdhuoke.com/'
   }
 
   .title {
-    font-size: 18px;
+    font-size: 16px;
     font-family: PingFang SC;
     font-weight: 500;
     color: #3A3A3A;
     margin-bottom: 14px;
+    line-height: 29px;
   }
 
   .top {
@@ -86,7 +98,7 @@ const host = 'https://admin.bdhuoke.com/'
     border-radius: 5px;
     position: absolute;
     right: 0;
-    bottom: 2px;
+    bottom: 3px;
     font-size: 14px;
     font-family: PingFang SC;
     font-weight: 400;
@@ -136,6 +148,10 @@ const host = 'https://admin.bdhuoke.com/'
     height: 14px;
     background: #B7B7B7;
     margin: 0 9px;
+  }
+
+  .date {
+    margin-left: 8px;
   }
 }
 </style>

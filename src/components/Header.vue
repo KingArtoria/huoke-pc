@@ -113,8 +113,8 @@
               }}</div>
             </div>
           </div>
-          <input type="text" class="input" placeholder="输入关键词进行搜索">
-          <div class="search-btn app-flex-center">搜索</div>
+          <input v-model="keyword" type="text" class="input" placeholder="输入关键词进行搜索">
+          <div class="search-btn app-flex-center" @click="doSearch">搜索</div>
         </div>
         <div class="grid auto-cols-max grid-flow-col links">
           <a href="javascript:;">加粉</a>
@@ -135,11 +135,13 @@
 import { ref } from 'vue';
 import bannerImg from '@/assets/dingbbanner@2x.png'
 import logo from '@/assets/huoke@2x.png'
-
+import { useRouter } from 'vue-router';
+import { ElMessage } from 'element-plus'
+const router = useRouter()
 // 搜索类型
 const searchType = ref('找项目')
 const typeOptions = ref([
-  { label: '找项目', value: 'project', isSelect: false },
+  { label: '找项目', value: 'project', isSelect: true },
   { label: '找人脉', value: 'people', isSelect: false },
   { label: '查企业', value: 'company', isSelect: false },
 ])
@@ -150,11 +152,25 @@ const setSearchType = (item: any) => {
 }
 // 关键词
 const keyword = ref('')
+// 搜索
+const doSearch = () => {
+  if (keyword.value.trim().length === 0) {
+    ElMessage.info('请输入搜索关键词')
+    return
+  }
+  router.push({
+    path: '/search',
+    query: {
+      keyword: keyword.value
+    }
+  })
+}
 </script>
 
 <style lang="scss" scoped>
 .header {
   background-color: white;
+  padding-bottom: 32px;
 }
 
 .nav {
@@ -449,7 +465,7 @@ const keyword = ref('')
     cursor: pointer;
 
     &:hover {
-      background: #2486fd;
+      background: #0e7aff;
     }
   }
 
