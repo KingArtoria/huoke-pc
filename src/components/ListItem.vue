@@ -1,35 +1,42 @@
 <template>
   <div class="item">
-    <div class="photo-wrap">
-      <img :src="host + item.head" alt="" class="photo">
+    <!-- 超级置顶 -->
+    <div v-if="type === 'super'" class="super flex items-center">
+      <img :src="superImg" alt="" class="img">
     </div>
-    <div class="flex-1 overflow-hidden">
-      <div class="top">
-        <p class="title" :style="{color: item.color}" :title="item.title">{{ item.title }}</p>
-        <p class="flex sub-title">
-          <span>{{ item.nick_name }}</span>
-          <span v-if="item.position" class="line"></span>
-          <span>{{ item.position }}</span>
-          <span v-if="item.company" class="line"></span>
-          <span>{{ item.company }}</span>
-          <img src="" alt="" class="vip-icon">
-          <span class="date">{{ fmtDate(item.addtime) }}</span>
-        </p>
-        <div class="type">{{ fmtType(item.type) }}</div>
+    <div class="flex content">
+      <div class="photo-wrap">
+        <img :src="host + item.head" alt="" class="photo">
       </div>
-      <div class="bottom">
-        <span v-if="item.settcycle_id" class="tag">{{ item.settcycle_id }}</span>
-        <span v-if="item.settmod_id" class="tag">结算方式：{{ item.settmod_id }}</span>
-        <span v-if="item.promotion" class="tag">{{ item.promotion }}</span>
-        <span>合作区域：{{ item.area }}</span>
-        <span class="right flex items-center">
-          <el-icon class="icon">
-            <View />
-          </el-icon>
-          <span>{{ item.viewcount }}</span>
-        </span>
-      </div>
+      <div class="flex-1 overflow-hidden">
+        <div class="top">
+          <p class="title" :style="{ color: item.color }" :title="item.title">{{ item.title }}</p>
+          <p class="flex sub-title items-end">
+            <span>{{ item.nick_name }}</span>
+            <span v-if="item.position" class="line"></span>
+            <span>{{ item.position }}</span>
+            <span v-if="item.company" class="line"></span>
+            <span>{{ item.company }}</span>
+            <img v-if="fmtVipImg(item)" :src="fmtVipImg(item)" alt="" class="vip-icon">
+            <span class="date">{{ fmtDate(item.addtime) }}</span>
+          </p>
+          <div class="type">{{ fmtType(item.type) }}</div>
+        </div>
+        <div class="bottom">
+          <span v-if="item.settcycle_id" class="tag">{{ item.settcycle_id }}</span>
+          <span v-if="item.settmod_id" class="tag">结算方式：{{ item.settmod_id }}</span>
+          <span v-if="item.promotion" class="tag">{{ item.promotion }}</span>
+          <span>合作区域：{{ fmtArea(item.area) }}</span>
+          <span class="right flex items-center">
+            <el-icon class="icon">
+              <View />
+            </el-icon>
+            <span>{{ item.viewcount }}</span>
+          </span>
+        </div>
 
+      </div>
+      <img v-if="type === 'normal'" :src="normalImg" alt="" class="top-img">
     </div>
   </div>
 </template>
@@ -37,8 +44,22 @@
 import dayjs from 'dayjs'
 import { COOPERATION_TYPES } from '@/utils/const'
 import { matchLabel } from '@/utils/index'
+import superImg from '@/assets/cjzhiding.png'
+import normalImg from '@/assets/zhiding.png'
+import vipImg from '@/assets/puthy.png'
+import superVipImg from '@/assets/svip2.png'
+import blackVipImg from '@/assets/heikahuizhang@2x@2x.png'
+import companyVipImg from '@/assets/qiyehy@2x@2x.png'
 defineProps<{
-  item: any
+  item: any, // 数据
+  /**
+   * 置顶类型
+   * ad=广告置顶
+   * black=黑卡置顶
+   * super=超级置顶
+   * normal=普通置顶
+   */
+  type?: string,
 }>()
 // 图片地址前缀
 const host = 'https://admin.bdhuoke.com/'
@@ -50,12 +71,33 @@ const fmtDate = (val: string) => {
 const fmtType = (val: number) => {
   return val ? matchLabel(val, COOPERATION_TYPES) : val
 }
+// 格式化区域
+const fmtArea = (val: string) => {
+  return val ? val.replaceAll(':', '-') : ''
+}
+// vip图标
+const fmtVipImg = (item: any) => {
+  switch (true) {
+    // 超级会员
+    case item.is_super == 1:
+      return superVipImg
+    // 普通vip
+    case item.is_vip == 1:
+      return vipImg
+    // 黑卡vip
+    case item.is_black == 1:
+      return blackVipImg
+    // 企业vip
+    case item.is_firm == 1:
+      return companyVipImg
+    default:
+      return ''
+  }
+}
 </script>
 
 <style lang="scss" scoped>
 .item {
-  padding: 26px 19px 32px 15px;
-  display: flex;
   background-color: white;
   border-bottom: 1px solid #F6F6F6;
   cursor: pointer;
@@ -64,6 +106,17 @@ const fmtType = (val: number) => {
   &:hover {
     box-shadow: 0px 0px 27px 0px rgba(134, 177, 255, 0.53);
     transform: translateZ(0);
+  }
+
+  .content {
+    padding: 26px 19px 32px 15px;
+    position: relative;
+  }
+
+  .top-img {
+    position: absolute;
+    right: 0;
+    top: 0;
   }
 
   .photo-wrap {
@@ -143,6 +196,10 @@ const fmtType = (val: number) => {
     color: #B7B7B7;
   }
 
+  .vip-icon {
+    margin: 0 9px;
+  }
+
   .line {
     width: 1px;
     height: 14px;
@@ -152,6 +209,21 @@ const fmtType = (val: number) => {
 
   .date {
     margin-left: 8px;
+  }
+
+  .area {
+    margin-right: 10px;
+  }
+}
+
+.super {
+  height: 40px;
+  background: #F6FAFF;
+
+  .img {
+    width: 66px;
+    height: 16px;
+    margin-left: 17px;
   }
 }
 </style>

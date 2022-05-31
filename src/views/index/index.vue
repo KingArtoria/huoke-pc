@@ -164,7 +164,7 @@
     <!-- 联系客服 -->
     <div class="concat">
       <ul>
-        <li class="concat-item">
+        <li class="concat-item" @click="signVisible = true">
           <img :src="signImg" alt="" class="normal img">
           <img :src="signImgActive" alt="" class="active img">
           <span>签到</span>
@@ -179,7 +179,7 @@
           <img :src="propImgActive" alt="" class="active img">
           <span>道具</span>
         </li>
-        <li class="concat-item">
+        <li class="concat-item" @click="openFeedback">
           <img :src="feedbackImg" alt="" class="normal img">
           <img :src="feedbackImgActive" alt="" class="active img">
           <span>反馈</span>
@@ -188,6 +188,10 @@
       <img :src="preferenceImg" alt="" class="vip-img">
     </div>
   </div>
+  <!-- 签到 -->
+  <Sign v-if="signVisible" @close="signVisible = false" />
+  <!-- 反馈 -->
+  <Feedback ref="feedbackRef" />
 </template>
 
 <script setup lang="ts">
@@ -214,6 +218,8 @@ import feedbackImgActive from '@/assets/fankui_bai@2x.png';
 import preferenceImg from '@/assets/xianshith@2x.png'
 import newImg from '@/assets/NEW@2x.png';
 import Download from '@/components/Download.vue'
+import Sign from './components/Sign.vue'
+import Feedback from './components/Feedback.vue'
 
 // 分类菜单
 const navItems = ref<any>([])
@@ -260,6 +266,13 @@ getRecommendList().then(res => {
 // 广告
 const isShowLeft = ref(true)
 const isShowRight = ref(true)
+// 签到
+const signVisible = ref(false)
+// 反馈
+const feedbackRef = ref()
+const openFeedback = () => {
+  feedbackRef.value.open()
+}
 </script>
 
 <style lang="scss" scoped>

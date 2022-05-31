@@ -127,9 +127,11 @@
         </div>
       </div>
       <div class="text app-flex-center">或</div>
-      <div class="btn app-flex-center">免费发布合作信息</div>
+      <div class="btn app-flex-center" @click="openPublish">免费发布合作信息</div>
     </div>
   </div>
+  <!-- 发布合作信息 -->
+  <Publish ref="publishRef" />
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
@@ -137,6 +139,8 @@ import bannerImg from '@/assets/dingbbanner@2x.png'
 import logo from '@/assets/huoke@2x.png'
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus'
+import Publish from './Publish.vue';
+
 const router = useRouter()
 // 搜索类型
 const searchType = ref('找项目')
@@ -164,6 +168,11 @@ const doSearch = () => {
       keyword: keyword.value
     }
   })
+}
+// 发布合作信息
+const publishRef = ref()
+const openPublish = () => {
+  publishRef.value.open()
 }
 </script>
 

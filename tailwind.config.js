@@ -3,8 +3,10 @@ module.exports = {
   theme: {
     extend: {
       gap: {
+        '15': '15px',
         '16': '16px',
-        '20': '20px'
+        '20': '20px',
+        '26': '26px',
       }
     },
   },
