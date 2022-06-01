@@ -6,6 +6,37 @@ const routes: RouteRecordRaw[] = [
   { path: '/search', component: () => import('@/views/search/index.vue') },
   { path: '/detail', component: () => import('@/views/search/detail.vue') },
   { path: '/publish', component: () => import('@/views/publish/index.vue') },
+  {
+    path: '/user/:id', component: () => import('@/views/user/index.vue'),
+    children: [
+      // 个人中心
+      { path: 'profile', component: () => import('@/views/user/profile/index.vue') },
+      // 填写个人资料
+      { path: 'profile-form', component: () => import('@/views/user/profile/profile-form.vue') },
+      // 我的道具
+      { path: 'item', component: () => import('@/views/user/profile-form.vue') },
+      // vip 
+      { path: 'item', component: () => import('@/views/user/profile-form.vue') },
+      // buy 
+      { path: 'item', component: () => import('@/views/user/profile-form.vue') },
+      // 我的动态（已发布）
+      { path: 'punlish-pass', component: () => import('@/views/user/profile-form.vue') },
+      // 我的动态（待审核）
+      { path: 'punlish-audit', component: () => import('@/views/user/profile-form.vue') },
+      // 我的动态（未通过 ）
+      { path: 'punlish-reject', component: () => import('@/views/user/profile-form.vue') },
+      // 修改手机号
+      { path: 'change-phone', component: () => import('@/views/user/profile-form.vue') },
+      // 修改密码  
+      { path: 'change-password', component: () => import('@/views/user/profile-form.vue') },
+      // 我的收藏  
+      { path: 'favorite', component: () => import('@/views/user/profile-form.vue') },
+      // 担保记录   
+      { path: 'guarantee', component: () => import('@/views/user/profile-form.vue') },
+      // 我的好友    
+      { path: 'friend', component: () => import('@/views/user/profile-form.vue') },
+    ]
+  },
 ]
 
 // 创建路由
