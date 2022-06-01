@@ -4,7 +4,8 @@ const routes: RouteRecordRaw[] = [
   { path: '/', component: () => import('@/views/index/index.vue') },
   { path: '/login', component: () => import('@/views/login/index.vue') },
   { path: '/search', component: () => import('@/views/search/index.vue') },
-  { path: '/detail', component: () => import('@/views/detail/index.vue') },
+  { path: '/detail', component: () => import('@/views/search/detail.vue') },
+  { path: '/publish', component: () => import('@/views/publish/index.vue') },
 ]
 
 // 创建路由

@@ -1,5 +1,5 @@
 <template>
-  <div class="item">
+  <div @click="nav(item)" class="item">
     <!-- 超级置顶 -->
     <div v-if="type === 'super'" class="super flex items-center">
       <img :src="superImg" alt="" class="img">
@@ -50,6 +50,7 @@ import vipImg from '@/assets/puthy.png'
 import superVipImg from '@/assets/svip2.png'
 import blackVipImg from '@/assets/heikahuizhang@2x@2x.png'
 import companyVipImg from '@/assets/qiyehy@2x@2x.png'
+import { useRouter } from 'vue-router'
 defineProps<{
   item: any, // 数据
   /**
@@ -61,6 +62,7 @@ defineProps<{
    */
   type?: string,
 }>()
+const router = useRouter()
 // 图片地址前缀
 const host = 'https://admin.bdhuoke.com/'
 // 格式化日期
@@ -93,6 +95,15 @@ const fmtVipImg = (item: any) => {
     default:
       return ''
   }
+}
+// 条状到详情
+const nav = (item: any) => {
+  router.push({
+    path: '/detail',
+    query: {
+      id: item.id
+    }
+  })
 }
 </script>
 

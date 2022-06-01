@@ -1,16 +1,79 @@
 .app-img {
   background-repeat: no-repeat;
 }
+
 .app-flex-center {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .app-page {
   width: 1382px;
   margin: 0 auto;
 }
+
 .app-full-img {
   width: 100%;
   height: 100%;
+}
+
+.app-mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  .center {
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%, -50%);
+  }
+}
+
+/* chrome */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+/* 火狐浏览器 */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.app-btn {
+  background: #0A7BF5;
+  color: white;
+  font-size: 16px;
+  font-family: PingFang SC;
+  font-weight: 400;
+  text-align: center;
+}
+
+// 字号类
+.fs-12 {
+  font-size: 12px;
+}
+.fs-13 {
+  font-size: 13px;
+}
+.fs-14 {
+  font-size: 14px;
+}
+.fs-15 {
+  font-size: 15px;
+}
+.fs-16 {
+  font-size: 16px;
+}
+.fs-17 {
+  font-size: 17px;
+}
+.fs-18 {
+  font-size: 18px;
+}
+.fs-22 {
+  font-size: 22px;
 }
