@@ -8,6 +8,7 @@ module.exports = {
         '20': '20px',
         '22': '22px',
         '26': '26px',
+        '80': '80px',
       }
     },
     spacing: {
@@ -41,6 +42,9 @@ module.exports = {
       46: '46px',
       48: '48px',
       50: '50px',
+      60: '60px',
+      70: '70px',
+      80: '80px',
     }
   },
   plugins: [],

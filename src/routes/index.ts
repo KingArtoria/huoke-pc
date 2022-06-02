@@ -14,27 +14,27 @@ const routes: RouteRecordRaw[] = [
       // 填写个人资料
       { path: 'profile-form', component: () => import('@/views/user/profile/profile-form.vue') },
       // 我的道具
-      { path: 'item', component: () => import('@/views/user/profile-form.vue') },
-      // vip 
-      { path: 'item', component: () => import('@/views/user/profile-form.vue') },
+      { path: 'item', component: () => import('@/views/user/profile/profile-form.vue') },
+      // 会员特权  
+      { path: 'vip', component: () => import('@/views/user/vip.vue') },
       // buy 
-      { path: 'item', component: () => import('@/views/user/profile-form.vue') },
+      { path: 'buy', component: () => import('@/views/user/profile/profile-form.vue') },
       // 我的动态（已发布）
-      { path: 'punlish-pass', component: () => import('@/views/user/profile-form.vue') },
+      { path: 'punlish-pass', component: () => import('@/views/user/profile/profile-form.vue') },
       // 我的动态（待审核）
-      { path: 'punlish-audit', component: () => import('@/views/user/profile-form.vue') },
+      { path: 'punlish-audit', component: () => import('@/views/user/profile/profile-form.vue') },
       // 我的动态（未通过 ）
-      { path: 'punlish-reject', component: () => import('@/views/user/profile-form.vue') },
+      { path: 'punlish-reject', component: () => import('@/views/user/profile/profile-form.vue') },
       // 修改手机号
-      { path: 'change-phone', component: () => import('@/views/user/profile-form.vue') },
+      { path: 'change-phone', component: () => import('@/views/user/profile/profile-form.vue') },
       // 修改密码  
-      { path: 'change-password', component: () => import('@/views/user/profile-form.vue') },
+      { path: 'change-password', component: () => import('@/views/user/profile/profile-form.vue') },
       // 我的收藏  
-      { path: 'favorite', component: () => import('@/views/user/profile-form.vue') },
+      { path: 'favorite', component: () => import('@/views/user/profile/profile-form.vue') },
       // 担保记录   
-      { path: 'guarantee', component: () => import('@/views/user/profile-form.vue') },
+      { path: 'guarantee', component: () => import('@/views/user/profile/profile-form.vue') },
       // 我的好友    
-      { path: 'friend', component: () => import('@/views/user/profile-form.vue') },
+      { path: 'friend', component: () => import('@/views/user/profile/profile-form.vue') },
     ]
   },
 ]
