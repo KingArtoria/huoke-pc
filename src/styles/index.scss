@@ -1,6 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import 'nprogress/nprogress.css';
+@import "swiper/css";
+@import "swiper/css/pagination";
+@import 'element-plus/dist/index.css';
 @import './app.scss';
 
 html {

@@ -2,7 +2,14 @@
   <!-- 通知栏 -->
   <Header v-if="isShowHeader" />
 
-  <RouterView />
+  <div id="main">
+    <router-view v-slot="{ Component }">
+      <component :is="Component" />
+    </router-view>
+  </div>
+  
+  <!-- 侧边和广告 -->
+  <Aside v-if="isShowHeader" />
 
   <!-- 底部 -->
   <Footer />
@@ -10,6 +17,7 @@
 <script setup lang="ts">
 import Header from './components/Header.vue';
 import Footer from './components/Footer.vue';
+import Aside from './components/Aside.vue';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router'
 
@@ -19,6 +27,3 @@ const isShowHeader = computed(() => {
   return !['/login'].includes(route.path)
 })
 </script>
-
-<style>
-</style>

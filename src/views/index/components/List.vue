@@ -42,7 +42,7 @@
     <!-- 分页 -->
     <footer class="footer flex justify-center">
       <el-pagination :current-page="tab[activeTab].page" :total="tab[activeTab].total" background
-        layout="prev, pager, next, jumper, total" @current-change="changePage" />
+        layout="total, prev, pager, next, jumper" @current-change="changePage" />
     </footer>
   </div>
 </template>

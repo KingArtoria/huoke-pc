@@ -1,14 +1,14 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import './styles/index.scss';
+import './styles/index.scss'; // 样式入口
 import { router } from '@/routes';
 import ElementPlus from 'element-plus'
 import locale from "element-plus/lib/locale/lang/zh-cn";
-import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
-import "swiper/css";
-import "swiper/css/pagination";
 import Swiper, { Pagination } from "swiper";
+import NProgress from 'nprogress'
+
+NProgress.configure({ parent: '#main' });
 
 Swiper.use([Pagination]);
 const app = createApp(App)
@@ -25,4 +25,5 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }
 /* -------- 注册全局组件 end -------- */
+
 app.mount('#app')

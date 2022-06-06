@@ -323,7 +323,7 @@
               <CloseBold />
             </el-icon>
           </td>
-          <td class="td">一个关键词</td>
+        <td class="td">一个关键词</td>
           <td class="td">
             <el-icon class="icon">
               <Check />
@@ -332,6 +332,7 @@
         </tr>
       </tbody>
     </table>
+    <div class="btn app-flex-center fs-18 text-white">立即开通，尽享权益</div>
   </div>
 </template>
 <script setup lang="ts">
@@ -449,5 +450,14 @@ import { loadImg } from '@/utils';
     margin: 0 auto;
   }
 
+}
+
+.btn {
+  width: 247px;
+  height: 60px;
+  background: linear-gradient(90deg, #F28E26 0%, #FD644F 100%);
+  border-radius: 30px;
+  margin: 22px 0 0 auto;
+  cursor: pointer;
 }
 </style> 

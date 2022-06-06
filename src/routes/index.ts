@@ -1,5 +1,6 @@
 import { createWebHistory, createRouter, RouteRecordRaw, RouteLocationNormalized } from 'vue-router'
 import { TOKEN } from '@/utils/const'
+import NProgress from 'nprogress'
 const routes: RouteRecordRaw[] = [
   { path: '/', component: () => import('@/views/index/index.vue') },
   { path: '/login', component: () => import('@/views/login/index.vue') },
@@ -17,8 +18,6 @@ const routes: RouteRecordRaw[] = [
       { path: 'item', component: () => import('@/views/user/profile/profile-form.vue') },
       // 会员特权  
       { path: 'vip', component: () => import('@/views/user/vip.vue') },
-      // buy 
-      { path: 'buy', component: () => import('@/views/user/profile/profile-form.vue') },
       // 我的动态（已发布）
       { path: 'punlish-pass', component: () => import('@/views/user/profile/profile-form.vue') },
       // 我的动态（待审核）
@@ -37,6 +36,7 @@ const routes: RouteRecordRaw[] = [
       { path: 'friend', component: () => import('@/views/user/profile/profile-form.vue') },
     ]
   },
+  { path: '/buy', component: () => import('@/views/buy/index.vue') },
 ]
 
 // 创建路由
@@ -48,7 +48,7 @@ export const router = createRouter({
 // 注册拦截器
 // 前置拦截器
 router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized) => {
-
+  NProgress.start()
   // 检查token
   // if (!sessionStorage.getItem(TOKEN) && !localStorage.getItem(TOKEN)) {
   //   if (to.path !== '/login') {
@@ -62,3 +62,6 @@ router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized) =
   // 不返回或返回 true 放行
 })
 // 后置拦截器
+router.afterEach(() => {
+  NProgress.done()
+})

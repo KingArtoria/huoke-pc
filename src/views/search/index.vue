@@ -2,7 +2,7 @@
   <div class="app-page">
 
     <div v-if="keyword" class="tip">
-      结果：招到‘<span class="light">{{ keyword }}</span>’相关内容{{ total }}个
+      结果：招到'<span class="light">{{ keyword }}</span>'相关内容{{ total }}个
     </div>
     <!-- 搜索条件 -->
     <div class="search-wrap">
@@ -37,11 +37,12 @@
         <div class="list-wrap">
           <!-- 列表数据 -->
           <ListItem v-for="item in listData" :item="item" />
+          <Empty v-if="listData.length === 0" />
         </div>
 
         <!-- 分页 -->
-        <footer class="footer flex justify-center">
-          <el-pagination :current-page="params.page" :total="total" background layout="prev, pager, next, jumper, total"
+        <footer v-if="listData.length > 0" class="footer flex justify-center">
+          <el-pagination :current-page="params.page" :total="total" background layout="total, prev, pager, next, jumper"
             @current-change="changePage" />
         </footer>
       </div>
@@ -78,6 +79,7 @@ import { searchApi, getHot } from '@/utils/api'
 import ListItem from '@/components/ListItem.vue'
 import Download from '@/components/Download.vue';
 import { COOPERATION_TYPES } from '@/utils/const'
+import Empty from '@/components/Empty.vue';
 
 const route = useRoute()
 // 搜索关键词

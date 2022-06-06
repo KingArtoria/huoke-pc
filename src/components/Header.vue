@@ -4,11 +4,14 @@
     <nav class="nav">
       <div class="center">
         <span class="brand">用火客，必定获客</span>
-        <ul class="grid auto-cols-max grid-flow-col nav-items">
+        <ul class="flex nav-items">
           <li class="nav-item">
             <span>请<a href="javascript:;">登录</a><a href="javascript:;">注册</a></span>
           </li>
-          <li class="nav-item">个人中心</li>
+          <li class="nav-item">
+            <span class="item-text">个人中心</span>
+          </li>
+          <!-- 普通会员 -->
           <li class="nav-item drop">
             <span class="item-text">普通会员</span>
             <div class="vip-wrap super normal">
@@ -19,7 +22,7 @@
                     <span class="time">一年普通会员</span>
                     <span class="price"><span class="money">998</span>元/年</span>
                   </p>
-                  <div class="btn">立即开通</div>
+                  <div class="btn" @click="navToBuy('normal')">立即开通</div>
                 </div>
                 <p class="present ml">每月赠送道具卡（置顶卡*1、变色卡*1）</p>
               </div>
@@ -51,6 +54,7 @@
               </div>
             </div>
           </li>
+          <!-- 超级会员 -->
           <li class="nav-item drop">
             <span class="item-text">超级会员</span>
             <div class="vip-wrap super">
@@ -60,12 +64,13 @@
                   <span class="time">一年超级会员</span>
                   <span class="price"><span class="money">1998</span>元/年</span>
                 </p>
-                <div class="btn">立即开通</div>
+                <div class="btn" @click="navToBuy('super')">立即开通</div>
               </div>
               <p class="desc ml">专属客服，专属资源</p>
               <p class="present ml">每月赠送道具卡（置顶卡*1、变色卡*1、超级置顶卡*1）</p>
             </div>
           </li>
+          <!-- 企业会员 -->
           <li class="nav-item drop">
             <span class="item-text">企业会员</span>
             <div class="vip-wrap super company">
@@ -75,16 +80,16 @@
                   <span class="time">一年企业会员</span>
                   <span class="price"><span class="money">3998</span>元/年</span>
                 </p>
-                <div class="btn">立即开通</div>
+                <div class="btn" @click="navToBuy('enterprise')">立即开通</div>
               </div>
               <p class="desc ml">专属客服，专属资源，多设备登录</p>
               <p class="present ml">每月赠送道具卡（置顶卡*1、变色卡*1、超级置顶卡*1）</p>
             </div>
           </li>
-          <li class="nav-item">黑卡</li>
-          <li class="nav-item">帮助中心</li>
-          <li class="nav-item">APP下载</li>
-          <li class="nav-item">消息</li>
+          <li class="nav-item"><span class="item-text" @click="navToBuy('black')">黑卡</span></li>
+          <li class="nav-item"><span class="item-text">帮助中心</span></li>
+          <li class="nav-item"><span class="item-text">APP下载</span></li>
+          <li class="nav-item"><span class="item-text">消息</span></li>
         </ul>
       </div>
 
@@ -174,6 +179,16 @@ const publishRef = ref()
 const openPublish = () => {
   publishRef.value.open()
 }
+
+// 跳转到购买页面
+const navToBuy = (tab: string) => {
+  router.push({
+    path: '/buy',
+    query: {
+      tab
+    }
+  })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -198,10 +213,22 @@ const openPublish = () => {
   }
 
   .nav-item {
+    height: 100%;
     position: relative;
 
     .item-text {
+      padding: 0 20px;
       cursor: pointer;
+      border-bottom: 1px solid transparent;
+      height: 100%;
+      display: flex;
+      align-items: center;
+
+      &:hover {
+        color: #0076FF;
+        border-color: #0071FA;
+      }
+
     }
   }
 
@@ -216,6 +243,7 @@ const openPublish = () => {
     display: none;
     left: 50%;
     transform: translateX(-50%);
+    top: 35px;
 
     .ml {
       margin-left: 18px;
@@ -386,7 +414,7 @@ const openPublish = () => {
 }
 
 .nav-items {
-  column-gap: 40px;
+  height: 100%;
 }
 
 .center {
