@@ -17,7 +17,8 @@
             <span>{{ item.position }}</span>
             <span v-if="item.company" class="line"></span>
             <span>{{ item.company }}</span>
-            <img v-if="fmtVipImg(item)" :src="fmtVipImg(item)" alt="" class="vip-icon">
+            <!-- <img v-if="fmtVipImg(item)" :src="fmtVipImg(item)" alt="" > -->
+            <VipIcon :item="item" class="vip-icon" />
             <span class="date">{{ fmtDate(item.addtime) }}</span>
           </p>
           <div class="type">{{ fmtType(item.type) }}</div>
@@ -46,11 +47,8 @@ import { COOPERATION_TYPES } from '@/utils/const'
 import { matchLabel } from '@/utils/index'
 import superImg from '@/assets/cjzhiding.png'
 import normalImg from '@/assets/zhiding.png'
-import vipImg from '@/assets/puthy.png'
-import superVipImg from '@/assets/svip2.png'
-import blackVipImg from '@/assets/heikahuizhang@2x@2x.png'
-import companyVipImg from '@/assets/qiyehy@2x@2x.png'
 import { useRouter } from 'vue-router'
+import VipIcon from './VipIcon.vue'
 defineProps<{
   item: any, // 数据
   /**
@@ -76,25 +74,6 @@ const fmtType = (val: number) => {
 // 格式化区域
 const fmtArea = (val: string) => {
   return val ? val.replaceAll(':', '-') : ''
-}
-// vip图标
-const fmtVipImg = (item: any) => {
-  switch (true) {
-    // 超级会员
-    case item.is_super == 1:
-      return superVipImg
-    // 普通vip
-    case item.is_vip == 1:
-      return vipImg
-    // 黑卡vip
-    case item.is_black == 1:
-      return blackVipImg
-    // 企业vip
-    case item.is_firm == 1:
-      return companyVipImg
-    default:
-      return ''
-  }
 }
 // 条状到详情
 const nav = (item: any) => {

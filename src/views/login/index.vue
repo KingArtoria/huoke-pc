@@ -14,8 +14,8 @@
               class="box_tabs_login_input" />
             <div class="code-wrap">
               <!-- 密码 -->
-              <input v-if="loginType == 'pass'" type="password" maxlength="6" v-model="loginForm.pass" placeholder="请输入密码"
-                class="box_tabs_login_input" />
+              <input v-if="loginType == 'pass'" type="password" maxlength="6" v-model="loginForm.pass"
+                placeholder="请输入密码" class="box_tabs_login_input" />
               <!-- 验证码 -->
               <input v-if="loginType == 'code'" type="text" maxlength="6" v-model="loginForm.code" placeholder="请输入验证码"
                 class="box_tabs_login_input" />
@@ -172,6 +172,7 @@ const doLogin = () => {
     if (res.data.code !== 1) return ElMessage.error(res.data.msg)
     ElMessage.success(res.data.msg)
     sessionStorage.setItem(TOKEN, res.data.data.token);
+    // 记住密码
     if (isRemember.value) localStorage.setItem(TOKEN, res.data.data.token);
     localStorage.setItem(USER, JSON.stringify(res.data.data));
     router.push('/');
@@ -377,6 +378,7 @@ const reLogin = () => {
   right: 20px;
   cursor: pointer;
   z-index: 1;
+
   &:hover {
     color: #0071fb;
   }

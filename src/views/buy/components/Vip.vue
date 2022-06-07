@@ -40,12 +40,14 @@
       <span class="color-4C4C4C ml-6">我已阅读并同意</span>
       <span class="color-0076FF">《BD火客付费会员协议》</span>
     </div>
-    <div class="btn app-flex-center fs-20 text-white mt-60">立即支付</div>
+    <button class="btn app-flex-center fs-20 text-white mt-60" @click="doPay">立即支付</button>
   </div>
+  <Pay v-model="payVisible" />
 </template>
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { loadImg } from '@/utils/index'
+import Pay from './Pay.vue'
 // 套餐
 interface IService {
   duration: string // 时长
@@ -67,6 +69,11 @@ watch(() => props.service, () => {
 }, { immediate: true })
 // 是否同意协议
 const isAgree = ref(false)
+const payVisible = ref(false)
+// 支付
+const doPay = () => {
+  payVisible.value = true
+}
 </script>
 
 <style lang="scss" scoped>

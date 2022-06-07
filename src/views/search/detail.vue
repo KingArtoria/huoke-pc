@@ -13,53 +13,53 @@
         </header>
         <div class="p-22 bg-white">
           <div class="detail">
-            <div class="tag mb-20">广告甲方</div>
-            <p class="detail-title fs-22 mb-32">2021年6月份APP即将上线啦寻渠道招募商家，无费用入住，坐享2年分润</p>
+            <div class="tag mb-20">{{ fmtType(detailData.type) }}</div>
+            <p class="detail-title fs-22 mb-32">{{ detailData.title }}</p>
             <div class="flex items-center div1">
-              <img src="" alt="" class="head-img">
-              <span>杨月</span>
-              <span class="line"></span>
-              <span>产品经理</span>
-              <span class="line"></span>
-              <span>徐州牛牛网络科技</span>
-              <img src="" alt="" class="ml-10 mr-24">
+              <img :src="host + detailData.head" alt="" class="head-img">
+              <span>{{ detailData.nick_name }}</span>
+              <span v-if="detailData.position" class="line"></span>
+              <span>{{ detailData.position }}</span>
+              <span v-if="detailData.company" class="line"></span>
+              <span>{{ detailData.company }}</span>
+              <VipIcon :item="detailData" class="ml-10 mr-24" />
               <button class="btn primary mr-22">+添加好友</button>
               <button class="btn info">发消息</button>
               <span class="right flex items-center">
                 <el-icon class="icon">
                   <View />
                 </el-icon>
-                <span>999</span>
+                <span>{{ detailData.viewcount }}</span>
               </span>
             </div>
             <div class="grid grid-cols-3 fields gap-y-22 mt-20 mb-30">
               <p>
                 <span class="label">合作类型：</span>
-                <span class="value">开卡</span>
+                <span class="value">{{ detailData.cooptype_id }}</span>
               </p>
               <p>
                 <span class="label">合作地区：</span>
-                <span class="value">开卡</span>
+                <span class="value">{{ detailData.area }}</span>
               </p>
               <p>
                 <span class="label">发布时间：</span>
-                <span class="value">开卡</span>
+                <span class="value">{{ fmtDate(detailData.addtime) }}</span>
               </p>
               <p>
                 <span class="label">结算方式：</span>
-                <span class="value">开卡</span>
+                <span class="value">{{ detailData.settmod_id }}</span>
               </p>
               <p>
                 <span class="label">结算周期：</span>
-                <span class="value">开卡</span>
+                <span class="value">{{ detailData.settcycle_id }}</span>
               </p>
               <p>
                 <span class="label">推广方式：</span>
-                <span class="value">开卡</span>
+                <span class="value">{{ detailData.promotion }}</span>
               </p>
               <p>
                 <span class="label">结算单价：</span>
-                <span class="value">开卡</span>
+                <span class="value">{{ detailData.price }}</span>
               </p>
             </div>
             <div class="flex items-center justify-between">
@@ -68,24 +68,24 @@
             </div>
             <!-- 联系方式 -->
             <div v-if="!contactVisible" class="contract-type flex items-center justify-center my-30">
-              <div class="btn cursor-pointer" @click="contactVisible = true">点击查看联系方式</div>
+              <div class="btn cursor-pointer" @click="getContactInfo">点击查看联系方式</div>
             </div>
             <div v-else class="contract-type show my-30">
               <div class="flex justify-center show1">
                 <div class="flex items-center">
                   <img :src="loadImg('dianh@2x.png')" alt="" class="img">
                   <span class="line"></span>
-                  <span>18805208888</span>
+                  <span>{{ contactInfo.contact }}</span>
                 </div>
                 <div class="flex items-center show2">
                   <img :src="loadImg('wechat@2x.png')" alt="" class="img">
                   <span class="line"></span>
-                  <span>XYLD8888</span>
+                  <span>{{ contactInfo.wx }}</span>
                 </div>
                 <div class="flex items-center">
                   <img :src="loadImg('QQ@2x.png')" alt="" class="img">
                   <span class="line"></span>
-                  <span>819241819</span>
+                  <span>{{ contactInfo.qq }}</span>
                 </div>
               </div>
               <span class="text">联系我时请说明是从<span class="light">BD火客</span>上看到的（未经授权严禁转载和使用）</span>
@@ -99,11 +99,12 @@
               <p>3、实物或高价值优惠券、视频网站会员等（需全国范围内使用）</p>
             </div>
             <div>
-              <span class="leader">需求详情标准</span>
+              <span class="leader">需求详情</span>
             </div>
             <div class="mt-32 mb-48 div2">
-              <p>1、提供优质流量资源,寻运营商号卡,电商,教育等甲方,可按表单线索合作</p>
-              <p>2、寻求微信支付后流量、短信流量、电子发票流量等各种出</p>
+              {{ detailData.info }}
+              <!-- <p>1、提供优质流量资源,寻运营商号卡,电商,教育等甲方,可按表单线索合作</p>
+              <p>2、寻求微信支付后流量、短信流量、电子发票流量等各种出</p> -->
             </div>
             <div class="text-center">
               <p class="text1 fs-16 mb-38">扫一扫下方二维码，下载BD火客AP，商务合作更快捷</p>
@@ -146,6 +147,11 @@ import iconImg from '@/assets/baozhang@2x.png'
 import { loadImg } from '@/utils'
 import Tip from './components/Tip.vue';
 import UserList from './components/UserList.vue';
+import { projectInfoAPI, contactInfoAPI } from '@/utils/api'
+import { COOPERATION_TYPES } from '@/utils/const'
+import { matchLabel } from '@/utils/index'
+import VipIcon from '@/components/VipIcon.vue';
+import dayjs from 'dayjs'
 const route = useRoute()
 // 今日热门
 const todayHot = ref<any>([])
@@ -154,6 +160,20 @@ getHot().then(res => {
 })
 const { id } = route.query
 const detailData = ref<any>({})
+// 获取详情
+projectInfoAPI({ fid: id }).then(res => {
+  detailData.value = res.data.data
+})
+// 格式化合作类型
+const fmtType = (val: number) => {
+  return val ? matchLabel(val, COOPERATION_TYPES) : val
+}
+// 格式化发布时间
+const fmtDate = (val: number) => {
+  return val ? dayjs(val).format('YYYY-MM-DD') : val
+}
+// 图片地址前缀
+const host = 'https://admin.bdhuoke.com/'
 // 标题字数过长做截取
 const shortTitle = computed(() => {
   const { title } = detailData.value
@@ -165,8 +185,18 @@ const shortTitle = computed(() => {
     return ''
   }
 })
+
 // 是否显示联系方式
 const contactVisible = ref(false)
+// 联系方式详情
+const contactInfo = ref<any>({})
+// 获取联系方式
+const getContactInfo = () => {
+  contactInfoAPI({ fid: id }).then(res => {
+    contactInfo.value = res.data.data
+    contactVisible.value = true
+  })
+}
 // 开通会员提示
 const vipTipVisible = ref(false)
 // 浏览用户窗口
@@ -239,8 +269,8 @@ const userListVisible = ref(false)
 
   .line {
     width: 1px;
-    height: 14px;
-    background: #8B8B8B;
+    height: 13px;
+    background: #bebebe;
     margin: 0 8px;
   }
 
@@ -248,6 +278,7 @@ const userListVisible = ref(false)
     width: 45px;
     height: 45px;
     margin-right: 13px;
+    border-radius: 50%;
   }
 
   .btn {

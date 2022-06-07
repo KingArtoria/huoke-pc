@@ -229,3 +229,50 @@ export const searchApi = (data: any): AxiosPromise<any> => {
     data
   });
 };
+// 项目详情
+export const projectInfoAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/comprehensive/Info',
+    data
+  });
+};
+// 项目详情-获取联系方式
+export const contactInfoAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/comprehensive/GetContactInfo',
+    data
+  });
+};
+// 项目发布-获得省份
+export const provinceAPI = (): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/area/getProvince',
+  });
+};
+// 项目发布-获得城市
+export const cityAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/area/getCity',
+    data
+  });
+};
+// 项目发布
+export const saveProjectAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/Comprehensive/comprehensiveAdd',
+    data
+  });
+};
+// 项目发布-获取下拉框选项
+export const typeListAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/Comprehensive/typeList',
+    data
+  });
+};
