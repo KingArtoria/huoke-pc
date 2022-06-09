@@ -112,36 +112,114 @@
             </div>
           </div>
         </div>
-      </div>
-      <aside class="aside">
-        <!-- 今日热门 -->
-        <div class="top">
-          <div class="top-content">
-            <div v-for="item in todayHot" class="top-item">
-              <p class="title">
-                {{ item.title }}
-              </p>
-              <p class="flex desc">
-                <span class="truncate">{{ item.nick_name }}</span>
-                <span v-if="item.position" class="line"></span>
-                <span class="truncate">{{ item.position }}</span>
-                <span v-if="item.company" class="line"></span>
-                <span class="truncate">{{ item.company }}</span>
-              </p>
+        <!-- 回复 -->
+        <div class="mt-16 bg-white comment-wrap">
+          <div class="px-22 pt-32 pb-18">
+            <textarea v-model="comment" placeholder="会员用户可以自定义回复文案，普通用户仅限于使用快捷回复。切记禁止留联系方式，违规将被禁言！"
+              class="comment-input" :disabled="!isVip" />
+            <div class="flex justify-end mt-12">
+              <button class="btn primary" @click="sendReply">评论</button>
+            </div>
+            <p class="mt-12 mb-26 fs-16">快捷回复：</p>
+            <div class="flex option-wrap">
+              <div v-for="item in replyOptions" class="option" @click="comment = item">{{ item }}</div>
+            </div>
+          </div>
+          <div class="hr-line"></div>
+          <div class="px-22 py-34">
+            <p class="p1 fs-16">全部回复（{{ commentList.length }}）</p>
+            <div v-for="item in commentList" class="comment">
+              <div class="flex">
+                <img src="" alt="" class="img">
+                <div class="flex-1">
+                  <p class="flex items-end">
+                    <span class="mr-10 mb-12 fs-16">{{ item.name }}</span>
+                    <img src="" alt="">
+                  </p>
+                  <p class="flex items-center color-949494 fs-16">
+                    <span>{{ item.posi }}</span>
+                    <span class="line"></span>
+                    <span>{{ item.comp }}</span>
+                  </p>
+                  <p class="py-20 color-4D4D4D">{{ item.content }}</p>
+                  <div class="bottom">
+                    <p class="color-949494">{{ item.date }}</p>
+                    <button class="btn info" @click="openReply(item.id)">回复</button>
+                  </div>
+                </div>
+              </div>
+              <!-- 楼中楼 -->
+              <div v-if="item.children && item.children.length" class="reply-wrap">
+                <div v-for="reply in item.children" class="reply">
+                  <div class="flex">
+                    <img src="" alt="" class="img">
+                    <div class="flex-1">
+                      <p class="flex items-end">
+                        <span class="mr-10 mb-12 fs-16">{{ reply.name }}</span>
+                        <img src="" alt="">
+                      </p>
+                      <p class="flex items-center color-949494 fs-16">
+                        <span>{{ reply.posi }}</span>
+                        <span class="line"></span>
+                        <span>{{ reply.comp }}</span>
+                      </p>
+                      <p class="py-20 color-4D4D4D">{{ reply.content }}</p>
+                      <p class="color-949494">{{ reply.date }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+      </div>
+      <aside class="aside">
+        <!-- 浏览用户 -->
+        <div class="visitor">
+          <p class="p1 py-20 fs-16">浏览用户（89）</p>
+          <div class="pl-16 pr-10">
+            <div v-for="item in visitorList" class="py-20 flex visitor-item">
+              <img src="" alt="">
+              <div class="flex-1">
+                <p>杨月</p>
+                <p class="flex color-949494 fs-14 my-10">
+                  <span>产品</span>
+                  <span class="line"></span>
+                  <span>徐州星月联动网络科技</span>
+                </p>
+                <p class="flex justify-between items-center">
+                  <span class="color-949494">
+                    <span class="light">2</span>
+                    <span>条合作信息</span>
+                  </span>
+                  <span class="tag1 app-flex-center">互联网</span>
+                </p>
+              </div>
+            </div>
+          </div>
+          <p class="more cursor-pointer">查看更多 >></p>
+        </div>
         <Download class="download" />
       </aside>
+      <div class="side">
+        <div class="side-item">
+          <img :src="loadImg('shoucang@2x.png')" alt="" class="img1">
+          <span class="mt-12">收藏</span>
+        </div>
+        <div class="side-item">
+          <img :src="loadImg('图层 622@2x.png')" alt="" class="img2">
+          <span class="mt-12">递名片</span>
+        </div>
+      </div>
     </div>
   </div>
   <Tip v-if="vipTipVisible" @close="vipTipVisible = false" />
   <UserList v-if="userListVisible" @close="userListVisible = false" />
+  <Reply ref="replyRef" @update="getProjectInfo" />
 </template>
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import Download from '@/components/Download.vue';
-import { getHot } from '@/utils/api'
 import { useRoute } from 'vue-router';
 import iconImg from '@/assets/baozhang@2x.png'
 import { loadImg } from '@/utils'
@@ -152,18 +230,29 @@ import { COOPERATION_TYPES } from '@/utils/const'
 import { matchLabel } from '@/utils/index'
 import VipIcon from '@/components/VipIcon.vue';
 import dayjs from 'dayjs'
+import { ElMessage } from 'element-plus';
+import Reply from './components/Reply.vue'
 const route = useRoute()
-// 今日热门
-const todayHot = ref<any>([])
-getHot().then(res => {
-  todayHot.value = (res.data.data || []).slice(0, 2)
-})
+// 浏览用户
+const visitorList = ref<any>([
+  {},
+  {},
+  {},
+])
+// getHot().then(res => {
+//   todayHot.value = (res.data.data || []).slice(0, 2)
+// })
 const { id } = route.query
 const detailData = ref<any>({})
+// 获取当前用户是否是vip
+const isVip = ref(false)
 // 获取详情
-projectInfoAPI({ fid: id }).then(res => {
-  detailData.value = res.data.data
-})
+const getProjectInfo = () => {
+  projectInfoAPI({ fid: id }).then(res => {
+    detailData.value = res.data.data
+  })
+}
+getProjectInfo()
 // 格式化合作类型
 const fmtType = (val: number) => {
   return val ? matchLabel(val, COOPERATION_TYPES) : val
@@ -201,6 +290,44 @@ const getContactInfo = () => {
 const vipTipVisible = ref(false)
 // 浏览用户窗口
 const userListVisible = ref(false)
+// 回复窗口
+const replyRef = ref()
+// 评论
+const comment = ref('')
+// 快捷回复
+const replyOptions = [
+  '怎么合作请联系我',
+  '我有您需要的资源可合作',
+  '您好，期待与您的合作',
+  '有兴趣可聊聊',
+  '聊聊',
+  '欢迎私信对接合作',
+  '您好，合作有什么要求吗？'
+]
+// 发表回复
+let replyLoading = false
+const sendReply = () => {
+  if (replyLoading) return
+  if (comment.value.trim() === '') {
+    return ElMessage.info('请输入评论内容')
+  }
+  replyLoading = true
+  replyLoading = false
+}
+// 评论列表
+const commentList = ref<any>([
+  {
+    img: '', name: '张三', vip: '', posi: 'sdfds', comp: 'sdfdsf', content: '怎么合作请联系我', date: '2222', children: [
+      { img: '', name: '张三', vip: '', posi: 'sdfds', comp: 'sdfdsf', content: '怎么合作请联系我', date: '2222' },
+    ]
+  },
+  { img: '', name: '张三', vip: '', posi: 'sdfds', comp: 'sdfdsf', content: '怎么合作请联系我', date: '2222' },
+  { img: '', name: '张三', vip: '', posi: 'sdfds', comp: 'sdfdsf', content: '怎么合作请联系我', date: '2222' },
+  { img: '', name: '张三', vip: '', posi: 'sdfds', comp: 'sdfdsf', content: '怎么合作请联系我', date: '2222' },
+])
+const openReply = (id: number) => {
+  replyRef.value.open(id)
+}
 </script>
 
 <style lang="scss" scoped>
@@ -267,12 +394,6 @@ const userListVisible = ref(false)
     }
   }
 
-  .line {
-    width: 1px;
-    height: 13px;
-    background: #bebebe;
-    margin: 0 8px;
-  }
 
   .head-img {
     width: 45px;
@@ -373,6 +494,7 @@ const userListVisible = ref(false)
 }
 
 .content-wrap {
+  position: relative;
   display: flex;
 
   .aside {
@@ -395,5 +517,212 @@ const userListVisible = ref(false)
   width: 124px;
   height: 124px;
   margin: 0 auto 42px;
+}
+
+.line {
+  width: 1px;
+  height: 13px;
+  background: #bebebe;
+  margin: 0 8px;
+}
+
+.comment-wrap {
+  .btn {
+    border-radius: 16px;
+    width: 88px;
+    height: 31px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &.primary {
+      background: #0372F7;
+      color: white;
+    }
+
+    &.info {
+      border: 1px solid #CECECE;
+      color: #868686;
+
+      &:hover {
+        background: #F3F3F3;
+      }
+    }
+  }
+
+  .comment-input {
+    height: 78px;
+    background: #F4F4F4;
+    border: 1px solid #E2E2E2;
+    border-radius: 5px;
+    padding: 12px 10px;
+    display: block;
+    width: 100%;
+    outline: none;
+  }
+
+  .option-wrap {
+    flex-wrap: wrap;
+
+    .option {
+      padding: 10px 26px;
+      border: 1px solid #CECECE;
+      border-radius: 18px;
+      margin: 0 20px 14px 0;
+      color: #868686;
+      cursor: pointer;
+
+      &:hover {
+        background: #EBEEF2;
+      }
+    }
+  }
+
+  .hr-line {
+    height: 1px;
+    background: #F3F3F3;
+  }
+
+}
+
+.p1 {
+  position: relative;
+  padding-left: 10px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 16px;
+    background: #0071FA;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+  }
+}
+
+.comment {
+  padding: 32px 0;
+  border-bottom: 1px solid #F3F3F3;
+
+  &:hover {
+    .btn {
+      display: flex;
+    }
+  }
+
+  .img {
+    width: 45px;
+    height: 45px;
+    border-radius: 23px;
+    margin-right: 14px;
+  }
+
+  .btn {
+    position: absolute;
+    display: none;
+    right: 0;
+    top: -10px;
+  }
+
+  .bottom {
+    position: relative;
+  }
+
+  .reply-wrap {
+    background: #F3F3F3;
+    margin-left: 60px;
+    margin-top: 20px;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: #F3F3F3;
+      transform: rotate(45deg);
+      left: 40px;
+      top: -10px;
+    }
+
+    .reply {
+      padding: 20px;
+    }
+  }
+}
+
+.visitor {
+  background: white;
+  border-radius: 5px;
+
+  .p1 {
+    &::before {
+      width: 3px;
+      height: 24px;
+    }
+  }
+
+  .light {
+    color: #0071FA;
+    margin-right: 3px;
+  }
+
+  .tag1 {
+    width: 71px;
+    height: 24px;
+    background: #F7F7F7;
+    color: #56689B;
+  }
+
+  .visitor-item {
+    border-bottom: 1px solid #F3F3F3;
+
+    &:last-of-type {
+      border-bottom: 0;
+    }
+  }
+
+  .more {
+    border-top: 1px solid #F3F3F3;
+    padding: 18px 0;
+    text-align: center;
+    color: #8C8C8C;
+  }
+}
+
+.side {
+  position: absolute;
+  top: 60px;
+  width: 60px;
+  left: -66px;
+
+  .side-item {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    margin-bottom: 6px;
+    color: #040404;
+    justify-content: center;
+    align-items: center;
+    height: 70px;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &:hover {
+      background: #e9e9e9;
+    }
+
+    .img1 {
+      width: 25px;
+      height: 24px;
+    }
+
+    .img2 {
+      width: 22px;
+      height: 22px;
+    }
+  }
 }
 </style>

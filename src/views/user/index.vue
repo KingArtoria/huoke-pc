@@ -21,7 +21,7 @@ import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 const route = useRoute()
 const pathPrefix = ref('')
-pathPrefix.value = '/user/' + route.params.id + '/'
+pathPrefix.value = '/user/'
 const currentPath = ref('')
 const routes = [
   { text: '个人中心', path: 'profile' },
@@ -34,8 +34,8 @@ const routes = [
   },
   {
     text: '人脉管理', children: [
-      { text: '待处理请求', path: 'punlish-pass' },
-      { text: '已发出请求', path: 'punlish-audit' },
+      { text: '待处理请求', path: '3' },
+      { text: '已发出请求', path: '4' },
     ]
   },
   { text: '我的钱包', path: 'profile' },
@@ -44,15 +44,15 @@ const routes = [
   { text: '会员特权', path: 'vip' },
   {
     text: '账号管理', children: [
-      { text: '修改手机号', path: 'punlish-pass' },
-      { text: '修改密码', path: 'punlish-audit' },
+      { text: '修改手机号', path: '1' },
+      { text: '修改密码', path: '2' },
     ]
   },
 ]
 
 watch(() => route.path, (path: string) => {
   currentPath.value = path.substring(path.lastIndexOf('/') + 1)
-})
+}, { immediate: true })
 const isActive = (children: any[]) => {
   return children.some(v => v.path === currentPath.value)
 }

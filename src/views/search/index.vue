@@ -2,7 +2,7 @@
   <div class="app-page">
 
     <div v-if="keyword" class="tip">
-      结果：招到'<span class="light">{{ keyword }}</span>'相关内容{{ total }}个
+      结果：招到"<span class="light">{{ keyword }}</span>"相关内容{{ total }}个
     </div>
     <!-- 搜索条件 -->
     <div class="search-wrap">

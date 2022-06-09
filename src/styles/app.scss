@@ -118,6 +118,10 @@ input[type="number"] {
   color: #848484;
 }
 
+.color-949494 {
+  color: #949494;
+}
+
 .color-0076FF {
   color: #0076FF;
 }
@@ -136,6 +140,10 @@ input[type="number"] {
 
 .color-4C4C4C {
   color: #4C4C4C;
+}
+
+.color-4D4D4D {
+  color: #4D4D4D;
 }
 
 /* 覆盖nprogress样式 */
@@ -163,4 +171,18 @@ input[type="number"] {
 
 .el-cascader-node .el-checkbox {
   margin-right: 0;
+}
+
+.el-image .image-slot {
+  background-color: #f5f7fa;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .el-icon {
+    color: #b7b7b7;
+    font-size: 20px;
+  }
 }

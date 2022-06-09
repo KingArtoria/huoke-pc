@@ -6,7 +6,16 @@
     </div>
     <div class="flex content">
       <div class="photo-wrap">
-        <img :src="host + item.head" alt="" class="photo">
+        <!-- <img :src="host + item.head" alt="" class="photo"> -->
+        <el-image :src="host + item.head" class="photo">
+          <template #error>
+            <div class="image-slot">
+              <el-icon>
+                <PictureFilled />
+              </el-icon>
+            </div>
+          </template>
+        </el-image>
       </div>
       <div class="flex-1 overflow-hidden">
         <div class="top">

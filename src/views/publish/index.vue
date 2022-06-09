@@ -22,35 +22,34 @@
             </el-radio-group>
           </el-form-item>
           <!-- 产品类型 -->
-          <el-form-item v-if="[3, 4, 7, 8, 9, 10].includes(type)" :label="productLabelMap[type]" prop="product">
+          <el-form-item v-if="[3, 4, 7, 8, 9, 10].includes(type)" :label="productLabelMap[type].label" prop="product">
             <el-radio-group v-model="formData.product">
-              <el-radio v-for="item in []" :label="item.id">{{ item.name }}</el-radio>
+              <el-radio v-for="item in productOptions" :label="item.id">{{ item.name }}</el-radio>
             </el-radio-group>
           </el-form-item>
           <!-- 货源类型 -->
-          <el-form-item v-if="[3, 4, 5, 6].includes(type)" :label="sourceLabelMap[type]" prop="source">
+          <el-form-item v-if="[3, 4, 5, 6].includes(type)" :label="sourceLabelMap[type].label" prop="source">
             <el-radio-group v-model="formData.source">
-              <el-radio v-for="item in []" :label="item.id">{{ item.name }}</el-radio>
+              <el-radio v-for="item in sourceOptions" :label="item.id">{{ item.name }}</el-radio>
             </el-radio-group>
           </el-form-item>
           <!-- 需求类型 -->
-          <el-form-item v-if="[5, 6, 7, 9].includes(type)" :label="comprehensiveLabelMap[type]" prop="comprehensive">
+          <el-form-item v-if="[5, 6, 7, 9].includes(type)" :label="comprehensiveLabelMap[type].label"
+            prop="comprehensive">
             <el-radio-group v-model="formData.comprehensive">
-              <el-radio v-for="item in []" :label="item.id">{{ item.name }}</el-radio>
+              <el-radio v-for="item in comprehensiveOptions" :label="item.id">{{ item.name }}</el-radio>
             </el-radio-group>
           </el-form-item>
           <!-- 4渠道优势 -->
           <el-form-item v-if="[4].includes(type)" label="渠道优势" prop="channel_advantage">
             <el-radio-group v-model="formData.channel_advantage">
-              <el-radio v-for="item in []" :label="item.id">{{ item.name }}</el-radio>
+              <el-radio v-for="item in channelOptions" :label="item.id">{{ item.name }}</el-radio>
             </el-radio-group>
           </el-form-item>
           <!-- 用户量 -->
           <el-form-item v-if="[6, 8].includes(type)" :label="userNumberLabelMap[type].label" prop="user_number">
-            <!-- <el-input v-model="formData.user_number" :placeholder="userNumberLabelMap[type].placeholder" type="number"
-              style="width: 300px;" /> -->
             <el-radio-group v-model="formData.user_number">
-              <el-radio v-for="item in []" :label="item.id">{{ item.name }}</el-radio>
+              <el-radio v-for="item in userNumberOptions" :label="item.id">{{ item.name }}</el-radio>
             </el-radio-group>
           </el-form-item>
           <!-- 3产品名称 7项目名称 -->
@@ -251,6 +250,11 @@ const submit = () => {
     formData.value.area = formData.value.area.map((v: any) => {
       return v.join(':')
     }).join(',')
+    // @ts-ignore
+    if (formData.value.area === '0') {
+      // @ts-ignore
+      formData.value.area = '0:0'
+    }
     // console.log(formData.value);
     saveProjectAPI(formData.value).then(res => {
       ElMessage.success('发布成功')
@@ -264,8 +268,8 @@ const submit = () => {
 }
 // 推广方式
 const promoteOptions = ref([
-  { id: 1, name: '网推' },
-  { id: 2, name: '地推' },
+  { id: '网推', name: '网推' },
+  { id: '地推', name: '地推' },
 ])
 // 平台交易
 const platformOptions = ref([
@@ -308,15 +312,24 @@ const cycleOptions = ref<any>([])
 const productOptions = ref<any>([])
 // 货源类型
 const sourceOptions = ref<any>([])
+// 需求类型
+const comprehensiveOptions = ref<any>([])
+// 渠道优势
+const channelOptions = ref<any>([])
+// 用户量
+const userNumberOptions = ref<any>([])
 // 根据类型获取对应的选项数据
 typeListAPI({ type: type.value }).then(res => {
   // 合作类型，结算方式，结算周期
-  const { cooptype, settmod, settcycle, product, source } = res.data.data
+  const { cooptype, settmod, settcycle, product, source, comprehensive, channel_advantage, user_number } = res.data.data
   cooperationTypes.value = cooptype
   settleOptions.value = settmod
   cycleOptions.value = settcycle
   productOptions.value = product
   sourceOptions.value = source
+  comprehensiveOptions.value = comprehensive
+  channelOptions.value = channel_advantage
+  userNumberOptions.value = user_number
 })
 
 // info字段名称

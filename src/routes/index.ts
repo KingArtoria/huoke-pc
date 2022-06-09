@@ -8,7 +8,7 @@ const routes: RouteRecordRaw[] = [
   { path: '/detail', component: () => import('@/views/search/detail.vue') },
   { path: '/publish', component: () => import('@/views/publish/index.vue') },
   {
-    path: '/user/:id', component: () => import('@/views/user/index.vue'),
+    path: '/user', component: () => import('@/views/user/index.vue'),
     children: [
       // 个人中心
       { path: 'profile', component: () => import('@/views/user/profile/index.vue') },
@@ -19,11 +19,11 @@ const routes: RouteRecordRaw[] = [
       // 会员特权  
       { path: 'vip', component: () => import('@/views/user/vip.vue') },
       // 我的动态（已发布）
-      { path: 'punlish-pass', component: () => import('@/views/user/profile/profile-form.vue') },
+      { path: 'punlish-pass', component: () => import('@/views/user/record/pass.vue') },
       // 我的动态（待审核）
-      { path: 'punlish-audit', component: () => import('@/views/user/profile/profile-form.vue') },
+      { path: 'punlish-audit', component: () => import('@/views/user/record/audit.vue') },
       // 我的动态（未通过 ）
-      { path: 'punlish-reject', component: () => import('@/views/user/profile/profile-form.vue') },
+      { path: 'punlish-reject', component: () => import('@/views/user/record/reject.vue') },
       // 修改手机号
       { path: 'change-phone', component: () => import('@/views/user/profile/profile-form.vue') },
       // 修改密码  

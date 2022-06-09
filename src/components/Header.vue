@@ -9,7 +9,7 @@
             <span>请<a href="javascript:;">登录</a><a href="javascript:;">注册</a></span>
           </li>
           <li class="nav-item">
-            <span class="item-text">个人中心</span>
+            <span class="item-text" @click="navToUser">个人中心</span>
           </li>
           <!-- 普通会员 -->
           <li class="nav-item drop">
@@ -101,7 +101,7 @@
     <!-- 搜索 -->
     <div class="search center">
       <div class="logo">
-        <img :src="logo" alt="" class="logo-img">
+        <img :src="logo" alt="" class="logo-img" @click="navToIndex">
       </div>
       <div class="search-wrap">
         <div class="input-wrap">
@@ -145,6 +145,7 @@ import logo from '@/assets/huoke@2x.png'
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus'
 import Publish from './Publish.vue';
+import { getUser } from '@/utils/index'
 
 const router = useRouter()
 // 搜索类型
@@ -187,6 +188,25 @@ const navToBuy = (tab: string) => {
     query: {
       tab
     }
+  })
+}
+// 跳转到个人中心
+const navToUser = () => {
+  const user = getUser()
+  if (user) {
+    router.push({
+      path: `/user/profile`
+    })
+  } else {
+    router.push({
+      path: '/login',
+    })
+  }
+}
+// 跳转到首页
+const navToIndex = () => {
+  router.push({
+    path: '/'
   })
 }
 </script>
