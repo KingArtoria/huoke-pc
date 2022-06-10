@@ -87,8 +87,8 @@
             </div>
           </div>
           <div class="flex justify-center">
-            <div class="btn app-flex-center">登录</div>
-            <div class="btn app-flex-center">注册</div>
+            <div class="btn app-flex-center" @click="navToLogin('login')">登录</div>
+            <div class="btn app-flex-center" @click="navToLogin('register')">注册</div>
           </div>
         </div>
         <!-- 会员 -->
@@ -171,7 +171,8 @@ import bottomImg2 from '@/assets/yaoqihy@2x.png'
 import bottomImg3 from '@/assets/heika@2x.png'
 import newImg from '@/assets/NEW@2x.png';
 import Download from '@/components/Download.vue'
-
+import { useRouter } from 'vue-router'
+const router = useRouter()
 // 分类菜单
 const navItems = ref<any>([])
 getMenu().then(res => {
@@ -213,7 +214,15 @@ getRecommendList().then(res => {
     return v;
   })
 })
-
+// 跳转到登录
+const navToLogin = (tab: string) => {
+  router.push({
+    path: '/login',
+    query: {
+      tab
+    }
+  })
+}
 
 </script>
 

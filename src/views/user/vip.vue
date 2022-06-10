@@ -323,7 +323,7 @@
               <CloseBold />
             </el-icon>
           </td>
-        <td class="td">一个关键词</td>
+          <td class="td">一个关键词</td>
           <td class="td">
             <el-icon class="icon">
               <Check />

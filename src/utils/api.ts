@@ -65,118 +65,6 @@ export const comprehensiveIndex = (params: any): AxiosPromise<any> => {
     params,
   });
 };
-/* 详情 */
-export const getObtainInfo = (params: any): AxiosPromise<any> => {
-  return request({
-    method: 'GET',
-    url: 'web_v1/comprehensive/getObtainInfo',
-    params,
-  });
-};
-/* 查看手机号 */
-export const getContactInfo = (data: any): AxiosPromise<any> => {
-  return request({
-    method: 'POST',
-    url: 'web_v1/Comprehensive/getContactInfo',
-    data: qs.stringify(data),
-  });
-};
-/* 查询新媒体 */
-export const getResponses = (params: any): AxiosPromise<any> => {
-  return request({
-    method: 'GET',
-    url: 'web_v1/Queryrel/getResponses',
-    params,
-  });
-};
-/* 查询新媒体详情 */
-export const getMediaInfo = (params: any): AxiosPromise<any> => {
-  return request({
-    method: 'GET',
-    url: 'web_v1/Queryrel/getMediaInfo',
-    params,
-  });
-};
-/* 收藏和取消收藏 */
-export const sidesKeep = (data: any): AxiosPromise<any> => {
-  return request({
-    method: 'POST',
-    url: 'web_v1/keep/sidesKeep',
-    data: qs.stringify(data),
-  });
-};
-/* 网站列表 */
-export const webList = (params: any): AxiosPromise<any> => {
-  return request({
-    method: 'GET',
-    url: 'web_v1/Queryrel/webList',
-    params,
-  });
-};
-/* 网站详情查询 */
-export const getWebInfo = (params: any): AxiosPromise<any> => {
-  return request({
-    method: 'GET',
-    url: 'web_v1/Queryrel/getWebInfo',
-    params,
-  });
-};
-/* 域名列表 */
-export const domainList = (params: any): AxiosPromise<any> => {
-  return request({
-    method: 'GET',
-    url: 'web_v1/Queryrel/domainList',
-    params,
-  });
-};
-/* 域名查询详情 */
-export const getDomainInfo = (params: any): AxiosPromise<any> => {
-  return request({
-    method: 'GET',
-    url: 'web_v1/Queryrel/getDomainInfo',
-    params,
-  });
-};
-/* 账号信息 */
-export const getMemberInfo = (params: any): AxiosPromise<any> => {
-  return request({
-    method: 'GET',
-    url: 'web_v1/member/getMemberInfo',
-    params,
-  });
-};
-/* 好友列表 */
-export const getFriendList = (data: any): AxiosPromise<any> => {
-  return request({
-    method: 'POST',
-    url: 'web_v1/Friend/getFriendList',
-    data: qs.stringify(data),
-  });
-};
-/* 检测用户是不是好友 */
-export const getFriendRelation = (data: any): AxiosPromise<any> => {
-  return request({
-    method: 'POST',
-    url: 'web_v1/Friend/getFriendRelation',
-    data: qs.stringify(data),
-  });
-};
-/* 发送消息检测敏感词 */
-export const messageVerify = (data: any): AxiosPromise<any> => {
-  return request({
-    method: 'POST',
-    url: 'web_v1/Friend/messageVerify',
-    data: qs.stringify(data),
-  });
-};
-/* 删除好友 */
-export const putDelFriend = (params: any): AxiosPromise<any> => {
-  return request({
-    method: 'GET',
-    url: 'web_v1/Friend/putDelFriend',
-    params,
-  });
-};
 
 // 获取会员记录
 export const getVipOrder = (): AxiosPromise<any> => {
@@ -273,6 +161,89 @@ export const typeListAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/Comprehensive/typeList',
+    data
+  });
+};
+// 个人中心-我的好友
+export const getFriendListAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/Friend/getFriendList',
+    data
+  });
+};
+// 个人中心-修改手机号
+export const changephoneAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/member/changephone',
+    data
+  });
+};
+// 个人中心-我的发布
+export const memberProjectAPI = (): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/member/member_project',
+  });
+};
+// 个人中心-获取二级行业
+export const getIndustryInfoAPI = (): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/member/getIndustryInfo',
+  });
+};
+// 个人中心-获取一级行业
+export const getIndustryListAPI = (): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/member/getIndustryList',
+  });
+};
+// 个人中心-获取学校
+export const getSchoolListAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/member/getSchoolList',
+    data
+  });
+};
+// 个人中心-修改个人信息
+export const memberInfoEditAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/member/memberInfoEdit',
+    data
+  });
+};
+// 个人中心-我的道具
+export const userCouponsAPI = (): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/member/user_coupons',
+  });
+};
+// 个人中心-兑换记录
+export const couponsLogAPI = (): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/member/coupons_log',
+  });
+};
+// 变色卡置顶卡使用
+export const useCouponsAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/coupons/useCoupons',
+    data
+  });
+};
+// 道具卡使用 及变色卡置顶卡列表
+export const useCouponsListAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/coupons/useCouponsList',
     data
   });
 };

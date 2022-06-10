@@ -36,7 +36,21 @@ const routes: RouteRecordRaw[] = [
       { path: 'friend', component: () => import('@/views/user/profile/profile-form.vue') },
     ]
   },
+  // 购买VIP、道具
   { path: '/buy', component: () => import('@/views/buy/index.vue') },
+  {
+    path: '/message', component: () => import('@/views/message/index.vue'),
+    children: [
+      // 通知
+      { path: 'inform', component: () => import('@/views/message/inform.vue') },
+      // 好友
+      { path: 'friends', component: () => import('@/views/message/friends.vue') },
+      // 私信
+      { path: 'chat-list', component: () => import('@/views/message/chat-list.vue') },
+      // 聊天
+      { path: 'chat', component: () => import('@/views/message/chat.vue') },
+    ]
+  }
 ]
 
 // 创建路由

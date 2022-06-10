@@ -186,3 +186,11 @@ input[type="number"] {
     font-size: 20px;
   }
 }
+
+.app-round {
+  border-radius: 50%;
+}
+.el-popover.el-popper {
+  padding: 0;
+  min-width: initial;
+}

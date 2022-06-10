@@ -77,12 +77,12 @@
                   <span class="line"></span>
                   <span>{{ contactInfo.contact }}</span>
                 </div>
-                <div class="flex items-center show2">
+                <div v-if="contactInfo.wx" class="flex items-center show2">
                   <img :src="loadImg('wechat@2x.png')" alt="" class="img">
                   <span class="line"></span>
                   <span>{{ contactInfo.wx }}</span>
                 </div>
-                <div class="flex items-center">
+                <div v-if="contactInfo.qq" class="flex items-center">
                   <img :src="loadImg('QQ@2x.png')" alt="" class="img">
                   <span class="line"></span>
                   <span>{{ contactInfo.qq }}</span>
@@ -197,7 +197,7 @@
               </div>
             </div>
           </div>
-          <p class="more cursor-pointer">查看更多 >></p>
+          <p class="more cursor-pointer" @click="userListVisible = true">查看更多 >></p>
         </div>
         <Download class="download" />
       </aside>
