@@ -26,7 +26,7 @@
         </p>
         <p class="desc">毕业院校：中国美术学院</p>
       </div>
-      <button class="btn app-flex-center">编辑资料</button>
+      <button class="btn app-flex-center" @click="navToForm">编辑资料</button>
     </div>
     <!-- 联系方式 -->
     <div class="contact flex items-center my-16">
@@ -46,10 +46,18 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { loadImg } from '@/utils';
+import { useRouter } from 'vue-router';
 // 账号是否绑定手机号
 const isBindPhone = ref(true)
 // 账号是否绑定微信
 const isBindWx = ref(true)
+const router = useRouter()
+// 跳转到编辑资料页面
+const navToForm = () => {
+  router.push({
+    path: '/user/profile-form'
+  })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -115,6 +123,7 @@ const isBindWx = ref(true)
   height: 43px;
   background: #F5F5F5;
 }
+
 .img1 {
   margin: 0 auto;
 }

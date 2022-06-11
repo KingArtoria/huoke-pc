@@ -12,7 +12,10 @@
           <el-upload accept=".jpg,.png" class="uploader" action="https://jsonplaceholder.typicode.com/posts/"
             :show-file-list="false" :on-success="uploadSuccess">
             <img v-if="formData.img" :src="formData.img" class="img" />
-            <span class="link">上传图片</span>
+            <div v-else class="flex items-center flex-col">
+              <img :src="loadImg('tupian@2x.png')" alt="" class="w-30 h-30">
+              <span class="link">上传图片</span>
+            </div>
           </el-upload>
         </el-form-item>
       </el-form>
@@ -27,6 +30,7 @@
   <script setup lang="ts">
 import { ref } from 'vue';
 import useForm from '@/composables/useForm';
+import { loadImg } from '@/utils/index'
 // 表单数据
 const formData = ref({
   comment: '', // 反馈意见
