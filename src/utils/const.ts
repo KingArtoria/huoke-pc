@@ -16,3 +16,21 @@ export const COOPERATION_TYPES = [
   { label: '免费福利', value: 10 },
   { label: '海外项目', value: 11 },
 ]
+/**
+ * 商品种类
+ */
+export const GOOD_TYPE = {
+  /**
+   * 会员
+   */
+  HY: 'HY',
+  /**
+   * 道具卡
+   */
+  DJK: 'DJK',
+}
+
+/**
+ * 图片地址域名
+ */
+export const DOMAIN = 'http://39.106.208.234'

@@ -40,7 +40,7 @@ const routes = [
   },
   { text: '我的钱包', path: 'profile' },
   { text: '积分商城', path: 'profile' },
-  { text: '道具中心', path: 'profile' },
+  { text: '我的道具', path: 'item' },
   { text: '会员特权', path: 'vip' },
   {
     text: '账号管理', children: [

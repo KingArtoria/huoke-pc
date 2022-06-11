@@ -1,22 +1,35 @@
 <template>
   <div class="page">
     <p class="flex justify-end items-center color-848484 pt-20 pr-40">
-      <span class="link">我的道具</span>
+      <span class="link" @click="navToItem">我的道具</span>
       <span class="line"></span>
       <span class="link">兑换记录</span>
     </p>
     <!-- 积分兑换 -->
     <div class="conversion">
       <div class="grid grid-cols-3 gap-y-16">
+        <!-- coupons_id: 13
+discount: "1.00"
+endtime: null
+id: 18
+image: "/pic/icon/chakank.png"
+key: "DJ_DCCKZY"
+mark: "v41"
+num: 10
+price: "118.00"
+remark: "增加一次查看联系方式次数"
+status: 1
+title: "单次查看资源卡（10张）"
+type: "DJK" -->
         <div v-for="item in items" class="flex items-start item">
           <div class="img-wrap app-flex-center">
-            <img :src="loadImg(item.img)" alt="" class="img">
+            <img :src="item.image" alt="" class="img">
           </div>
           <div class="flex-1">
             <p class="title">{{ item.title }}</p>
-            <p class="desc overflow-clip">{{ item.desc }}</p>
+            <p class="desc overflow-clip">{{ item.remark }}</p>
             <p class="price">￥{{ item.price }}</p>
-            <button class="btn">购买</button>
+            <button class="btn" @click="doBuy(item)">购买</button>
           </div>
         </div>
       </div>
@@ -26,26 +39,38 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { loadImg } from '@/utils'
+import { useRouter } from 'vue-router';
+import { goodslistAPI } from '@/utils/api'
+import { GOOD_TYPE, DOMAIN } from '@/utils/const'
 const call = defineEmits(['close'])
 // 积分兑换的道具
-const items = [
-  { img: 'chakank@3x@2x.png', title: '单次查看联系方式', desc: '仅限一次使用查看联系方式', price: 5 },
-  { img: 'zhidingk@3x@2x.png', title: '广告甲方置顶卡', desc: '置顶一条已发布广告甲方内容', price: 5 },
-  { img: 'zdka@3x@2x.png', title: '流量乙方置顶卡', desc: '置顶一条已发布流量乙方内容', price: 5 },
-  { img: 'huiyuan@3x@2x.png', title: '一天会员卡', desc: '普通会员一天试用', price: 350 },
-  { img: 'renmai@3x@2x.png', title: '加人脉卡（5次）', desc: '5次免费加人脉', price: 350 },
-  { img: 'bianse@3x@2x.png', title: '标题变色卡', desc: '仅限一次使用查看联系方式', price: 350 },
-  { img: 'sytjzdi@3x@2x.png', title: '首页推荐置顶卡', desc: '仅限一次使用查看联系方式', price: 350 },
-  { img: '9zhegk@3x@2x.png', title: '9折购半年会员', desc: '仅限一次使用查看联系方式', price: 350 },
-  { img: '组 254@2x.png', title: '8.5折购一年会员', desc: '仅限一次使用查看联系方式', price: 350 },
-  { img: 'sycjzd@3x@2x.png', title: '首页超级置顶卡', desc: '置顶一条已发布内容在首页推荐栏并带 有超级置顶标志', price: 350 },
-]
+const items = ref<any>([])
+// 获取道具
+goodslistAPI({
+  type: GOOD_TYPE.DJK
+}).then(res => {
+  res.data.data.forEach((v: any) => {
+    v.image = DOMAIN + v.image
+  })
+  items.value = res.data.data
+})
 // 关闭窗口
 const close = () => {
   call('close')
 }
 // 签到成功
 const successVisible = ref(false)
+// 跳转到我的道具页面
+const router = useRouter()
+const navToItem = () => {
+  router.push({
+    path: '/user/item'
+  })
+}
+// 购买道具卡
+const doBuy = (item: any) => {
+
+}
 </script>
 
 <style lang="scss" scoped>

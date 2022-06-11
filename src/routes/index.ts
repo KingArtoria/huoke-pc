@@ -15,7 +15,7 @@ const routes: RouteRecordRaw[] = [
       // 填写个人资料
       { path: 'profile-form', component: () => import('@/views/user/profile/profile-form.vue') },
       // 我的道具
-      { path: 'item', component: () => import('@/views/user/profile/profile-form.vue') },
+      { path: 'item', component: () => import('@/views/user/item/index.vue') },
       // 会员特权  
       { path: 'vip', component: () => import('@/views/user/vip.vue') },
       // 我的动态（已发布）

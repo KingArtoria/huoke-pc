@@ -247,3 +247,11 @@ export const useCouponsListAPI = (data: any): AxiosPromise<any> => {
     data
   });
 };
+// 获取商品
+export const goodslistAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/order/goodslist',
+    data
+  });
+};

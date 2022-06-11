@@ -4,15 +4,16 @@
       <p class="title">打开支付宝扫一扫</p>
     </template>
     <div class="flex items-center flex-col">
-      <img :src="loadImg('erweim@2x.png')" alt="" class="img">
+      <img :src="codeUrl" alt="" class="img">
       <p class="desc">为使购买的产品或服务立即生效，支付完成后，请务必点击下方完成支付按钮</p>
       <button class="btn">完成支付</button>
     </div>
   </el-dialog>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { loadImg } from '@/utils'
+import QRCode from 'qrcode'
 defineProps<{
   modelValue: boolean
 }>()
@@ -20,6 +21,15 @@ const call = defineEmits(['update:modelValue'])
 const close = (done?: any) => {
   call('update:modelValue', false)
 }
+// 付款链接
+const payUrl = ref('http://www.baidu.com')
+// 二维码图片
+const codeUrl = ref('')
+onMounted(() => {
+  QRCode.toDataURL(payUrl.value).then((url: string) => {
+    codeUrl.value = url
+  })
+})
 </script>
 
 <style lang="scss" scoped>

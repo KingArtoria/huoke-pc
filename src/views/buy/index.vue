@@ -49,6 +49,8 @@ import Vip from './components/Vip.vue';
 import { useRoute } from 'vue-router';
 import BlackCard from './components/BlackCard.vue';
 import Prop from './components/Prop.vue';
+import { goodslistAPI } from '@/utils/api';
+import { GOOD_TYPE } from '@/utils/const';
 
 const tabItems = ref([
   { label: '普通会员', value: 'normal' },
@@ -67,18 +69,29 @@ if (tab && tabItems.value.map(v => v.value).includes(tab)) {
 }
 
 // 普通会员套餐
-const normalService = [
-  { duration: '3个月', price: 298, prop: '每月赠送道具卡（置顶卡*1、变色卡*1）', tag: '体验会员', id: 1 },
-  { duration: '12个月', price: 998, prop: '每月赠送道具卡（置顶卡*1、变色卡*1）', tag: '超值优惠', id: 2 },
-]
-// 超级会员套餐
-const superService = [
-  { duration: '12个月', price: 1998, prop: '每月赠送道具卡（置顶卡*1、变色卡*1、超级置顶卡*1） ', tag: '本站力推', id: 1 },
-]
+const normalService = ref<any>([
+  { duration: '3个月', price: 298, prop: '每月送道具卡(置顶卡*1、变色卡*1)', tag: '超值优惠', id: 26 },
+  { duration: '12个月', price: 998, prop: '每月送道具卡(置顶卡*1、变色卡*1)', tag: '超值优惠', id: 27 },
+])
+// 超级会员套餐 
+const superService = ref<any>([
+  { duration: '12个月', price: 1998, prop: '每月送道具卡(置顶卡*1、变色卡*1、超级置顶卡*1)', tag: '本站力推', id: 28 },
+])
 // 企业会员套餐
-const enterpriseService = [
-  { duration: '12个月', price: 3998, prop: '每月赠送道具卡（置顶卡*1、变色卡*1、超级置顶卡*1） ', tag: '企业专享', id: 1 },
-]
+const enterpriseService = ref<any>([
+  { duration: '12个月', price: 3998, prop: '每月送道具卡(置顶卡*1、变色卡*1、超级置顶卡*1)', tag: '企业专享', id: 29 },
+])
+
+goodslistAPI({
+  type: GOOD_TYPE.HY
+}).then(res => {
+  const data = res.data.data
+  [normalService.value, superService.value, enterpriseService.value].forEach((element: any) => {
+    element.forEach((v: any) => {
+      v.price = parseInt(data.find((val: any) => val.id === v.id).price)
+    })
+  });
+})
 </script>
 
 <style lang="scss" scoped>
