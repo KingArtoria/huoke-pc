@@ -30,3 +30,31 @@ export const getUser = () => {
   }
   return false
 }
+
+/**
+ * 校验手机号
+ */
+export const isPhone = (str: string) => {
+  return /^1[0-9]{10}$/.test(str)
+}
+
+/**
+ * 验证手机号
+ * @param fieldName 字段名称
+ * @param isRequired 是否必填
+ * @returns 
+ */
+export const validPhone = (fieldName: string, isRequired: boolean = true) => {
+  return [
+    { required: isRequired, message: '请输入' + fieldName, trigger: 'blur' },
+    {
+      validator: (rule: any, value: string, callback: Function) => {
+        if (value && !isPhone(value)) {
+          callback(new Error(fieldName + '格式不正确'))
+        } else {
+          callback()
+        }
+      }, trigger: 'blur'
+    }
+  ]
+}

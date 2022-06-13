@@ -34,3 +34,8 @@ export const GOOD_TYPE = {
  * 图片地址域名
  */
 export const DOMAIN = 'http://39.106.208.234'
+
+/**
+ * API域名
+ */
+export const API_DOMAIN = 'http://nad.bdhuoke.com/'

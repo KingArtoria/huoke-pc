@@ -5,13 +5,13 @@
       完善您的个人信息后才能发布合作信息、查看合作信息联系方式、添加人脉、查企业等操作（带*号为必填项）
     </div>
     <div class="form-wrap mt-40">
-      <el-form ref="formRef" :model="formData" :rulues="rules" label-width="80px" label-position="right">
+      <el-form ref="formRef" :model="formData" :rules="rules" label-width="86px" label-position="right">
         <el-row :gutter="56">
           <el-col>
-            <el-form-item label="头像:">
-              <el-upload accept=".jpg,.png" class="uploader" action="https://jsonplaceholder.typicode.com/posts/"
+            <el-form-item label="头像:" prop="head">
+              <el-upload accept=".jpg,.png" class="uploader" action="http://nad.bdhuoke.com/web_v1/member/upload"
                 :show-file-list="false" :on-success="uploadSuccess">
-                <img v-if="formData.head" :src="formData.head" class="img" />
+                <img v-if="formData.head" :src="API_DOMAIN + formData.head" class="img" />
                 <div v-else class="flex items-center flex-col">
                   <img :src="loadImg('tupian@2x.png')" alt="" class="w-30 h-30">
                   <span class="link">上传图片</span>
@@ -29,35 +29,36 @@
               <el-input v-model="formData.real_name" placeholder="请填写" maxlength="150" />
             </el-form-item>
           </el-col>
-          <el-col>
+          <el-col :span="12">
             <el-form-item label="毕业院校:" prop="school">
-              <!-- <el-select-v2 v-model="formData.school" filterable remote :remote-method="getSchoolOptions"
-                :options="schoolOptions" :loading="searchLoading" placeholder="请输入学校名称" /> -->
-              <!-- <el-select-v2 v-model="formData.school" filterable :options="schoolOptions" placeholder="请输入学校名称" /> -->
-              <!-- <el-select-v2 v-model="value" :options="options" placeholder="Please select" size="large" /> -->
+              <el-select v-model="formData.school" filterable remote reserve-keyword placeholder="请输入学校名称"
+                :remote-method="getSchoolOptions" :loading="searchLoading">
+                <el-option v-for="item in schoolOptions" :key="item.value" :label="item.label" :value="item.value" />
+              </el-select>
             </el-form-item>
           </el-col>
+          <el-col :span="12"></el-col>
           <el-col :span="12">
             <el-form-item label="所在地区:" prop="province">
-              <el-select v-model="formData.province" @change="getCityOptions">
+              <el-select v-model="formData.province" placeholder="请选择省份" @change="getCityOptions">
                 <el-option v-for="item in provinceOptions" :value="item.id" :label="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-select v-model="formData.city">
+            <el-select v-model="formData.city" placeholder="请选择城市" style="width: 216px;">
               <el-option v-for="item in cityOptions" :value="item.id" :label="item.name"></el-option>
             </el-select>
           </el-col>
           <el-col :span="12">
             <el-form-item label="所在行业:" prop="industry_one">
-              <el-select v-model="formData.industry_one" @change="getIndustryTowOptions">
+              <el-select v-model="formData.industry_one" placeholder="请选择一级行业" @change="getIndustryTowOptions">
                 <el-option v-for="item in industryOneOptions" :value="item.id" :label="item.name"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-select v-model="formData.industry_tow">
+            <el-select v-model="formData.industry_tow" placeholder="请选择二级行业" style="width: 216px;">
               <el-option v-for="item in industryTowOptions" :value="item.id" :label="item.name"></el-option>
             </el-select>
           </el-col>
@@ -86,8 +87,13 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
-import { provinceAPI, cityAPI, getIndustryListAPI, getIndustryInfoAPI, getSchoolListAPI } from '@/utils/api'
-import { loadImg } from '@/utils/index'
+import { provinceAPI, cityAPI, getIndustryListAPI, getIndustryInfoAPI, getSchoolListAPI, memberInfoEditAPI, uploadFile } from '@/utils/api'
+import { loadImg, validPhone } from '@/utils/index'
+import { ElMessage } from 'element-plus';
+import { useRouter } from 'vue-router';
+import { API_DOMAIN } from '@/utils/const'
+
+const router = useRouter()
 const formData = ref({
   type: 'set',
   head: '', // 头像
@@ -104,23 +110,30 @@ const formData = ref({
 })
 const rules = {
   head: [{ required: true, message: '请上传头像', trigger: 'change' }],
-  nick_name: [{ required: true, message: '请输入', trigger: 'blur' }],
-  real_name: [{ required: true, message: '请输入', trigger: 'blur' }],
-  school: [{ required: true, message: '请输入', trigger: 'blur' }],
-  industry_one: [{ required: true, message: '请输入', trigger: 'blur' }],
-  province: [{ required: true, message: '请输入', trigger: 'blur' }],
-  company: [{ required: true, message: '请输入', trigger: 'blur' }],
-  position: [{ required: true, message: '请输入', trigger: 'blur' }],
-  phone: [{ required: true, message: '请输入', trigger: 'blur' }],
+  nick_name: [{ required: true, message: '请输入昵称', trigger: 'blur' }],
+  real_name: [{ required: true, message: '请输入真实姓名', trigger: 'blur' }],
+  school: [{ required: true, message: '请选择学校', trigger: 'change' }],
+  industry_one: [{ required: true, message: '请选择一级行业', trigger: 'change' }],
+  province: [{ required: true, message: '请选择省份', trigger: 'change' }],
+  company: [{ required: true, message: '请输入公司名称', trigger: 'blur' }],
+  position: [{ required: true, message: '请输入职位', trigger: 'blur' }],
+  phone: validPhone('手机号'),
 }
 const formRef = ref()
 let loading = false
 const submit = () => {
   formRef.value.validate((valid: boolean) => {
     if (!valid) return
+    if (!formData.value.city) return ElMessage.error('请选择城市')
+    if (!formData.value.industry_tow) return ElMessage.error('请选择二级行业')
     loading = true
+    memberInfoEditAPI(formData.value).then(res => {
+      loading = false
+      if (res.data.code !== 1) return ElMessage.error(res.data.msg)
+      ElMessage.success('修改成功')
+      router.back()
+    })
   })
-
 }
 
 // 省份
@@ -134,8 +147,8 @@ const industryTowOptions = ref<any>([])
 // 学校
 const schoolOptions = ref<any>([])
 // 根据所选省份获取城市
-const getCityOptions = () => {
-  formData.value.city = ''
+const getCityOptions = (isClear: boolean = true) => {
+  if (isClear) formData.value.city = ''
   cityAPI({
     id: formData.value.province
   }).then(res => {
@@ -143,8 +156,8 @@ const getCityOptions = () => {
   })
 }
 // 根据所选一级行业
-const getIndustryTowOptions = () => {
-  formData.value.industry_tow = ''
+const getIndustryTowOptions = (isClear: boolean = true) => {
+  if (isClear) formData.value.industry_tow = ''
   getIndustryInfoAPI({
     id: formData.value.industry_one
   }).then(res => {
@@ -156,7 +169,15 @@ const searchLoading = ref(false)
 const getSchoolOptions = (query: string) => {
   if (query !== '') {
     searchLoading.value = true
-
+    getSchoolListAPI({ name: query }).then(res => {
+      searchLoading.value = false
+      schoolOptions.value = res.data.data.map((v: any) => {
+        return {
+          label: v.name,
+          value: v.id
+        }
+      })
+    })
   } else {
     schoolOptions.value = []
   }
@@ -167,18 +188,28 @@ provinceAPI().then(res => {
 getIndustryListAPI().then(res => {
   industryOneOptions.value = res.data.data
 })
-// getSchoolListAPI({ name: '' }).then(res => {
-//   schoolOptions.value = res.data.data.map((v: any) => {
-//     return {
-//       label: v.name,
-//       value: v.id
-//     }
-//   })
-// })
+// 回显用户资料
+memberInfoEditAPI({ type: 'get' }).then(res => {
+  const data = res.data.data
+  formData.value.head = data.head
+  formData.value.nick_name = data.nick_name
+  formData.value.real_name = data.real_name
+  formData.value.school = data.school
+  formData.value.industry_one = data.industry_one
+  formData.value.industry_tow = data.industry_tow
+  formData.value.province = data.province
+  formData.value.city = data.city
+  formData.value.company = data.company
+  formData.value.position = data.position
+  formData.value.phone = data.phone
+  getCityOptions(false)
+  getIndustryTowOptions(false)
+  getSchoolOptions(data.schoolname)
+})
+
 // 上传成功回调
 const uploadSuccess = (res: any) => {
-  console.log(res);
-
+  formData.value.head = res.data
 }
 </script>
 
