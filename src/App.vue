@@ -21,8 +21,9 @@ import Header from './components/Header.vue';
 import Footer from './components/Footer.vue';
 import Aside from './components/Aside.vue';
 import Nav from './components/Nav.vue';
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router'
+import GoEasy from 'goeasy';
 
 const route = useRoute()
 // 通知栏在某些页面不显示
