@@ -256,3 +256,19 @@ export const goodslistAPI = (data: any): AxiosPromise<any> => {
     data
   });
 };
+
+// 上传文件
+export const uploadFile = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/member/upload',
+    data
+  });
+};
+// 个人中心
+export const userInfoAPI = (): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/member/index',
+  });
+};

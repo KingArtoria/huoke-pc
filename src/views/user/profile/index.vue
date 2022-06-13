@@ -1,30 +1,30 @@
 <template>
   <div class="p-34 bg-white fs-16">
     <p class="fs-18 mb-28">个人中心</p>
-    <div class="tip flex items-center">
+    <div v-if="!userInfo.idcard" class="tip flex items-center">
       您的账号未实名认证：不能在本站进行平台交易，为了不影响你的使用体验，请及时进行实名认证。
     </div>
     <!-- 用户信息  -->
     <div class="user-info flex mt-28">
       <!-- 头像 -->
-      <img :src="loadImg('banner_big2@2x.png')" alt="" class="head-img mr-10">
+      <img :src="API_DOMAIN + userInfo.head" alt="" class="head-img mr-10">
       <div class="mt-8">
         <!-- 姓名 -->
         <div class="flex items-end">
-          <span class="fs-18 font-bold">姓名</span>
-          <div class="div1 app-flex-center">未实名认证</div>
-          <img src="" alt="">
-          <img :src="loadImg(isBindPhone ? 'shoujih_yt@2x.png' : 'shoujhhwt@2x.png')" alt="" class="bind-img">
-          <img :src="loadImg(isBindWx ? 'weixinhyt@2x.png' : 'wxh_wtx@2x.png')" alt="" class="bind-img">
+          <span class="fs-18 font-bold">{{ userInfo.nick_name }}</span>
+          <div class="div1 app-flex-center">{{ userInfo.idcard ? '已实名认证' : '未实名认证' }}</div>
+          <!-- <img :src="" alt=""> -->
+          <img :src="loadImg(userInfo.phone ? 'shoujih_yt@2x.png' : 'shoujhhwt@2x.png')" alt="" class="bind-img">
+          <img :src="loadImg(userInfo.wx ? 'weixinhyt@2x.png' : 'wxh_wtx@2x.png')" alt="" class="bind-img">
         </div>
         <p class="desc my-10 flex items-center">
-          <span>BD经理</span>
+          <span>{{ userInfo.position }}</span>
           <span class="line"></span>
-          <span>互联网</span>
+          <span>{{ userInfo.company }}</span>
           <span class="line"></span>
-          <span>徐州网络科技公司</span>
+          <span>{{ userInfo.company }}</span>
         </p>
-        <p class="desc">毕业院校：中国美术学院</p>
+        <p class="desc">毕业院校：{{ userInfo.schoolname }}</p>
       </div>
       <button class="btn app-flex-center" @click="navToForm">编辑资料</button>
     </div>
@@ -32,25 +32,38 @@
     <div class="contact flex items-center my-16">
       <span class="color-1B1B1B mr-50 ml-10">联系方式：</span>
       <div class="grid grid-cols-3 gap-x-80">
-        <span class="color-818181">手机号：131****5213</span>
-        <span class="color-818181">微信号：131****5213</span>
+        <span class="color-818181">手机号：{{ userInfo.phone }}</span>
+        <span v-if="userInfo.wechat_name" class="color-818181">微信号：{{ userInfo.wechat_name }}</span>
         <span>
           <span class="color-1B1B1B mr-30">邀请码：</span>
-          <span class="color-1F73F1">DHSKSKA</span>
+          <span class="color-1F73F1">{{ userInfo.Invitation_code }}</span>
         </span>
       </div>
     </div>
     <img :src="loadImg('weikaitong-grzx@2x.png')" alt="" class="img1">
+    <!-- 我的道具 -->
+    <div class="tabbar flex mt-20">
+      <div v-for="tab in itemTabbar" class="tab-item app-flex-center"
+        :class="[tab.value, { active: tab.value === activeItemTab }]" @click="setActiveTab(tab.value)">{{ tab.label
+        }}</div>
+    </div>
+    <Owner v-if="activeItemTab === 'owner'" class="item-wrap" />
+    <!-- 我的发布 -->
+    <div class="tabbar flex mt-38">
+      <div v-for="tab in projectTabbar" class="tab-item app-flex-center"
+        :class="[tab.value, { active: tab.value === activeProjectTab }]">{{ tab.label
+        }}</div>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
 import { loadImg } from '@/utils';
 import { useRouter } from 'vue-router';
-// 账号是否绑定手机号
-const isBindPhone = ref(true)
-// 账号是否绑定微信
-const isBindWx = ref(true)
+import { userInfoAPI, memberInfoEditAPI } from '@/utils/api'
+import { API_DOMAIN } from '@/utils/const'
+import Owner from '../item/components/Owner.vue';
+
 const router = useRouter()
 // 跳转到编辑资料页面
 const navToForm = () => {
@@ -58,6 +71,40 @@ const navToForm = () => {
     path: '/user/profile-form'
   })
 }
+
+// 用户信息
+const userInfo = ref<any>({})
+Promise.all([
+  userInfoAPI(),
+  memberInfoEditAPI({ type: 'get' })
+]).then(([res1, res2]) => {
+  userInfo.value = Object.assign(res2.data.data, res1.data.data.user_info)
+})
+
+// 我的道具
+const itemTabbar = [
+  { label: '我的道具', value: 'owner' },
+  { label: '道具商城', value: 'shop' },
+]
+const activeItemTab = ref('owner')
+const setActiveTab = (tab: string) => {
+  if (tab === 'shop') {
+    router.push({
+      path: '/buy',
+      query: {
+        tab: 'props'
+      }
+    })
+    return
+  }
+  activeItemTab.value = tab
+}
+
+// 我的发布
+const projectTabbar = [
+  { label: '我的发布', value: 'project' },
+]
+const activeProjectTab = ref('project')
 </script>
 
 <style lang="scss" scoped>
@@ -126,5 +173,46 @@ const navToForm = () => {
 
 .img1 {
   margin: 0 auto;
+}
+
+.tabbar {
+  background: #FCFCFC;
+  border: 1px solid #F3F3F3;
+  height: 49px;
+}
+
+.tab-item {
+  width: 170px;
+  height: 45px;
+  font-size: 16px;
+  color: #666;
+  width: 183px;
+  cursor: pointer;
+
+  &.active,
+  &:hover {
+    color: #0172FF;
+    background: white;
+    border-top: 2px solid #0D86FF;
+  }
+}
+
+.item-wrap {
+  background: #F5F5F5;
+  padding: 20px;
+}
+
+::v-deep(.item-wrap .item) {
+  background: white;
+  border: 0;
+  padding: 18px 20px;
+
+  .img-wrap {
+    margin-right: 26px;
+  }
+}
+
+::v-deep(.gap-x-36) {
+  column-gap: 20px;
 }
 </style>
