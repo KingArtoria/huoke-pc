@@ -188,10 +188,11 @@ export const memberProjectAPI = (): AxiosPromise<any> => {
   });
 };
 // 个人中心-获取二级行业
-export const getIndustryInfoAPI = (): AxiosPromise<any> => {
+export const getIndustryInfoAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/member/getIndustryInfo',
+    data
   });
 };
 // 个人中心-获取一级行业
