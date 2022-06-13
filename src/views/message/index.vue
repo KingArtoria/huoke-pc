@@ -15,8 +15,8 @@
       <!-- 好友列表 -->
       <div class="bg-white mt-14 py-20">
         <ul>
-          <li v-for="item in routes" class="route" :class="{ active: item.path === route.path }"
-            @click="router.push(item.path)">{{ item.text }}</li>
+          <li v-for="(item, index) in routes" class="route" :class="{ active: item.path === route.path }"
+            @click="router.push(item.path)" :key="index">{{ item.text }}</li>
         </ul>
       </div>
     </nav>
@@ -83,7 +83,9 @@ const userInfo = ref({
     color: #979797;
   }
 }
+
 $height: 36px;
+
 .route {
   height: $height;
   line-height: $height;
