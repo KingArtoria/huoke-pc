@@ -31,7 +31,7 @@ export const GOOD_TYPE = {
 }
 
 /**
- * 图片地址域名
+ * 静态资源域名
  */
 export const DOMAIN = 'http://39.106.208.234'
 
@@ -39,3 +39,8 @@ export const DOMAIN = 'http://39.106.208.234'
  * API域名
  */
 export const API_DOMAIN = 'http://nad.bdhuoke.com/'
+
+/**
+ * 头像图片域名
+ */
+export const HEAD_DOMAIN = 'https://admin.bdhuoke.com/'

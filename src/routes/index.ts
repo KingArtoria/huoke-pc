@@ -18,21 +18,17 @@ const routes: RouteRecordRaw[] = [
       { path: 'item', component: () => import('@/views/user/item/index.vue') },
       // 会员特权  
       { path: 'vip', component: () => import('@/views/user/vip.vue') },
-      // 我的动态（已发布）
-      { path: 'punlish-pass', component: () => import('@/views/user/record/pass.vue') },
-      // 我的动态（待审核）
-      { path: 'punlish-audit', component: () => import('@/views/user/record/audit.vue') },
-      // 我的动态（未通过 ）
-      { path: 'punlish-reject', component: () => import('@/views/user/record/reject.vue') },
+      // 我的动态
+      { path: 'project', component: () => import('@/views/user/record/index.vue') },
       // 修改手机号
       { path: 'change-phone', component: () => import('@/views/user/profile/profile-form.vue') },
-      // 修改密码  
+      // 修改密码
       { path: 'change-password', component: () => import('@/views/user/profile/profile-form.vue') },
-      // 我的收藏  
-      { path: 'favorite', component: () => import('@/views/user/profile/profile-form.vue') },
-      // 担保记录   
-      { path: 'guarantee', component: () => import('@/views/user/profile/profile-form.vue') },
-      // 我的好友    
+      // 我的收藏
+      { path: 'favorite', component: () => import('@/views/user/favorite.vue') },
+      // 担保记录
+      { path: 'guarantee', component: () => import('@/views/user/guarantee/index.vue') },
+      // 我的好友
       { path: 'friend', component: () => import('@/views/user/profile/profile-form.vue') },
     ]
   },

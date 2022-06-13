@@ -181,10 +181,11 @@ export const changephoneAPI = (data: any): AxiosPromise<any> => {
   });
 };
 // 个人中心-我的发布
-export const memberProjectAPI = (): AxiosPromise<any> => {
+export const memberProjectAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/member/member_project',
+    data
   });
 };
 // 个人中心-获取二级行业
@@ -270,5 +271,21 @@ export const userInfoAPI = (): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/member/index',
+  });
+};
+// 我的收藏
+export const favoriteAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/member/member_keep',
+    data
+  });
+};
+// 收藏项目
+export const addTofavoriteAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/member/keep',
+    data
   });
 };

@@ -25,13 +25,9 @@ pathPrefix.value = '/user/'
 const currentPath = ref('')
 const routes = [
   { text: '个人中心', path: 'profile' },
-  {
-    text: '我的动态', children: [
-      { text: '已发布', path: 'punlish-pass' },
-      { text: '待审核', path: 'punlish-audit' },
-      { text: '未通过', path: 'punlish-reject' },
-    ]
-  },
+  { text: '我的发布', path: 'project' },
+  { text: '我的收藏', path: 'favorite' },
+  { text: '担保记录', path: 'guarantee' },
   {
     text: '人脉管理', children: [
       { text: '待处理请求', path: '3' },

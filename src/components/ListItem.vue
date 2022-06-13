@@ -26,7 +26,6 @@
             <span>{{ item.position }}</span>
             <span v-if="item.company" class="line"></span>
             <span>{{ item.company }}</span>
-            <!-- <img v-if="fmtVipImg(item)" :src="fmtVipImg(item)" alt="" > -->
             <VipIcon :item="item" class="vip-icon" />
             <span class="date">{{ fmtDate(item.addtime) }}</span>
           </p>

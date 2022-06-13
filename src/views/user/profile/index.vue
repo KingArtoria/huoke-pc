@@ -54,6 +54,12 @@
         :class="[tab.value, { active: tab.value === activeProjectTab }]">{{ tab.label
         }}</div>
     </div>
+    <CommonList :list="projectList" />
+    <!-- 无数据 -->
+    <div v-if="projectList.length === 0" class="flex flex-col items-center mt-40">
+      <p class="color-757575 fs-16 text-center">您还没有发布过合作信息，快去发布吧</p>
+      <button class="publish-btn mt-18">去发布</button>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -63,6 +69,7 @@ import { useRouter } from 'vue-router';
 import { userInfoAPI, memberInfoEditAPI } from '@/utils/api'
 import { API_DOMAIN } from '@/utils/const'
 import Owner from '../item/components/Owner.vue';
+import CommonList from '../record/components/CommonList.vue';
 
 const router = useRouter()
 // 跳转到编辑资料页面
@@ -79,6 +86,7 @@ Promise.all([
   memberInfoEditAPI({ type: 'get' })
 ]).then(([res1, res2]) => {
   userInfo.value = Object.assign(res2.data.data, res1.data.data.user_info)
+  projectList.value = res1.data.data.user_project
 })
 
 // 我的道具
@@ -105,6 +113,8 @@ const projectTabbar = [
   { label: '我的发布', value: 'project' },
 ]
 const activeProjectTab = ref('project')
+// 发布项目数据
+const projectList = ref<any>([])
 </script>
 
 <style lang="scss" scoped>
@@ -215,4 +225,18 @@ const activeProjectTab = ref('project')
 ::v-deep(.gap-x-36) {
   column-gap: 20px;
 }
+
+.color-757575 {
+  color: #757575;
+}
+
+.publish-btn {
+  width: 120px;
+  height: 40px;
+  background: #1F73F1;
+  border-radius: 20px;
+  color: #fff;
+  font-size: 16px;
+}
+
 </style>

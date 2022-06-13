@@ -130,20 +130,20 @@
             <p class="p1 fs-16">全部回复（{{ commentList.length }}）</p>
             <div v-for="item in commentList" class="comment">
               <div class="flex">
-                <img src="" alt="" class="img">
+                <img :src="HEAD_DOMAIN + item.head" alt="" class="img">
                 <div class="flex-1">
                   <p class="flex items-end">
-                    <span class="mr-10 mb-12 fs-16">{{ item.name }}</span>
-                    <img src="" alt="">
+                    <span class="mr-10 mb-12 fs-16">{{ item.nick_name }}</span>
+                    <!-- <img :src="dom" alt=""> -->
                   </p>
-                  <p class="flex items-center color-949494 fs-16">
-                    <span>{{ item.posi }}</span>
+                  <p class="flex items-center color-949494">
+                    <span>{{ item.position }}</span>
                     <span class="line"></span>
-                    <span>{{ item.comp }}</span>
+                    <span>{{ item.company }}</span>
                   </p>
                   <p class="py-20 color-4D4D4D">{{ item.content }}</p>
                   <div class="bottom">
-                    <p class="color-949494">{{ item.date }}</p>
+                    <p class="color-949494">{{ fmtDate(item.createtime) }}</p>
                     <button class="btn info" @click="openReply(item.id)">回复</button>
                   </div>
                 </div>
@@ -152,19 +152,19 @@
               <div v-if="item.children && item.children.length" class="reply-wrap">
                 <div v-for="reply in item.children" class="reply">
                   <div class="flex">
-                    <img src="" alt="" class="img">
+                    <img :src="HEAD_DOMAIN + reply.head" alt="" class="img">
                     <div class="flex-1">
                       <p class="flex items-end">
-                        <span class="mr-10 mb-12 fs-16">{{ reply.name }}</span>
+                        <span class="mr-10 mb-12 fs-16">{{ reply.nick_name }}</span>
                         <img src="" alt="">
                       </p>
                       <p class="flex items-center color-949494 fs-16">
-                        <span>{{ reply.posi }}</span>
+                        <span>{{ reply.position }}</span>
                         <span class="line"></span>
-                        <span>{{ reply.comp }}</span>
+                        <span>{{ reply.company }}</span>
                       </p>
                       <p class="py-20 color-4D4D4D">{{ reply.content }}</p>
-                      <p class="color-949494">{{ reply.date }}</p>
+                      <p class="color-949494">{{ fmtDate(item.createtime) }}</p>
                     </div>
                   </div>
                 </div>
@@ -202,8 +202,8 @@
         <Download class="download" />
       </aside>
       <div class="side">
-        <div class="side-item">
-          <img :src="loadImg('shoucang@2x.png')" alt="" class="img1">
+        <div class="side-item" @click="doFavorite">
+          <img :src="loadImg(detailData.keep === 1 ? 'yishoucang@2x.png' : 'shoucang@2x.png')" alt="" class="img1">
           <span class="mt-12">收藏</span>
         </div>
         <div class="side-item">
@@ -222,11 +222,11 @@ import { ref, computed } from 'vue';
 import Download from '@/components/Download.vue';
 import { useRoute } from 'vue-router';
 import iconImg from '@/assets/baozhang@2x.png'
-import { loadImg } from '@/utils'
+import { loadImg, once } from '@/utils'
 import Tip from './components/Tip.vue';
 import UserList from './components/UserList.vue';
-import { projectInfoAPI, contactInfoAPI } from '@/utils/api'
-import { COOPERATION_TYPES } from '@/utils/const'
+import { projectInfoAPI, contactInfoAPI, addTofavoriteAPI } from '@/utils/api'
+import { COOPERATION_TYPES, HEAD_DOMAIN } from '@/utils/const'
 import { matchLabel } from '@/utils/index'
 import VipIcon from '@/components/VipIcon.vue';
 import dayjs from 'dayjs'
@@ -250,6 +250,7 @@ const isVip = ref(false)
 const getProjectInfo = () => {
   projectInfoAPI({ fid: id }).then(res => {
     detailData.value = res.data.data
+    commentList.value = detailData.value.comment
   })
 }
 getProjectInfo()
@@ -315,19 +316,22 @@ const sendReply = () => {
   replyLoading = false
 }
 // 评论列表
-const commentList = ref<any>([
-  {
-    img: '', name: '张三', vip: '', posi: 'sdfds', comp: 'sdfdsf', content: '怎么合作请联系我', date: '2222', children: [
-      { img: '', name: '张三', vip: '', posi: 'sdfds', comp: 'sdfdsf', content: '怎么合作请联系我', date: '2222' },
-    ]
-  },
-  { img: '', name: '张三', vip: '', posi: 'sdfds', comp: 'sdfdsf', content: '怎么合作请联系我', date: '2222' },
-  { img: '', name: '张三', vip: '', posi: 'sdfds', comp: 'sdfdsf', content: '怎么合作请联系我', date: '2222' },
-  { img: '', name: '张三', vip: '', posi: 'sdfds', comp: 'sdfdsf', content: '怎么合作请联系我', date: '2222' },
-])
+const commentList = ref<any>([])
 const openReply = (id: number) => {
   replyRef.value.open(id)
 }
+// 收藏项目
+const doFavorite = once((done: Function) => {
+  if (detailData.value.keep === 1) return done()
+  addTofavoriteAPI({
+    fid: detailData.value.id,
+    type: detailData.value.type,
+  }).then(res => {
+    done()
+    ElMessage.success('收藏成功')
+    detailData.value.keep = 1
+  })
+})
 </script>
 
 <style lang="scss" scoped>

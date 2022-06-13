@@ -13,7 +13,7 @@ service.interceptors.request.use(
 )
 service.interceptors.response.use(
   response => {
-    if (response.data.code == -1) {
+    if (response.data.code !== 1) {
       ElMessage.error(response.data.msg);
       return Promise.reject(response.data);
     } else {

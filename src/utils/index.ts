@@ -58,3 +58,15 @@ export const validPhone = (fieldName: string, isRequired: boolean = true) => {
     }
   ]
 }
+
+export const once = (fn: Function) => {
+  let loading = false
+  const done = () => {
+    loading = false
+  }
+  return () => {
+    if (loading) return
+    loading = true
+    fn(done)
+  }
+}

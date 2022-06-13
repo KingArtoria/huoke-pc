@@ -1,5 +1,5 @@
 <template>
-  <CommonList :type="1" />
+  <CommonList :list="{}" />
 </template>
 <script setup lang="ts">
 import CommonList from './components/CommonList.vue';
