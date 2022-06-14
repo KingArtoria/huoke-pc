@@ -2,7 +2,7 @@
   <header class="header">
     <div class="app-page">
       <div class="title">合作分类</div>
-      <div class="nav-item">
+      <div class="nav-item" @click="navTo('/deal')">
         <span>平台交易</span>
         <img :src="newImg" alt="" class="tag">
       </div>
@@ -16,12 +16,6 @@
       </div>
       <div class="nav-item">
         <span>业务订阅</span>
-      </div>
-      <div class="nav-item">
-        <span>找人脉</span>
-      </div>
-      <div class="nav-item">
-        <span>查企业</span>
       </div>
     </div>
 
@@ -223,11 +217,15 @@ const navToLogin = (tab: string) => {
     }
   })
 }
-
+// 页面跳转
+const navTo = (path: string) => {
+  router.push({
+    path
+  })
+}
 </script>
 
 <style lang="scss" scoped>
-
 .side-banner {
   position: fixed;
   top: 56px;

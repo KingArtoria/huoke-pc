@@ -76,6 +76,15 @@ const navToDetail = (id: number) => {
   background: white;
 }
 
+::v-deep(.el-table) {
+  font-size: 16px;
+  color: #1b1b1b;
+}
+
+::v-deep(.el-table .el-table__header-wrapper) {
+  font-size: 15px;
+}
+
 .link {
   cursor: pointer;
 

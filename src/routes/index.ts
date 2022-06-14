@@ -46,7 +46,11 @@ const routes: RouteRecordRaw[] = [
       // 聊天
       { path: 'chat', component: () => import('@/views/message/chat.vue') },
     ]
-  }
+  },
+  // 平台交易
+  { path: '/deal', component: () => import('@/views/deal/index.vue') },
+  // 发起交易
+  { path: '/deal-form', component: () => import('@/views/deal/form.vue') },
 ]
 
 // 创建路由

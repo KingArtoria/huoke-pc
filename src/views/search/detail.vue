@@ -126,7 +126,7 @@
             </div>
           </div>
           <div class="hr-line"></div>
-          <div class="px-22 py-34">
+          <div v-if="commentList.length" class="px-22 py-34">
             <p class="p1 fs-16">全部回复（{{ commentList.length }}）</p>
             <div v-for="item in commentList" class="comment">
               <div class="flex">

@@ -2,21 +2,21 @@
   <div class="p-34 bg-white">
     <p class="fs-18 mb-20">我的收藏</p>
     <KindTab @change="handleChange" />
-    <div v-if="currentType.data.length !== 0" class="flex items-center mt-20">
+    <div v-if="currentData.length !== 0" class="flex items-center my-10">
       <el-checkbox v-model="isCheckAll" @change="isCheckAllChange"><span class="fs-16 color-1B1B1B ml-2">全选</span>
       </el-checkbox>
       <button class="btn" @click="doDel">删除</button>
     </div>
-    <div v-for="item in currentType.data" class="flex items-center item">
+    <div v-for="item in currentData" class="flex items-center item">
       <el-checkbox v-model="item.isCheck" @change="itemChange"></el-checkbox>
-      <p class="ml-10 fs-16">{{ item.title }}</p>
-      <span class="ml-auto time">{{ item.date }}</span>
+      <p class="ml-10 fs-16 flex-1 truncate pr-20 link" @click="navToDetail(item.id)">{{ item.title }}</p>
+      <span class="ml-auto time">{{ fmtDate(item.addtime) }}</span>
     </div>
     <!-- 无数据 -->
-    <Empty v-if="currentType.data.length === 0" />
+    <Empty v-if="currentData.length === 0" />
     <!-- 分页 -->
-    <footer v-if="currentType.data.length !== 0" class="footer flex justify-center">
-      <el-pagination :current-page="currentType.page" :total="currentType.total" background
+    <footer v-if="currentData.length !== 0" class="footer flex justify-center mt-30">
+      <el-pagination :current-page="currentPage" :total="currentTotal" background
         layout="total, prev, pager, next, jumper" @current-change="changePage" />
     </footer>
   </div>
@@ -29,6 +29,8 @@ import KindTab from '@/components/KindTab.vue';
 import Empty from '@/components/Empty.vue';
 import { COOPERATION_TYPES } from '@/utils/const'
 import { computed } from '@vue/reactivity';
+import Dayjs from 'dayjs';
+import { useRouter } from 'vue-router';
 
 const typeData = COOPERATION_TYPES.map((v: any) => {
   return {
@@ -39,9 +41,9 @@ const typeData = COOPERATION_TYPES.map((v: any) => {
   }
 })
 let activeType = 1
-const currentType = computed(() => {
-  return typeData.find((v: any) => v.type === activeType) || {} as any
-})
+const currentData = ref<any>([])
+const currentPage = ref(1)
+const currentTotal = ref(0)
 // 获取收藏
 const getFavorite = () => {
   const current = typeData.find((v: any) => v.type === activeType) || {} as any
@@ -50,6 +52,9 @@ const getFavorite = () => {
     current.total = num
     list.forEach((v: any) => v.isCheck = false)
     current.data = list
+    currentData.value = current.data
+    currentPage.value = current.page
+    currentTotal.value = current.total
   })
 }
 const handleChange = (type: number) => {
@@ -82,6 +87,20 @@ const isCheckAllChange = () => {
 const itemChange = () => {
   isCheckAll.value = listData.value.every((v: any) => v.isCheck)
 }
+// 格式化日期
+const fmtDate = (str: string) => {
+  return Dayjs(str).format('YYYY-MM-DD-HH:mm')
+}
+const router = useRouter()
+// 跳转到详情页面
+const navToDetail = (id: number) => {
+  router.push({
+    path: '/detail',
+    query: {
+      id
+    }
+  })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -108,5 +127,13 @@ const itemChange = () => {
 ::v-deep(.header) {
   padding-left: 0;
   padding-right: 0;
+}
+
+.link {
+  cursor: pointer;
+
+  &:hover {
+    color: #1E84FF;
+  }
 }
 </style>
