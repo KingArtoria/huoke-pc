@@ -1,133 +1,67 @@
 <template>
   <div class="app-page pb-30">
     <nav class="py-20">当前位置：首页 > 需求发布 >发布合作信息</nav>
-    <div class="bg-white py-30">
-      <p class="title">平台交易</p>
-      <el-form ref="formRef" :model="formData" :rules="rules" label-width="86px" label-position="right">
-        <el-form-item label="交易对象">
-          <div class="select">
-            <div v-if="!formData.to_id" class="flex flex-col items-center" @click="userVisible = true">
-              <el-icon>
-                <Plus />
-              </el-icon>
-              <span>选择交易对象</span>
-            </div>
-            <div v-else class="flex">
-              <img src="" alt="">
-              <div>
-                <p class="flex">
-                  <span>{{ user.head }}</span>
-                  <img src="" alt="">
-                </p>
-                <p>
-                  <span>{{ user.comp }}</span>
-                  <span>-</span>
-                  <span>{{ user.posi }}</span>
-                </p>
-              </div>
-            </div>
-          </div>
-        </el-form-item>
-        <el-form-item label="合作内容">
-          <el-input v-model="formData.details" placeholder="请输入合作内容" maxlength="150" />
-        </el-form-item>
-        <el-form-item label="对方要求">
-          <el-input v-model="formData.details" placeholder="请输入对方要求" maxlength="150" />
-        </el-form-item>
-        <el-form-item label="结算条件">
-          <el-input v-model="formData.details" placeholder="请输入结算条件" maxlength="150" />
-        </el-form-item>
-        <el-form-item label="其他补充">
-          <el-input v-model="formData.details" placeholder="请输入其他补充" maxlength="150" />
-        </el-form-item>
-        <el-form-item label="担保金额">
-          <el-input v-model="formData.details" placeholder="请输入担保金额" type="number" />
-        </el-form-item>
-        <!-- <el-row :gutter="56">
-          <el-col>
-            <el-form-item label="头像:" prop="head">
-              <el-upload accept=".jpg,.png" class="uploader" action="http://nad.bdhuoke.com/web_v1/member/upload"
-                :show-file-list="false" :on-success="uploadSuccess">
-                <img v-if="formData.head" :src="API_DOMAIN + formData.head" class="img" />
-                <div v-else class="flex items-center flex-col">
-                  <img :src="loadImg('tupian@2x.png')" alt="" class="w-30 h-30">
-                  <span class="link">上传图片</span>
+    <div class="flex">
+      <div class="bg-white py-30 flex-1 mr-14">
+        <p class="title mb-30">平台交易</p>
+        <div class="content">
+          <el-form ref="formRef" :model="formData" :rules="rules" label-width="86px" label-position="right">
+            <el-form-item label="交易对象">
+              <div class="select">
+                <div v-if="!formData.to_id" class="flex flex-col items-center pt-20" @click="userVisible = true">
+                  <el-icon class="plus-icon">
+                    <Plus />
+                  </el-icon>
+                  <span class="mt-10">选择交易对象</span>
                 </div>
-              </el-upload>
+                <div v-else class="flex">
+                  <img src="" alt="">
+                  <div>
+                    <p class="flex">
+                      <span>{{ user.head }}</span>
+                      <img src="" alt="">
+                    </p>
+                    <p>
+                      <span>{{ user.comp }}</span>
+                      <span>-</span>
+                      <span>{{ user.posi }}</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
             </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="昵称:" prop="nick_name">
-              <el-input v-model="formData.nick_name" placeholder="请填写" maxlength="150" />
+            <el-form-item label="合作内容">
+              <el-input v-model="formData.details" placeholder="请输入合作内容" maxlength="150" />
             </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="真实姓名:" prop="real_name">
-              <el-input v-model="formData.real_name" placeholder="请填写" maxlength="150" />
+            <el-form-item label="对方要求">
+              <el-input v-model="formData.details" placeholder="请输入对方要求" maxlength="150" />
             </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="毕业院校:" prop="school">
-              <el-select v-model="formData.school" filterable remote reserve-keyword placeholder="请输入学校名称"
-                :remote-method="getSchoolOptions" :loading="searchLoading">
-                <el-option v-for="item in schoolOptions" :key="item.value" :label="item.label" :value="item.value" />
-              </el-select>
+            <el-form-item label="结算条件">
+              <el-input v-model="formData.details" placeholder="请输入结算条件" maxlength="150" />
             </el-form-item>
-          </el-col>
-          <el-col :span="12"></el-col>
-          <el-col :span="12">
-            <el-form-item label="所在地区:" prop="province">
-              <el-select v-model="formData.province" placeholder="请选择省份" @change="getCityOptions">
-                <el-option v-for="item in provinceOptions" :value="item.id" :label="item.name"></el-option>
-              </el-select>
+            <el-form-item label="其他补充">
+              <el-input v-model="formData.details" placeholder="请输入其他补充" maxlength="150" />
             </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-select v-model="formData.city" placeholder="请选择城市" style="width: 216px;">
-              <el-option v-for="item in cityOptions" :value="item.id" :label="item.name"></el-option>
-            </el-select>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="所在行业:" prop="industry_one">
-              <el-select v-model="formData.industry_one" placeholder="请选择一级行业" @change="getIndustryTowOptions">
-                <el-option v-for="item in industryOneOptions" :value="item.id" :label="item.name"></el-option>
-              </el-select>
+            <el-form-item label="担保金额">
+              <el-input v-model="formData.details" placeholder="请输入担保金额" type="number" />
             </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-select v-model="formData.industry_tow" placeholder="请选择二级行业" style="width: 216px;">
-              <el-option v-for="item in industryTowOptions" :value="item.id" :label="item.name"></el-option>
-            </el-select>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="公司名称:" prop="company">
-              <el-input v-model="formData.company" placeholder="请填写" maxlength="150" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12"></el-col>
-          <el-col :span="12">
-            <el-form-item label="职位:" prop="position">
-              <el-input v-model="formData.position" placeholder="请填写" maxlength="150" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12"></el-col>
-          <el-col :span="12">
-            <el-form-item label="手机号:" prop="phone">
-              <el-input v-model="formData.phone" placeholder="请填写" maxlength="11" />
-            </el-form-item>
-          </el-col>
-        </el-row> -->
-      </el-form>
-      <div>
-        <p>注：担保金不可以作为业务结算资金进行支付</p>
-        <div>
-          <el-checkbox>
-            <span>我已阅读并同意</span>
-            <span>《BD火客付费会员协议》</span>
-          </el-checkbox>
+          </el-form>
+          <div class="tip-wrap">
+            <p class="tip">注：担保金不可以作为业务结算资金进行支付</p>
+            <div>
+              <el-checkbox>
+                <span>我已阅读并同意</span>
+                <span class="link">《BD火客付费会员协议》</span>
+              </el-checkbox>
+            </div>
+            <button class="btn" @click="submit">立即支付</button>
+          </div>
         </div>
-        <button class="btn" @click="submit">保存</button>
+
       </div>
+      <aside class="aside">
+        <Download class="download" />
+      </aside>
     </div>
   </div>
   <User v-model="userVisible" />
@@ -136,6 +70,7 @@
 import { ref } from 'vue';
 import { ElMessage } from 'element-plus';
 import User from './components/User.vue';
+import Download from '@/components/Download.vue';
 
 const formData = ref({
   to_id: '', // 交易对象
@@ -186,5 +121,63 @@ const userVisible = ref(false)
   height: 99px;
   background: #FFFFFF;
   border: 1px solid #E0E0E0;
+  color: #8D8D8D;
+  cursor: pointer;
+
+  &:hover {
+    border-color: #8DBBFF;
+  }
+
+  .h-full {
+    height: 99px;
+  }
+
+  .plus-icon {
+    font-size: 22px;
+  }
+}
+
+.content {
+  padding-right: 128px;
+  padding-left: 50px;
+}
+
+.title {
+  font-size: 18px;
+  position: relative;
+  padding-left: 22px;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 4px;
+    height: 19px;
+    background: #257FFB;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+.tip-wrap {
+  margin-left: 86px;
+
+  .tip {
+    color: #FF0000;
+    margin-bottom: 20px;
+  }
+
+  .link {
+    color: #0A7BF5;
+  }
+
+  .btn {
+    width: 160px;
+    height: 40px;
+    background: #0A7BF5;
+    border-radius: 4px;
+    color: white;
+    margin-top: 20px;
+  }
 }
 </style>

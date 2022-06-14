@@ -7,9 +7,18 @@ import { smsApi } from '@/utils/api'
 import { ElMessage } from 'element-plus'
 const props = defineProps<{
   phone: string, // 手机号
-  type: string, // 验证码类型
+  /**
+   * 验证码类型
+   * login = 登录
+   * sign = 注册
+   * uppass = 忘记密码/修改密码
+   * changephone = 修改手机号
+   */
+  type: string,
+  text?: string,
 }>()
-const text = ref('获取验证码')
+const _text = props.text || '获取验证码'
+const text = ref(_text)
 const isActive = ref(false)
 let second = 60
 let timer: any = null;
@@ -25,13 +34,13 @@ const getSms = () => {
 }
 
 const fn = () => {
-  text.value = `获取验证码(${second})`
+  text.value = `${_text}(${second})`
   second--
   if (second < 0) {
     clearTimeout(timer)
     isActive.value = false
     second = 60
-    text.value = '获取验证码'
+    text.value = `${_text}`
   } else {
     timer = setTimeout(fn, 1000);
   }

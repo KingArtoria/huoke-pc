@@ -30,6 +30,10 @@ const routes: RouteRecordRaw[] = [
       { path: 'guarantee', component: () => import('@/views/user/guarantee/index.vue') },
       // 我的好友
       { path: 'friend', component: () => import('@/views/user/profile/profile-form.vue') },
+      // 修改手机号
+      { path: 'phone', component: () => import('@/views/user/account/phone.vue') },
+      // 修改密码
+      { path: 'password', component: () => import('@/views/user/account/password.vue') },
     ]
   },
   // 购买VIP、道具

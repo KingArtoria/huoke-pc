@@ -48,7 +48,8 @@
               <Sms :phone="registerForm.phone" type="sign" />
             </div>
             <input type="password" v-model="registerForm.pass" placeholder="请输入密码" class="box_tabs_login_input" />
-            <input type="password" v-model="registerForm.againPass" placeholder="请确认密码" class="box_tabs_login_input" />
+            <input type="password" v-model="registerForm.againPass" placeholder="请输入确认密码"
+              class="box_tabs_login_input" />
             <input type="password" v-model="registerForm.invitationCode" placeholder="请输入邀请码(选填)"
               class="box_tabs_login_input" />
             <div class="text-wrap">
@@ -57,7 +58,7 @@
               </div>
               <span class="text">我已阅读并接受<span class="light">《BD火客用户服务协议》《隐私政策》</span></span>
             </div>
-            <div class="box_tabs_login_btn" @click="sign">注册并登录</div>
+            <div class="box_tabs_login_btn" @click="sign">注册</div>
           </el-tab-pane>
         </el-tabs>
         <!-- 找回密码 -->
@@ -71,8 +72,8 @@
                 class="box_tabs_login_input" />
               <Sms :phone="foundForm.phone" type="uppass" />
             </div>
-            <input type="password" v-model="foundForm.pass" placeholder="请输入密码" class="box_tabs_login_input" />
-            <input type="password" v-model="foundForm.againPass" placeholder="请确认密码" class="box_tabs_login_input" />
+            <input type="password" v-model="foundForm.pass" placeholder="请输入新密码" class="box_tabs_login_input" />
+            <input type="password" v-model="foundForm.againPass" placeholder="请输入确认密码" class="box_tabs_login_input" />
             <div class="box_tabs_login_btn" @click="reLogin">登录</div>
           </el-tab-pane>
         </el-tabs>
@@ -144,14 +145,13 @@ const sign = () => {
     code: registerForm.value.code,
     source: 'web',
     Invitation_code: registerForm.value.invitationCode
-  }).then(res => {
+  }).then(() => {
     registerLoading = false
-    if (res.data.code !== 1) return ElMessage.error(res.data.msg)
-    ElMessage.success(res.data.msg)
-    sessionStorage.setItem(TOKEN, res.data.data.token);
-    localStorage.setItem(USER, JSON.stringify(res.data.data));
-    router.push('/');
-  });
+    ElMessage.success('注册成功，请登录')
+    activeTab.value = 'login'
+  }).catch(() => {
+    registerLoading = false
+  })
 }
 
 /* 密码登录 */
@@ -173,13 +173,14 @@ const doLogin = () => {
   }
   promise.then(res => {
     loading = false
-    if (res.data.code !== 1) return ElMessage.error(res.data.msg)
     ElMessage.success(res.data.msg)
     sessionStorage.setItem(TOKEN, res.data.data.token);
     // 记住密码
     if (isRemember.value) localStorage.setItem(TOKEN, res.data.data.token);
     localStorage.setItem(USER, JSON.stringify(res.data.data));
     router.push('/');
+  }).catch(() => {
+    loading = false
   })
 }
 
@@ -200,11 +201,12 @@ const reLogin = () => {
     code: foundForm.value.code,
   }).then(res => {
     reLoading = false
-    if (res.data.code !== 1) return ElMessage.error(res.data.msg)
     ElMessage.success(res.data.msg)
     // 让用户重新登录
     isFoundPwd.value = false
-  });
+  }).catch(() => {
+    reLoading = false
+  })
 }
 </script>
 

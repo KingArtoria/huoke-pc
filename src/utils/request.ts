@@ -6,8 +6,11 @@ const service = axios.create({
 });
 service.interceptors.request.use(
   (config: AxiosRequestConfig) => {
-    // @ts-ignore
-    config.headers['token'] = sessionStorage.getItem(TOKEN) || localStorage.getItem(TOKEN) || ''
+    const token = sessionStorage.getItem(TOKEN) || localStorage.getItem(TOKEN)
+    if (token && token !== 'undefined') {
+      // @ts-ignore
+      config.headers['token'] = token
+    }
     return config
   },
 )

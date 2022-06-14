@@ -40,8 +40,8 @@ const routes = [
   { text: '会员特权', path: 'vip' },
   {
     text: '账号管理', children: [
-      { text: '修改手机号', path: '1' },
-      { text: '修改密码', path: '2' },
+      { text: '修改手机号', path: 'phone' },
+      { text: '修改密码', path: 'password' },
     ]
   },
 ]
