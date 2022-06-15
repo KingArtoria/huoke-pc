@@ -29,7 +29,7 @@ const routes: RouteRecordRaw[] = [
       // 担保记录
       { path: 'guarantee', component: () => import('@/views/user/guarantee/index.vue') },
       // 我的好友
-      { path: 'friend', component: () => import('@/views/user/profile/profile-form.vue') },
+      { path: 'friend', component: () => import('@/views/user/friend/index.vue') },
       // 修改手机号
       { path: 'phone', component: () => import('@/views/user/account/phone.vue') },
       // 修改密码

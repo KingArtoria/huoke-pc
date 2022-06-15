@@ -2,7 +2,7 @@
   <div class="page">
     <KindTab @change="handleChange" />
     <!-- 列表 -->
-    <div class="list">
+    <div v-if="listData.length" class="list">
       <el-table
         :header-cell-style="{ background: '#F3F3F3', color: '#1B1B1B', 'font-weight': 'normal', 'padding': '16px 0' }"
         :data="listData" :highlight-current-row="false">
@@ -16,6 +16,7 @@
         <el-table-column label="浏览量" prop="viewcount" align="center" width="160"></el-table-column>
       </el-table>
     </div>
+    <Empty v-else />
   </div>
 </template>
 <script setup lang="ts">
@@ -24,6 +25,7 @@ import dayjs from 'dayjs';
 import { memberProjectAPI } from '@/utils/api'
 import KindTab from '@/components/KindTab.vue';
 import { useRouter } from 'vue-router';
+import Empty from '@/components/Empty.vue';
 
 // 列表数据
 const listData = ref<any>([])

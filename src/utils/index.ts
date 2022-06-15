@@ -1,5 +1,6 @@
 /* 工具类 */
 import { USER } from './const';
+import { ElLoading } from 'element-plus';
 /**
  * 根据数值从数组里招到对应的文本名称
  * @param value 数值
@@ -69,4 +70,16 @@ export const once = (fn: Function) => {
     loading = true
     fn(done)
   }
+}
+/**
+ * 显示加载中状态的全屏遮罩层
+ * @param text 
+ * @returns 返回loading实例，通过调用loading实例的close方法来隐藏遮罩
+ */
+export const showLoading = (text = '提交数据中……') => {
+  return ElLoading.service({
+    lock: true,
+    text: 'text',
+    background: 'rgba(0, 0, 0, 0.7)',
+  })
 }

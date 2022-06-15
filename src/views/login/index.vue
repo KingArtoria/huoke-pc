@@ -14,7 +14,7 @@
               class="box_tabs_login_input" />
             <div class="code-wrap">
               <!-- 密码 -->
-              <input v-if="loginType == 'pass'" type="password" maxlength="6" v-model="loginForm.pass"
+              <input v-if="loginType == 'pass'" type="password" maxlength="12" v-model="loginForm.pass"
                 placeholder="请输入密码" class="box_tabs_login_input" />
               <!-- 验证码 -->
               <input v-if="loginType == 'code'" type="text" maxlength="6" v-model="loginForm.code" placeholder="请输入验证码"

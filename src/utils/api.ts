@@ -289,3 +289,19 @@ export const addTofavoriteAPI = (data: any): AxiosPromise<any> => {
     data
   });
 };
+// 担保记录
+export const memberGuaranteeAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/Guarantee/member_Guarantee',
+    data
+  });
+};
+// 添加好友
+export const addFriendapplyAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/friend/addFriendapply',
+    data
+  });
+};

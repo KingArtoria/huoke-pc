@@ -12,12 +12,12 @@
           <el-form-item label="标题" prop="title">
             <el-input v-model="formData.title" placeholder="请填写" />
           </el-form-item>
-          <el-form-item label="合作地区" prop="area">
-            <el-cascader v-model="formData.area" :props="cascaderProps" collapse-tags collapse-tags-tooltip clearable
+          <el-form-item label="合作地区" prop="areaArr">
+            <el-cascader v-model="formData.areaArr" :props="cascaderProps" collapse-tags collapse-tags-tooltip clearable
               :show-all-levels="false" />
           </el-form-item>
-          <el-form-item v-if="[1, 2, 11].includes(type)" label="合作类型" prop="cooptype">
-            <el-radio-group v-model="formData.cooptype">
+          <el-form-item v-if="[1, 2, 11].includes(type)" label="合作类型" prop="cooptype_id">
+            <el-radio-group v-model="formData.cooptype_id">
               <el-radio v-for="item in cooperationTypes" :label="item.id">{{ item.name }}</el-radio>
             </el-radio-group>
           </el-form-item>
@@ -143,10 +143,13 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { provinceAPI, cityAPI, saveProjectAPI, typeListAPI } from '@/utils/api'
+import { provinceAPI, cityAPI, saveProjectAPI } from '@/utils/api'
 import { ElMessage } from 'element-plus';
+import { showLoading } from '@/utils/index'
+import useTypeOptions from '@/composables/useTypeOptions'
+
 const route = useRoute()
 const router = useRouter()
 const type = ref(0)
@@ -154,38 +157,38 @@ type.value = parseInt(route.query.type as string || '0')
 const formRef = ref()
 const formData = ref({
   type, // 合作类型
-  title: '', // 合作标题
-  area: [], // 合作区域
-  cooptype: '', // 合作类型
-  promotion: '', // 推广方式
-  price: '', // 单价
-  settmod_id: '', // 结算方式
-  settcycle_id: '', // 结算周期
-  info: '', // 需求详情
-  product: '', // 产品类型
-  source: '', // 产品类型
-  comprehensive: '', // 需求类型
-  user_number: '', // 用户量
-  product_name: '', // 产品名称
-  issuing: '', // 一件代发
-  product_advantage: '', // 产品优势
-  supplement: '', // 产品优势
-  channel_advantage: '', // 渠道优势
-  introduce: '', // 渠道简介
-  assessment: '', // 销货能力
-  alliance: '', // 合作模式
-  profits: '', // 预计年利润
-  quantity: '', // 广告位数量
-  amount: '', // 线下场地数量
-  contact: '', // 联系电话
-  wx: '', // 微信
-  qq: '', // qq
+  title: '优质货源', // 合作标题
+  areaArr: [], // 合作区域
+  cooptype_id: null, // 合作类型
+  promotion: null, // 推广方式
+  price: 9.9, // 单价
+  settmod_id: null, // 结算方式
+  settcycle_id: null, // 结算周期
+  info: null, // 需求详情
+  product: null, // 产品类型
+  source: null, // 产品类型
+  comprehensive: null, // 需求类型
+  user_number: null, // 用户量
+  product_name: null, // 产品名称
+  issuing: null, // 一件代发
+  product_advantage: null, // 产品优势
+  supplement: null, // 产品优势
+  channel_advantage: null, // 渠道优势
+  introduce: null, // 渠道简介
+  assessment: null, // 销货能力
+  alliance: null, // 合作模式
+  profits: null, // 预计年利润
+  quantity: null, // 广告位数量
+  amount: null, // 线下场地数量
+  contact: '18112341234', // 联系电话
+  wx: null, // 微信
+  qq: null, // qq
   platform: 1, // 支持平台交易
 })
 const isDiscuss = ref(false) // 是否可议
 const rules = {
   title: [{ required: true, message: '请输入标题', trigger: 'blur' }], // 标题
-  area: [{ required: true, message: '请选择合作地区', trigger: 'change' }], // 合作地区
+  areaArr: [{ required: true, message: '请选择合作地区', trigger: 'change' }], // 合作地区
   product: [{ required: true, message: '请选择', trigger: 'change' }], // 产品类型
   source: [{ required: true, message: '请选择', trigger: 'change' }], // 货源类型
   comprehensive: [{ required: true, message: '请选择', trigger: 'change' }], // 需求类型
@@ -201,7 +204,7 @@ const rules = {
   profits: [{ required: true, message: '请输入', trigger: 'blur' }], // 预计年利润
   quantity: [{ required: true, message: '请输入', trigger: 'blur' }], // 广告位数量
   amount: [{ required: true, message: '请输入', trigger: 'blur' }], // 线下场地数量
-  cooptype: [{ required: true, message: '请选择合作类型', trigger: 'change' }], // 合作类型
+  cooptype_id: [{ required: true, message: '请选择合作类型', trigger: 'change' }], // 合作类型
   promotion: [{ required: true, message: '请选择推广方式', trigger: 'change' }],
   price: [{
     validator: (rule: any, value: string, callback: Function) => {
@@ -235,34 +238,27 @@ const rules = {
   platform: [{ required: true, message: '请选择是否支持平台交易', trigger: 'change' }],
 }
 // 提交表单
-let loading = false
 const submit = () => {
-  if (loading) {
-    return
-  }
   formRef.value.validate((valid: boolean) => {
     if (!valid) return
-    loading = true
-    if (isDiscuss.value) {
-      formData.value.price = '0'
-    }
-    // @ts-ignore
-    formData.value.area = formData.value.area.map((v: any) => {
-      return v.join(':')
+    const loading = showLoading()
+    const params = JSON.parse(JSON.stringify(formData.value))
+    // 价格为可议时，清空金额字段
+    if (isDiscuss.value) params.price = null
+    // 格式化区域（省：市，0表示全部）
+    params.area = formData.value.areaArr.map((arr: any) => {
+      // 只选择省没有选市，后面补0
+      if (arr.length === 1) arr.push(0)
+      return arr.join(':')
     }).join(',')
-    // @ts-ignore
-    if (formData.value.area === '0') {
-      // @ts-ignore
-      formData.value.area = '0:0'
-    }
-    // console.log(formData.value);
-    saveProjectAPI(formData.value).then(res => {
+    saveProjectAPI(params).then(() => {
+      loading.close()
       ElMessage.success('发布成功')
       router.push({
         path: '/'
       })
     }).catch(() => {
-      loading = false
+      loading.close()
     })
   })
 }
@@ -302,124 +298,34 @@ const cascaderProps = {
   },
 }
 
-// 合作类型
-const cooperationTypes = ref<any>([])
-// 结算方式
-const settleOptions = ref<any>([])
-// 结算周期
-const cycleOptions = ref<any>([])
-// 产品类型
-const productOptions = ref<any>([])
-// 货源类型
-const sourceOptions = ref<any>([])
-// 需求类型
-const comprehensiveOptions = ref<any>([])
-// 渠道优势
-const channelOptions = ref<any>([])
-// 用户量
-const userNumberOptions = ref<any>([])
 // 根据类型获取对应的选项数据
-typeListAPI({ type: type.value }).then(res => {
-  // 合作类型，结算方式，结算周期
-  const { cooptype, settmod, settcycle, product, source, comprehensive, channel_advantage, user_number } = res.data.data
-  cooperationTypes.value = cooptype
-  settleOptions.value = settmod
-  cycleOptions.value = settcycle
-  productOptions.value = product
-  sourceOptions.value = source
-  comprehensiveOptions.value = comprehensive
-  channelOptions.value = channel_advantage
-  userNumberOptions.value = user_number
-})
+const {
+  cooperationTypes,
+  settleOptions,
+  cycleOptions,
+  productOptions,
+  sourceOptions,
+  comprehensiveOptions,
+  channelOptions,
+  userNumberOptions,
 
-// info字段名称
-const infoLabelMap: any = {
-  1: { label: '需求详情', placeholder: '这里可以输入您所需要的资源详情可以是：推广的产品及介绍' },
-  2: { label: '考核标准', placeholder: '这里可以输入您所需要的资源考核标准可以是产品单价等' },
-  5: { label: '需求的资源', placeholder: '请输入需求的资源' },
-  8: { label: '合作方式', placeholder: '请输入合作方式' },
-  9: { label: '需求资源', placeholder: '请输入需求资源' },
-  11: { label: '需求详情', placeholder: '这里可以输入您所需要的资源详情可以是：推广的产品及介绍' },
-}
-// product字段名称
-const productLabelMap: any = {
-  3: { label: '产品类型', placeholder: '' },
-  4: { label: '产品类型', placeholder: '' },
-  7: { label: '项目类型', placeholder: '' },
-  8: { label: '广告位场景', placeholder: '' },
-  9: { label: '场地类型', placeholder: '' },
-  10: { label: '资源类型', placeholder: '' },
-}
-// source字段名称
-const sourceLabelMap: any = {
-  3: { label: '货源类型', placeholder: '' },
-  4: { label: '渠道类型', placeholder: '' },
-  5: { label: '提供资源类型', placeholder: '' },
-  6: { label: '提供用户类型', placeholder: '' },
-}
-// comprehensive字段名称
-const comprehensiveLabelMap: any = {
-  5: { label: '需求资源类型', placeholder: '' },
-  6: { label: '需求用户类型', placeholder: '' },
-  7: { label: '加盟费', placeholder: '' },
-  9: { label: '需求合作模式', placeholder: '' },
-}
-// user_number字段名称
-const userNumberLabelMap: any = {
-  6: { label: '用户量', placeholder: '' },
-  8: { label: '日曝光量', placeholder: '' },
-}
-// product_name字段名称
-const productNameLabelMap: any = {
-  3: { label: '产品名称', placeholder: '请输入产品名称' },
-  7: { label: '项目名称', placeholder: '请输入项目名称' },
-}
-// issuing字段名称
-const issuingLabelMap: any = {
-  3: { label: '一件代发', placeholder: '是否支持一件代发' },
-  4: { label: '一件代发', placeholder: '是否要求一件代发' },
-  9: { label: '场地所在区域', placeholder: '请输入场地所在区域' },
-}
-// product_advantage字段名称
-const productAdvantageLabelMap: any = {
-  3: { label: '产品优势', placeholder: '产品优势及介绍' },
-  4: { label: '产品要求', placeholder: '请输入对产品的要求' },
-  5: { label: '提供的资源', placeholder: '请输入提供的资源' },
-  6: { label: '流量载体类型', placeholder: '请输入流量载体类型' },
-  10: { label: '资源描述', placeholder: '请输入资源描述' },
-}
-// supplement字段名称
-const supplementLabelMap: any = {
-  3: { label: '相关资质', placeholder: '相关资质是否齐全' },
-  4: { label: '其他补充', placeholder: '请输入其他补充' },
-  5: { label: '其他补充', placeholder: '只考虑互换、异业合作，广告公司勿扰' },
-  6: { label: '其他补充', placeholder: '只考虑互换、异业合作，广告公司勿扰' },
-  7: { label: '其他要求', placeholder: '请输入其他要求' },
-  9: { label: '场地概况', placeholder: '请输入场地概况' },
-  10: { label: '其他补充', placeholder: '请输入其他补充' },
-}
-// introduce字段名称
-const introduceLabelMap: any = {
-  4: { label: '渠道简介', placeholder: '渠道简介' },
-  6: { label: '可互换位置', placeholder: '请输入可互换位置' },
-  7: { label: '加盟扶持政策', placeholder: '请输入加盟扶持政策' },
-}
-// assessment字段名称
-const assessmentLabelMap: any = {
-  4: { label: '销货能力', placeholder: '产品优势及介绍' },
-  5: { label: '合作要求', placeholder: '请输入合作要求' },
-  6: { label: '合作要求', placeholder: '请输入合作要求' },
-  8: { label: '广告位资源描述', placeholder: '请输入广告位资源描述' },
-  10: { label: '合作要求', placeholder: '请输入合作要求' },
-}
-// alliance字段名称
-const allianceLabelMap: any = {
-  4: { label: '合作模式', placeholder: '请输入合作模式' },
-  6: { label: '合作模式', placeholder: '请输入合作模式' },
-  7: { label: '加盟条件', placeholder: '请输入加盟条件' },
-  8: { label: '合作要求', placeholder: '请输入合作要求' },
-  10: { label: '合作模式', placeholder: '请输入合作模式' },
-}
+  infoLabelMap,
+  productLabelMap,
+  sourceLabelMap,
+  comprehensiveLabelMap,
+  userNumberLabelMap,
+  productNameLabelMap,
+  issuingLabelMap,
+  productAdvantageLabelMap,
+  supplementLabelMap,
+  introduceLabelMap,
+  assessmentLabelMap,
+  allianceLabelMap,
+  updateTypeOptions
+} = useTypeOptions()
+updateTypeOptions(type.value)
+
+
 </script>
 
 <style lang="scss" scoped>

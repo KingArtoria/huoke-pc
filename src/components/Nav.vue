@@ -4,7 +4,7 @@
     <div class="center">
       <span class="brand">用火客，必定获客</span>
       <ul class="flex nav-items">
-        <li class="nav-item flex items-center">
+        <li v-if="!isLogin" class="nav-item flex items-center">
           <span>请<a href="javascript:;" class="link mr-26" @click="navToLogin('login')">登录</a><a href="javascript:;"
               class="link mr-20" @click="navToLogin('register')">注册</a></span>
         </li>
@@ -103,8 +103,12 @@
 import { useRouter } from 'vue-router';
 import { getUser } from '@/utils/index'
 import MessageBox from '@/views/index/components/MessageBox.vue';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
+
 const router = useRouter()
+const isLogin = computed(() => {
+  return !!getUser()
+})
 // 跳转到购买页面
 const navToBuy = (tab: string) => {
   router.push({
@@ -116,8 +120,7 @@ const navToBuy = (tab: string) => {
 }
 // 跳转到个人中心
 const navToUser = () => {
-  const user = getUser()
-  if (user) {
+  if (isLogin.value) {
     router.push({
       path: `/user/profile`
     })

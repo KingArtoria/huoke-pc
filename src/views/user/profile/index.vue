@@ -7,7 +7,7 @@
     <!-- 用户信息  -->
     <div class="user-info flex mt-28">
       <!-- 头像 -->
-      <img :src="API_DOMAIN + userInfo.head" alt="" class="head-img mr-10">
+      <img :src="headImg" alt="" class="head-img mr-10">
       <div class="mt-8">
         <!-- 姓名 -->
         <div class="flex items-end">
@@ -18,13 +18,13 @@
           <img :src="loadImg(userInfo.wx ? 'weixinhyt@2x.png' : 'wxh_wtx@2x.png')" alt="" class="bind-img">
         </div>
         <p class="desc my-10 flex items-center">
-          <span>{{ userInfo.position }}</span>
-          <span class="line"></span>
-          <span>{{ userInfo.company }}</span>
-          <span class="line"></span>
-          <span>{{ userInfo.company }}</span>
+          <span v-if="userInfo.position">{{ userInfo.position }}</span>
+          <span v-if="userInfo.position" class="line"></span>
+          <span v-if="userInfo.industry_one_name">{{ userInfo.industry_one_name }}</span>
+          <span v-if="userInfo.industry_one_name" class="line"></span>
+          <span v-if="userInfo.company">{{ userInfo.company }}</span>
         </p>
-        <p class="desc">毕业院校：{{ userInfo.schoolname }}</p>
+        <p v-if="userInfo.schoolname" class="desc">毕业院校：{{ userInfo.schoolname }}</p>
       </div>
       <button class="btn app-flex-center" @click="navToForm">编辑资料</button>
     </div>
@@ -58,18 +58,21 @@
     <!-- 无数据 -->
     <div v-if="projectList.length === 0" class="flex flex-col items-center mt-40">
       <p class="color-757575 fs-16 text-center">您还没有发布过合作信息，快去发布吧</p>
-      <button class="publish-btn mt-18">去发布</button>
+      <button class="publish-btn mt-18" @click="doPublish">去发布</button>
     </div>
+    <!-- 发布合作信息 -->
+    <Publish ref="publishRef" />
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { loadImg } from '@/utils';
 import { useRouter } from 'vue-router';
 import { userInfoAPI, memberInfoEditAPI } from '@/utils/api'
 import { API_DOMAIN } from '@/utils/const'
 import Owner from '../item/components/Owner.vue';
 import CommonList from '../record/components/CommonList.vue';
+import Publish from '@/components/Publish.vue';
 
 const router = useRouter()
 // 跳转到编辑资料页面
@@ -85,8 +88,16 @@ Promise.all([
   userInfoAPI(),
   memberInfoEditAPI({ type: 'get' })
 ]).then(([res1, res2]) => {
-  userInfo.value = Object.assign(res2.data.data, res1.data.data.user_info)
+  res1.data.data.user_info.phone = res1.data.data.user_info.phone.replace(/^(\d{3})\d{4}(\d{4})$/, "$1****$2");
+  userInfo.value = Object.assign(res2.data.data || {}, res1.data.data.user_info)
   projectList.value = res1.data.data.user_project
+})
+const headImg = computed(() => {
+  if (userInfo.value.head) {
+    return API_DOMAIN + userInfo.value.head
+  } else {
+    return loadImg('default.png')
+  }
 })
 
 // 我的道具
@@ -115,6 +126,11 @@ const projectTabbar = [
 const activeProjectTab = ref('project')
 // 发布项目数据
 const projectList = ref<any>([])
+// 发布项目
+const publishRef = ref()
+const doPublish = () => {
+  publishRef.value.open()
+}
 </script>
 
 <style lang="scss" scoped>
@@ -210,6 +226,11 @@ const projectList = ref<any>([])
 .item-wrap {
   background: #F5F5F5;
   padding: 20px;
+
+  &.empty-wrap {
+    padding: 100px 0;
+    background: #fff;
+  }
 }
 
 ::v-deep(.item-wrap .item) {
@@ -238,5 +259,4 @@ const projectList = ref<any>([])
   color: #fff;
   font-size: 16px;
 }
-
 </style>

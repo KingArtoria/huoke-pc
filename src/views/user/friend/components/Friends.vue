@@ -1,14 +1,6 @@
 <template>
-  <div class="bg-white">
-    <div class="pt-24 px-10 flex items-center justify-between">
-      <p class="title">好友共 <span class="color-0078FF">{{ friends.length }}</span> 人</p>
-      <div class="flex justify-center">
-        <el-input v-model="searchText" placeholder="查找好友" />
-        <button class="search-btn" @click="doSearch">搜索</button>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-3 gap-10 px-10 mt-40">
+  <div>
+    <div class="grid grid-cols-3 gap-10 mt-40">
       <div v-for="item in friends" class="item">
         <div class="flex">
           <img :src="loadImg('banner_big@2x.png')" alt="" class="w-50 h-50 app-round mr-22">
@@ -30,7 +22,7 @@
               </span>
             </template>
             <ul>
-              <li class="action-item">备注</li>
+              <li class="action-item" @click="openRemark(item.id)">备注</li>
               <li class="action-item">删除</li>
             </ul>
           </el-popover>
@@ -43,13 +35,37 @@
       <el-pagination :current-page="pageIndex" :total="total" background layout="total, prev, pager, next, jumper"
         @current-change="changePage" />
     </footer>
+    <Remark ref="remarkRef" />
   </div>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
 import { loadImg } from '@/utils';
 import VipIcon from '@/components/VipIcon.vue';
-const friends = ref([
+import { getFriendListAPI } from '@/utils/api';
+import Remark from './Remark.vue';
+import { ElMessage, ElMessageBox, ElPopconfirm } from 'element-plus';
+
+// 添加备注
+const remarkRef = ref()
+const openRemark = (id: number) => {
+  remarkRef.value.open(id)
+}
+// 删除好友
+const delFriend = (friend: any) => {
+  ElMessageBox.confirm(`将好友“${friend.nick_name}”删除，将同时删除与该好友的聊天记录`, '删除好友', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning',
+  }).then(() => {
+    ElMessage.success('删除成功')
+    // 刷新好友列表
+  }).catch(() => {
+
+  })
+}
+
+const friends = ref<any>([
   { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
   { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
   { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
@@ -63,19 +79,32 @@ const friends = ref([
   { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
   { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
 ])
-const pageIndex = ref(0)
+let searchText = ''
+const pageIndex = ref(1)
 const total = ref(0)
+const getData = () => {
+  getFriendListAPI({ page: pageIndex.value, num: 10, nick_name: searchText }).then(res => {
+    friends.value = res.data.data
+    total.value = res.data.num
+  })
+}
+const search = (val: string) => {
+  searchText = val
+  pageIndex.value = 1
+  getData()
+}
+
 // 翻页
 const changePage = (index: number) => {
   pageIndex.value = index
+  getData()
 }
-// 查询关键词
-const searchText = ref('')
-const doSearch = () => {
 
-}
+defineExpose({
+  search
+})
 </script>
 
 <style lang="scss" scoped>
-@import './friends.scss'
+@import '@/views/message/friends.scss'
 </style>

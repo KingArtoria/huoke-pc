@@ -28,6 +28,7 @@ const routes = [
   { text: '我的发布', path: 'project' },
   { text: '我的收藏', path: 'favorite' },
   { text: '担保记录', path: 'guarantee' },
+  { text: '我的好友', path: 'friend' },
   {
     text: '人脉管理', children: [
       { text: '待处理请求', path: '3' },

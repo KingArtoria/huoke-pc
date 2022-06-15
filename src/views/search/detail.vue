@@ -22,9 +22,11 @@
               <span>{{ detailData.position }}</span>
               <span v-if="detailData.company" class="line"></span>
               <span>{{ detailData.company }}</span>
-              <VipIcon :item="detailData" class="ml-10 mr-24" />
-              <button class="btn primary mr-22">+添加好友</button>
-              <button class="btn info">发消息</button>
+              <VipIcon :item="detailData" class="ml-10" />
+              <template v-if="isCreator">
+                <button class="btn primary mx-22" @click="addFriend">+添加好友</button>
+                <button class="btn info" @click="sendMsg">发消息</button>
+              </template>
               <span class="right flex items-center">
                 <el-icon class="icon">
                   <View />
@@ -34,12 +36,12 @@
             </div>
             <div class="grid grid-cols-3 fields gap-y-22 mt-20 mb-30">
               <p>
-                <span class="label">合作类型：</span>
-                <span class="value">{{ detailData.cooptype_id }}</span>
-              </p>
-              <p>
                 <span class="label">合作地区：</span>
                 <span class="value">{{ detailData.area }}</span>
+              </p>
+              <p v-if="[1, 2, 11].includes(detailData.type)">
+                <span class="label">合作类型：</span>
+                <span class="value">{{ detailData.cooptype_id }}</span>
               </p>
               <p>
                 <span class="label">发布时间：</span>
@@ -222,16 +224,18 @@ import { ref, computed } from 'vue';
 import Download from '@/components/Download.vue';
 import { useRoute } from 'vue-router';
 import iconImg from '@/assets/baozhang@2x.png'
-import { loadImg, once } from '@/utils'
+import { loadImg, once, getUser } from '@/utils'
 import Tip from './components/Tip.vue';
 import UserList from './components/UserList.vue';
-import { projectInfoAPI, contactInfoAPI, addTofavoriteAPI } from '@/utils/api'
+import { projectInfoAPI, contactInfoAPI, addTofavoriteAPI, addFriendapplyAPI } from '@/utils/api'
 import { COOPERATION_TYPES, HEAD_DOMAIN } from '@/utils/const'
 import { matchLabel } from '@/utils/index'
 import VipIcon from '@/components/VipIcon.vue';
 import dayjs from 'dayjs'
 import { ElMessage } from 'element-plus';
 import Reply from './components/Reply.vue'
+import useTypeOptions from '@/composables/useTypeOptions'
+
 const route = useRoute()
 // 浏览用户
 const visitorList = ref<any>([
@@ -246,13 +250,46 @@ const { id } = route.query
 const detailData = ref<any>({})
 // 获取当前用户是否是vip
 const isVip = ref(false)
+// 当前项目是否是项目发布者
+const isCreator = ref(false)
+// 用户信息
+const userInfo = getUser()
+// 根据类型获取对应的选项数据
+const {
+  cooperationTypes,
+  settleOptions,
+  cycleOptions,
+  productOptions,
+  sourceOptions,
+  comprehensiveOptions,
+  channelOptions,
+  userNumberOptions,
+
+  infoLabelMap,
+  productLabelMap,
+  sourceLabelMap,
+  comprehensiveLabelMap,
+  userNumberLabelMap,
+  productNameLabelMap,
+  issuingLabelMap,
+  productAdvantageLabelMap,
+  supplementLabelMap,
+  introduceLabelMap,
+  assessmentLabelMap,
+  allianceLabelMap,
+  updateTypeOptions
+} = useTypeOptions()
+
 // 获取详情
 const getProjectInfo = () => {
   projectInfoAPI({ fid: id }).then(res => {
     detailData.value = res.data.data
     commentList.value = detailData.value.comment
+    isCreator.value = detailData.value.member_id === userInfo.member_id
+    updateTypeOptions(detailData.value.type)
   })
 }
+
 getProjectInfo()
 // 格式化合作类型
 const fmtType = (val: number) => {
@@ -332,6 +369,21 @@ const doFavorite = once((done: Function) => {
     detailData.value.keep = 1
   })
 })
+
+// 加好友
+const addFriend = once((done: Function) => {
+  addFriendapplyAPI({ toid: detailData.value.member_id }).then((res) => {
+    done()
+    ElMessage.success(res.data.msg)
+  }).catch(() => {
+    done()
+  })
+})
+// 发消息
+const sendMsg = () => {
+
+}
+
 </script>
 
 <style lang="scss" scoped>

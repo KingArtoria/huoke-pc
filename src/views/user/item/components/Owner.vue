@@ -1,5 +1,5 @@
 <template>
-  <div class="grid  grid-cols-2 gap-x-36 gap-y-20 pt-20">
+  <div v-if="items.length" class="grid  grid-cols-2 gap-x-36 gap-y-20 pt-20">
     <div v-for="item in items" :key="item.id" class="flex items-start item">
       <div class="img-wrap app-flex-center">
         <img :src="loadImg(item.img)" alt="" class="img">
@@ -12,19 +12,18 @@
       </div>
     </div>
   </div>
+  <Empty v-else />
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
 import { userCouponsAPI } from '@/utils/api'
 import { loadImg } from '@/utils'
+import Empty from '@/components/Empty.vue';
+
 // 我的道具
-const items = ref<any>([
-  { title: '置顶卡', desc: '当值', count: 10 },
-  { title: '置顶卡', desc: '当值', count: 10 },
-  { title: '置顶卡', desc: '当值', count: 10 },
-])
+const items = ref<any>([])
 userCouponsAPI().then(res => {
-  // items.value = res.data.data.user_coupons
+  items.value = res.data.data.user_coupons
 })
 </script>
 

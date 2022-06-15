@@ -1,14 +1,6 @@
 <template>
-  <div class="bg-white">
-    <div class="pt-24 px-10 flex items-center justify-between">
-      <p class="title">好友共 <span class="color-0078FF">{{ friends.length }}</span> 人</p>
-      <div class="flex justify-center">
-        <el-input v-model="searchText" placeholder="查找好友" />
-        <button class="search-btn" @click="doSearch">搜索</button>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-3 gap-10 px-10 mt-40">
+  <div>
+    <div class="grid grid-cols-3 gap-10 mt-40">
       <div v-for="item in friends" class="item">
         <div class="flex">
           <img :src="loadImg('banner_big@2x.png')" alt="" class="w-50 h-50 app-round mr-22">
@@ -20,36 +12,20 @@
         </div>
         <div class="bottom flex justify-between items-center mt-30">
           <span class="color-56689B">{{ item.count }}条合作信息</span>
-          <el-popover placement="bottom" :width="78" trigger="hover">
-            <template #reference>
-              <span class="color-0078FF flex items-center cursor-pointer">
-                <span class="mr-8">管理</span>
-                <el-icon>
-                  <CaretBottom />
-                </el-icon>
-              </span>
-            </template>
-            <ul>
-              <li class="action-item">备注</li>
-              <li class="action-item">删除</li>
-            </ul>
-          </el-popover>
         </div>
-        <button class="btn">发信息</button>
+        <button class="btn" @click="addFriend(item.id)">加好友</button>
       </div>
     </div>
-    <!-- 分页 -->
-    <footer class="footer flex justify-center pt-80 pb-60">
-      <el-pagination :current-page="pageIndex" :total="total" background layout="total, prev, pager, next, jumper"
-        @current-change="changePage" />
-    </footer>
   </div>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
 import { loadImg } from '@/utils';
 import VipIcon from '@/components/VipIcon.vue';
-const friends = ref([
+import { addFriendapplyAPI } from '@/utils/api';
+import { ElMessage } from 'element-plus';
+
+const friends = ref<any>([
   { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
   { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
   { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
@@ -63,19 +39,29 @@ const friends = ref([
   { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
   { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
 ])
-const pageIndex = ref(0)
-const total = ref(0)
-// 翻页
-const changePage = (index: number) => {
-  pageIndex.value = index
+// 获取推荐列表
+const getData = () => {
+  // getFriendListAPI({ page: pageIndex.value, num: 10, nick_name: searchText }).then(res => {
+  //   friends.value = res.data.data
+  //   total.value = res.data.num
+  // })
 }
-// 查询关键词
-const searchText = ref('')
-const doSearch = () => {
 
+let loading = false
+const addFriend = (toid: number) => {
+  if (loading) return
+  loading = true
+  addFriendapplyAPI({ toid }).then(() => {
+    loading = false
+    ElMessage.success('添加成功')
+    // 刷新推荐列表
+  }).catch(() => {
+    loading = false
+  })
 }
+
 </script>
 
 <style lang="scss" scoped>
-@import './friends.scss'
+@import '@/views/message/friends.scss'
 </style>
