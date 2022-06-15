@@ -48,7 +48,7 @@ const routes: RouteRecordRaw[] = [
       // 私信
       { path: 'chat-list', component: () => import('@/views/message/chat-list.vue') },
       // 聊天
-      { path: 'chat', component: () => import('@/views/message/chat.vue') },
+      { path: 'chat', component: () => import('@/views/message/friends_info.vue') },
     ]
   },
   // 平台交易

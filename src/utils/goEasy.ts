@@ -5,13 +5,14 @@ export default class GoEasy {
     if (!GoEasy.goEasyData) {
       GoEasy.goEasyData = this.initGoEasy();
     }
-    return GoEasy.getGoEasy;
+    return GoEasy.goEasyData;
   }
   static initGoEasy(): any {
-    return goEasy.getInstance({
+    let data = goEasy.getInstance({
       host: 'hangzhou.goeasy.io',
       appkey: 'BC-ad662406fecb4b58bcd6e609416cf61f',
       modules: ['pubsub', 'im'],
     });
+    return data;
   }
 }

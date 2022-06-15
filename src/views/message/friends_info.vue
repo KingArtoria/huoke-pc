@@ -24,9 +24,15 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import GoEasy from '@/utils/goEasy'
+import { getUser } from '@/utils';
 const goEasy = GoEasy.getGoEasy()
+// const userInfo = getUser()
 onMounted(() => {
-  console.log(goEasy)
+  goEasy.connect({
+    // id: "001",
+    // data: { "avatar": "/www/xxx.png", "nickname": "Neo" },
+    onSuccess: () => { },
+  })
 })
 </script>
 
