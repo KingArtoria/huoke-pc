@@ -3,15 +3,15 @@
     <div class="grid grid-cols-3 gap-10 mt-40">
       <div v-for="item in friends" class="item">
         <div class="flex">
-          <img :src="loadImg('banner_big@2x.png')" alt="" class="w-50 h-50 app-round mr-22">
+          <img :src="HEAD_DOMAIN + item.head" alt="" class="w-50 h-50 app-round mr-22">
           <div class="flex-1">
-            <p class="color-303030 mb-10">{{ item.name }}</p>
-            <p class="color-6A6A6A fs-12 mb-6">{{ item.posi }}</p>
-            <p class="color-6A6A6A fs-12">{{ item.comp }}</p>
+            <p class="color-303030 mb-10">{{ item.nick_name }}</p>
+            <p class="color-6A6A6A fs-12 mb-6">{{ item.position }}</p>
+            <p class="color-6A6A6A fs-12">{{ item.company }}</p>
           </div>
         </div>
         <div class="bottom flex justify-between items-center mt-30">
-          <span class="color-56689B">{{ item.count }}条合作信息</span>
+          <span></span>
           <el-popover placement="bottom" :width="78" trigger="hover">
             <template #reference>
               <span class="color-0078FF flex items-center cursor-pointer">
@@ -22,8 +22,8 @@
               </span>
             </template>
             <ul>
-              <li class="action-item" @click="openRemark(item.id)">备注</li>
-              <li class="action-item">删除</li>
+              <li class="action-item" @click="openRemark(item.member_id)">备注</li>
+              <li class="action-item" @click="delFriend(item)">删除</li>
             </ul>
           </el-popover>
         </div>
@@ -41,10 +41,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { loadImg } from '@/utils';
-import VipIcon from '@/components/VipIcon.vue';
 import { getFriendListAPI } from '@/utils/api';
 import Remark from './Remark.vue';
 import { ElMessage, ElMessageBox, ElPopconfirm } from 'element-plus';
+import { HEAD_DOMAIN } from '@/utils/const';
 
 // 添加备注
 const remarkRef = ref()
@@ -60,34 +60,27 @@ const delFriend = (friend: any) => {
   }).then(() => {
     ElMessage.success('删除成功')
     // 刷新好友列表
+    getData()
   }).catch(() => {
-
   })
 }
 
-const friends = ref<any>([
-  { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
-  { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
-  { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
-  { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
-  { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
-  { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
-  { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
-  { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
-  { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
-  { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
-  { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
-  { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
-])
+const friends = ref<any>([])
 let searchText = ''
 const pageIndex = ref(1)
 const total = ref(0)
 const getData = () => {
   getFriendListAPI({ page: pageIndex.value, num: 10, nick_name: searchText }).then(res => {
-    friends.value = res.data.data
-    total.value = res.data.num
+    const { list, num } = res.data.data
+    let data: any = []
+    list.forEach((v: any) => {
+      data = data.concat(v.data)
+    })
+    friends.value = data
+    total.value = num
   })
 }
+getData()
 const search = (val: string) => {
   searchText = val
   pageIndex.value = 1

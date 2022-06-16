@@ -6,7 +6,6 @@
     </div>
     <div class="flex content">
       <div class="photo-wrap">
-        <!-- <img :src="host + item.head" alt="" class="photo"> -->
         <el-image :src="host + item.head" class="photo">
           <template #error>
             <div class="image-slot">
@@ -85,12 +84,7 @@ const fmtArea = (val: string) => {
 }
 // 条状到详情
 const nav = (item: any) => {
-  router.push({
-    path: '/detail',
-    query: {
-      id: item.id
-    }
-  })
+  router.push(`/detail/${item.id}`)
 }
 </script>
 

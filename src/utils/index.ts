@@ -65,10 +65,10 @@ export const once = (fn: Function) => {
   const done = () => {
     loading = false
   }
-  return () => {
+  return function (payload?: any) {
     if (loading) return
     loading = true
-    fn(done)
+    fn(done, payload)
   }
 }
 /**
@@ -79,7 +79,7 @@ export const once = (fn: Function) => {
 export const showLoading = (text = '提交数据中……') => {
   return ElLoading.service({
     lock: true,
-    text: 'text',
+    text,
     background: 'rgba(0, 0, 0, 0.7)',
   })
 }

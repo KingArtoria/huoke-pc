@@ -5,7 +5,7 @@ const useForm = (formData: any, formRef: any) => {
   // 按钮loading态
   const loading = ref(false)
   // 备份表单初始结构
-  const formDataBak = formData ? JSON.parse(JSON.stringify(formData.value)) : null
+  const formDataBak = formData ? JSON.parse(JSON.stringify(formData.value)) : {}
   const close = (done?: any) => {
     formRef.value.resetFields()
     formData.value = JSON.parse(JSON.stringify(formDataBak))

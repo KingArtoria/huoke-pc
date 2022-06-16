@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-model="visible" width="500px" title="好友备注" :close-on-click-modal="false" :before-close="close">
+  <el-dialog v-model="visible" width="500px" title="好友备注" :close-on-click-modal="false" :before-close="reset">
     <div class="padding">
       <el-form ref="formRef" :model="formData" :rules="rules" label-position="top">
         <p class="tip">为当前好友写一句话备注，便于自己识别</p>
@@ -11,7 +11,7 @@
     <template #footer>
       <div class="padding">
         <!-- <el-button type="primary" @click="submit">提交</el-button> -->
-        <button @click="submit">提交</button>
+        <button class="btn" @click="submit">提交</button>
       </div>
     </template>
   </el-dialog>
@@ -44,7 +44,9 @@ const open = () => {
   visible.value = true
   loading.value = false
 }
-
+const reset = () => [
+  close()
+]
 defineExpose({
   open
 })
@@ -62,5 +64,6 @@ defineExpose({
   background: #1F73F1;
   border: 1px solid #1F73F1;
   border-radius: 5px;
+  color: #fff;
 }
 </style>

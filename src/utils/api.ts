@@ -305,3 +305,34 @@ export const addFriendapplyAPI = (data: any): AxiosPromise<any> => {
     data
   });
 };
+// 发布评论
+export const setCommentsAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/comprehensive/setComments',
+    data
+  });
+};
+// 预设的评论模板
+export const getCommentContentAPI = (): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/comprehensive/getCommentContent',
+  });
+};
+// 1 待处理请求 2 已发出请求
+export const manageFriendapplyAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/friend/manageFriendapply',
+    data
+  });
+};
+// agreeFriendapply
+export const agreeFriendapplyAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/friend/agreeFriendapply',
+    data
+  });
+};

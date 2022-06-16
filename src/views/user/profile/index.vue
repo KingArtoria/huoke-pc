@@ -26,7 +26,10 @@
         </p>
         <p v-if="userInfo.schoolname" class="desc">毕业院校：{{ userInfo.schoolname }}</p>
       </div>
-      <button class="btn app-flex-center" @click="navToForm">编辑资料</button>
+      <div class="flex ml-auto pt-10">
+        <button class="btn app-flex-center" @click="navToForm">编辑资料</button>
+        <button class="btn primary app-flex-center ml-20" @click="logout">退出登录</button>
+      </div>
     </div>
     <!-- 联系方式 -->
     <div class="contact flex items-center my-16">
@@ -66,13 +69,14 @@
 </template>
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { loadImg } from '@/utils';
+import { loadImg, once } from '@/utils';
 import { useRouter } from 'vue-router';
 import { userInfoAPI, memberInfoEditAPI } from '@/utils/api'
-import { API_DOMAIN } from '@/utils/const'
+import { API_DOMAIN, TOKEN, USER } from '@/utils/const'
 import Owner from '../item/components/Owner.vue';
 import CommonList from '../record/components/CommonList.vue';
 import Publish from '@/components/Publish.vue';
+import { ElMessageBox } from 'element-plus';
 
 const router = useRouter()
 // 跳转到编辑资料页面
@@ -81,6 +85,25 @@ const navToForm = () => {
     path: '/user/profile-form'
   })
 }
+// 退出登录
+const logout = once((done: Function) => {
+  ElMessageBox.confirm('确定退出登录吗？', '提示', {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: 'warning'
+  }).then(() => {
+    done()
+    // 移除缓存
+    sessionStorage.removeItem(TOKEN)
+    localStorage.removeItem(TOKEN)
+    localStorage.removeItem(USER)
+    router.replace({
+      path: '/login'
+    })
+  }).catch(() => {
+    done()
+  })
+})
 
 // 用户信息
 const userInfo = ref<any>({})
@@ -187,8 +210,12 @@ const doPublish = () => {
     border-radius: 18px;
     color: #929292;
     font-size: 16px;
-    margin-left: auto;
-    margin-top: 10px;
+
+    &.primary {
+      background: #0372F7;
+      color: white;
+      border-color: initial;
+    }
   }
 }
 

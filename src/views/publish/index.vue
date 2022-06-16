@@ -251,6 +251,7 @@ const submit = () => {
       if (arr.length === 1) arr.push(0)
       return arr.join(':')
     }).join(',')
+    delete params.areaArr
     saveProjectAPI(params).then(() => {
       loading.close()
       ElMessage.success('发布成功')

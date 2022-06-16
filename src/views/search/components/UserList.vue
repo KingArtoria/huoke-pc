@@ -1,39 +1,47 @@
 <template>
-  <el-dialog :model-value="true" width="820px" :close-on-click-modal="false" :before-close="close">
+  <el-dialog v-model="modelValue" width="820px" :close-on-click-modal="false" :before-close="close">
     <template #header>
       <p class="title">浏览用户</p>
     </template>
-    <p class="mb-14">浏览人数：500</p>
+    <p class="mb-14">浏览人数：{{ users.length }}</p>
     <div class="grid grid-cols-2 gap-10">
-      <div v-for="item in users" class="item flex items-center">
-        <img :src="item.img" alt="" class="img">
+      <div v-for="item in currentData" class="item flex items-center">
+        <img :src="HEAD_DOMAIN + item.head" alt="" class="img">
         <div>
           <p class="flex items-end">
-            <span class="mb-10 text">{{ item.name }}</span>
-            <img src="" alt="" class="vip-img">
+            <span class="mb-10 text">{{ item.nick_name }}</span>
           </p>
-          <p class="desc">
-            <span>{{ companyShort(item.company) }}</span>
-            <span class="ml-10">{{ item.posi }}</span>
+          <p class="desc flex items-center">
+            <span>{{ companyShort(item.company || '暂未填写') }}</span>
+            <span class="line"></span>
+            <span>{{ item.position || '暂未填写' }}</span>
           </p>
         </div>
-        <button class="btn app-flex-center" @click="addFriend(item.id)">加好友</button>
+        <button v-if="member_id !== item.member_id" class="btn app-flex-center" @click="addFriend({ id: item.member_id })">加好友</button>
       </div>
     </div>
+    <!-- 分页 -->
+    <footer class="footer flex justify-center mt-30">
+      <el-pagination :current-page="page" :total="total" background layout="total, prev, pager, next, jumper"
+        @current-change="changePage" />
+    </footer>
   </el-dialog>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
-import { loadImg } from '@/utils';
-const call = defineEmits(['close'])
-const users = [
-  { img: loadImg('ggjf@2x.png'), name: '张三', vipType: 1, id: 1, company: '公司名称公司名称公司名称', posi: '商务经理' },
-  { img: loadImg('ggjf@2x.png'), name: '张三', vipType: 1, id: 1, company: '公司名称公司名称公司名称', posi: '商务经理' },
-  { img: loadImg('ggjf@2x.png'), name: '张三', vipType: 1, id: 1, company: '公司名称公司名称公司名称', posi: '商务经理' },
-  { img: loadImg('ggjf@2x.png'), name: '张三', vipType: 1, id: 1, company: '公司名称公司名称公司名称', posi: '商务经理' },
-  { img: loadImg('ggjf@2x.png'), name: '张三', vipType: 1, id: 1, company: '公司名称公司名称公司名称', posi: '商务经理' },
+import { getUser, once } from '@/utils';
+import { addFriendapplyAPI } from '@/utils/api';
+import { HEAD_DOMAIN } from '@/utils/const'
+import { ElMessage } from 'element-plus';
+import { ref, watch } from 'vue';
 
-]
+const props = defineProps<{
+  users: any[],
+  modelValue: boolean
+}>()
+const call = defineEmits(['update:modelValue'])
+
+const member_id = getUser().member_id
+
 // 超过一定字数做截取
 const companyShort = (val: string) => {
   if (val) {
@@ -44,16 +52,42 @@ const companyShort = (val: string) => {
   return val
 }
 const close = () => {
-  call('close')
+  call('update:modelValue')
 }
+
+// 当前页数据
+const currentData = ref<any>([])
+// 页数
+const page = ref(1)
+// 总条数
+const total = ref(0)
+// 每页数据条数
+const num = 10
+// 翻页
+const changePage = (index: number) => {
+  page.value = index
+  getData()
+}
+// 前端分页
+const getData = () => {
+  const start = (page.value - 1) * num
+  currentData.value = props.users.slice(start, start + num)
+}
+watch(() => props.users, () => {
+  if (props.users) {
+    total.value = props.users.length
+    getData()
+  }
+}, { immediate: true })
+
 // 添加好友
-const loading = false
-const addFriend = (id: number) => {
-  if (loading) return
-  // TODO 添加好友
-}
-defineExpose({
-  open
+const addFriend = once((done: Function, payload?: any) => {
+  addFriendapplyAPI({ toid: payload.id }).then((res) => {
+    done()
+    ElMessage.success(res.data.msg)
+  }).catch(() => {
+    done()
+  })
 })
 </script>
 
@@ -74,6 +108,11 @@ defineExpose({
   &:hover {
     border-color: #8DBBFF;
     box-shadow: 0px 1px 7px 0px rgba(187, 187, 187, 0.32);
+
+    .btn {
+      border-color: #1F73F1;
+      color: #1F73F1;
+    }
   }
 
   .img {
@@ -88,6 +127,13 @@ defineExpose({
     font-family: PingFang SC;
     font-weight: 400;
     color: #8D8D8D;
+
+    .line {
+      width: 1px;
+      height: 14px;
+      background: #dfdfdf;
+      margin: 0 10px;
+    }
   }
 
   .text {
@@ -98,9 +144,10 @@ defineExpose({
     margin-left: auto;
     width: 69px;
     height: 25px;
-    border: 1px solid #1F73F1;
+    border: 1px solid #BDBDBD;
+    color: #BDBDBD;
     border-radius: 13px;
-    color: #1F73F1;
+    transition: all 0.3s;
   }
 }
 

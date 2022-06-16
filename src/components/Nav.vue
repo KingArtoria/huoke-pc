@@ -120,15 +120,18 @@ const navToBuy = (tab: string) => {
 }
 // 跳转到个人中心
 const navToUser = () => {
-  if (isLogin.value) {
-    router.push({
-      path: `/user/profile`
-    })
-  } else {
-    router.push({
-      path: '/login',
-    })
-  }
+  // if (isLogin.value) {
+  //   router.push({
+  //     path: `/user/profile`
+  //   })
+  // } else {
+  //   router.push({
+  //     path: '/login',
+  //   })
+  // }
+  router.push({
+    path: `/user/profile`
+  })
 }
 // 跳转到登录
 const navToLogin = (tab: string) => {
