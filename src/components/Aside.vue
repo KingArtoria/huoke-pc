@@ -40,16 +40,16 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
-import adImg from '@/assets/guangg@2x.png';
-import signImg from '@/assets/qiandoa_lan@2x.png';
-import signImgActive from '@/assets/qiandoa_bai@2x.png';
-import concatImg from '@/assets/kefu_lan@2x.png';
-import concatImgActive from '@/assets/kefu_bai@2x.png';
-import propImg from '@/assets/daoju_lan@2x.png';
-import propImgActive from '@/assets/daoju_bai@2x.png';
-import feedbackImg from '@/assets/fankui_lan@2x.png';
-import feedbackImgActive from '@/assets/fankui_bai@2x.png';
-import preferenceImg from '@/assets/xianshith@2x.png'
+import adImg from '@/assets/guangg@2x.webp';
+import signImg from '@/assets/qiandoa_lan@2x.webp';
+import signImgActive from '@/assets/qiandoa_bai@2x.webp';
+import concatImg from '@/assets/kefu_lan@2x.webp';
+import concatImgActive from '@/assets/kefu_bai@2x.webp';
+import propImg from '@/assets/daoju_lan@2x.webp';
+import propImgActive from '@/assets/daoju_bai@2x.webp';
+import feedbackImg from '@/assets/fankui_lan@2x.webp';
+import feedbackImgActive from '@/assets/fankui_bai@2x.webp';
+import preferenceImg from '@/assets/xianshith@2x.webp'
 import Sign from '@/components/Sign.vue'
 import Feedback from '@/components/Feedback.vue'
 

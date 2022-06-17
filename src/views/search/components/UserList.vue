@@ -17,7 +17,7 @@
             <span>{{ item.position || '暂未填写' }}</span>
           </p>
         </div>
-        <button v-if="member_id !== item.member_id" class="btn app-flex-center" @click="addFriend({ id: item.member_id })">加好友</button>
+        <button v-if="member_id !== item.member_id" class="btn app-flex-center" @click="addFriend({ id: item.member_id || item.id })">加好友</button>
       </div>
     </div>
     <!-- 分页 -->

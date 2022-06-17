@@ -34,14 +34,16 @@
                   <ArrowRight />
                 </el-icon>
               </div>
-              <span v-for="sub in item.son.slice(0, 2)" class="sub-item">{{ sub.name }}</span>
+              <span v-for="sub in item.son.slice(0, 2)" class="sub-item" @click="handleLink(item, sub)">{{ sub.name
+              }}</span>
             </div>
-            <div class="all">显示全部&gt;&gt;</div>
+            <div class="all" @click="handleAll">显示全部&gt;&gt;</div>
             <!-- 展示 -->
             <div v-show="isShowChildren" class="children">
               <p class="title">{{ itemDetail.name }}</p>
               <div class="item-wrap">
-                <span v-for="sub in itemDetail.son" class="item">{{ sub.name }}</span>
+                <span v-for="sub in itemDetail.son" class="item" @click="handleLink(itemDetail, sub)">{{ sub.name
+                }}</span>
               </div>
             </div>
           </div>
@@ -72,7 +74,7 @@
 
       <aside class="aside">
         <!-- 用户信息 -->
-        <div class="user">
+        <div v-if="!loginInfo" class="user">
           <div class="flex">
             <img :src="photoImg" alt="" class="user-photo">
             <div>
@@ -83,6 +85,20 @@
           <div class="flex justify-center">
             <div class="btn app-flex-center" @click="navToLogin('login')">登录</div>
             <div class="btn app-flex-center" @click="navToLogin('register')">注册</div>
+          </div>
+        </div>
+        <div v-else class="user">
+          <div class="flex">
+            <img :src="userInfo.head ? API_DOMAIN + userInfo.head : photoImg" alt="" class="user-photo">
+            <div>
+              <div class="text">
+                <span>hi，{{ userInfo.nick_name }}</span>
+                <span></span>
+                <button class="btn">开通会员</button>
+              </div>
+              <div v-if="userInfo.company" class="tag app-flex-center">待企业认证</div>
+              <div v-else>{{ userInfo.company }}</div>
+            </div>
           </div>
         </div>
         <!-- 会员 -->
@@ -138,7 +154,6 @@
               </div>
               <div class="flex bottom justify-between">
                 <span><span class="light">{{ item.count }}</span>条合作信息</span>
-                <!-- <span class="tag app-flex-center">互联网</span> -->
               </div>
             </div>
           </div>
@@ -152,20 +167,23 @@
 </template>
 
 <script setup lang="ts">
-import adImg1 from '@/assets/ggwzs_h@2x.png'
-import { getVipOrder, getBanner, getMenu, getRecommendList, getHot } from '@/utils/api'
+import adImg1 from '@/assets/ggwzs_h@2x.webp'
+import { getVipOrder, getBanner, getMenu, getRecommendList, getHot, userInfoAPI, memberInfoEditAPI } from '@/utils/api'
 import { ref } from 'vue'
 import List from './components/List.vue'
-import photoImg from '@/assets/default.png'
-import vipImg from '@/assets/huiyuan-rk@2x.png'
-import topImg from '@/assets/jinrrm@2x.png'
-import recommendImg from '@/assets/tuijianrenma@2x.png'
-import bottomImg1 from '@/assets/pingtaijiapy@2x.png'
-import bottomImg2 from '@/assets/yaoqihy@2x.png'
-import bottomImg3 from '@/assets/heika@2x.png'
-import newImg from '@/assets/NEW@2x.png';
+import photoImg from '@/assets/default.webp'
+import vipImg from '@/assets/huiyuan-rk@2x.webp'
+import topImg from '@/assets/jinrrm@2x.webp'
+import recommendImg from '@/assets/tuijianrenma@2x.webp'
+import bottomImg1 from '@/assets/pingtaijiapy@2x.webp'
+import bottomImg2 from '@/assets/yaoqihy@2x.webp'
+import bottomImg3 from '@/assets/heika@2x.webp'
+import newImg from '@/assets/NEW@2x.webp';
 import Download from '@/components/Download.vue'
 import { useRouter } from 'vue-router'
+import { getUser } from '@/utils'
+import { API_DOMAIN } from '@/utils/const'
+
 const router = useRouter()
 // 分类菜单
 const navItems = ref<any>([])
@@ -223,6 +241,34 @@ const navTo = (path: string) => {
     path
   })
 }
+// 跳转到搜索
+const handleLink = (item: any, sub: any) => {
+  router.push({
+    path: '/search',
+    query: {
+      type: item.id,
+      search1: sub.id
+    }
+  })
+}
+const handleAll = () => {
+  router.push({
+    path: '/search',
+  })
+}
+
+// 用户信息
+const userInfo = ref<any>({})
+const loginInfo = getUser()
+if (loginInfo) {
+  Promise.all([
+    userInfoAPI(),
+    memberInfoEditAPI({ type: 'get' })
+  ]).then(([res1, res2]) => {
+    userInfo.value = Object.assign(res2.data.data || {}, res1.data.data.user_info, loginInfo)
+  })
+}
+
 </script>
 
 <style lang="scss" scoped>
@@ -305,6 +351,10 @@ const navTo = (path: string) => {
 
       .sub-item {
         color: white;
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
 
       .nav-icon {
@@ -398,6 +448,11 @@ const navTo = (path: string) => {
     color: #0071FA;
     margin-top: 14px;
     padding-left: 20px;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 

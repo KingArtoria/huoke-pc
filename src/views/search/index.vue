@@ -131,14 +131,13 @@ watch(params, () => {
 watch(() => route.query, () => {
   init()
 })
-// doSearch()
 // 初始化数据
 const init = () => {
   keyword.value = route.query.keyword as string || ''
   params.value = {
     title: keyword.value, // 关键词
-    type: 0, // 项目分类
-    search1: '',
+    type: parseInt(route.query.type as string || '') || 0, // 项目分类
+    search1: parseInt(route.query.search1 as string || '') || '',
     search2: '',
     search3: '',
     page: 1, // 当前页数

@@ -13,7 +13,7 @@
             :show-file-list="false" :on-success="uploadSuccess">
             <img v-if="formData.img" :src="formData.img" class="img" />
             <div v-else class="flex items-center flex-col">
-              <img :src="loadImg('tupian@2x.png')" alt="" class="w-30 h-30">
+              <img :src="loadImg('tupian@2x.webp')" alt="" class="w-30 h-30">
               <span class="link">上传图片</span>
             </div>
           </el-upload>

@@ -328,11 +328,35 @@ export const manageFriendapplyAPI = (data: any): AxiosPromise<any> => {
     data
   });
 };
-// agreeFriendapply
+// 同意/拒绝好友请求
 export const agreeFriendapplyAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/friend/agreeFriendapply',
+    data
+  });
+};
+// 删除好友
+export const putDelFriendAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/friend/putDelFriend',
+    data
+  });
+};
+// 给好友设置备注
+export const setRemarkAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/friend/saveName',
+    data
+  });
+};
+// 删除加好友申请
+export const putDelapplyAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/friend/putDelapply',
     data
   });
 };

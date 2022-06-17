@@ -1,5 +1,5 @@
 /* 工具类 */
-import { USER } from './const';
+import { TOKEN, USER } from './const';
 import { ElLoading } from 'element-plus';
 /**
  * 根据数值从数组里招到对应的文本名称
@@ -25,6 +25,8 @@ export const loadImg = (url: string) => {
  * 从会话缓存或本地缓存里获取用户信息
  */
 export const getUser = () => {
+  const token = sessionStorage.getItem(TOKEN) || localStorage.getItem(TOKEN);
+  if (!token) return false
   const userStr = sessionStorage.getItem(USER) || localStorage.getItem(USER);
   if (userStr) {
     return JSON.parse(userStr);
@@ -82,4 +84,31 @@ export const showLoading = (text = '提交数据中……') => {
     text,
     background: 'rgba(0, 0, 0, 0.7)',
   })
+}
+
+/**
+ * 获取vip等级
+ * @param level 
+ */
+export const getVipLevel = (level: string) => {
+  switch (level) {
+    case 'vip':
+      return {
+        is_vip: 1
+      }
+    case 'svip':
+      return {
+        is_super: 1
+      }
+    case 'fvip':
+      return {
+        is_firm: 1
+      }
+    case 'bvip':
+      return {
+        is_black: 1
+      }
+    default:
+      return {}
+  }
 }

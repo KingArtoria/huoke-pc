@@ -13,9 +13,9 @@
         <div class="flex items-end">
           <span class="fs-18 font-bold">{{ userInfo.nick_name }}</span>
           <div class="div1 app-flex-center">{{ userInfo.idcard ? '已实名认证' : '未实名认证' }}</div>
-          <!-- <img :src="" alt=""> -->
-          <img :src="loadImg(userInfo.phone ? 'shoujih_yt@2x.png' : 'shoujhhwt@2x.png')" alt="" class="bind-img">
-          <img :src="loadImg(userInfo.wx ? 'weixinhyt@2x.png' : 'wxh_wtx@2x.png')" alt="" class="bind-img">
+          <VipIcon :item="vipLevel" />
+          <img :src="loadImg(userInfo.phone ? 'shoujih_yt@2x.webp' : 'shoujhhwt@2x.webp')" alt="" class="bind-img">
+          <img :src="loadImg(userInfo.wx ? 'weixinhyt@2x.webp' : 'wxh_wtx@2x.webp')" alt="" class="bind-img">
         </div>
         <p class="desc my-10 flex items-center">
           <span v-if="userInfo.position">{{ userInfo.position }}</span>
@@ -43,7 +43,7 @@
         </span>
       </div>
     </div>
-    <img :src="loadImg('weikaitong-grzx@2x.png')" alt="" class="img1">
+    <img :src="loadImg('weikaitong-grzx@2x.webp')" alt="" class="img1">
     <!-- 我的道具 -->
     <div class="tabbar flex mt-20">
       <div v-for="tab in itemTabbar" class="tab-item app-flex-center"
@@ -69,7 +69,7 @@
 </template>
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { loadImg, once } from '@/utils';
+import { loadImg, once, getVipLevel } from '@/utils';
 import { useRouter } from 'vue-router';
 import { userInfoAPI, memberInfoEditAPI } from '@/utils/api'
 import { API_DOMAIN, TOKEN, USER } from '@/utils/const'
@@ -77,6 +77,7 @@ import Owner from '../item/components/Owner.vue';
 import CommonList from '../record/components/CommonList.vue';
 import Publish from '@/components/Publish.vue';
 import { ElMessageBox } from 'element-plus';
+import VipIcon from '@/components/VipIcon.vue';
 
 const router = useRouter()
 // 跳转到编辑资料页面
@@ -107,6 +108,7 @@ const logout = once((done: Function) => {
 
 // 用户信息
 const userInfo = ref<any>({})
+const vipLevel = ref<any>({})
 Promise.all([
   userInfoAPI(),
   memberInfoEditAPI({ type: 'get' })
@@ -114,12 +116,13 @@ Promise.all([
   res1.data.data.user_info.phone = res1.data.data.user_info.phone.replace(/^(\d{3})\d{4}(\d{4})$/, "$1****$2");
   userInfo.value = Object.assign(res2.data.data || {}, res1.data.data.user_info)
   projectList.value = res1.data.data.user_project
+  vipLevel.value = getVipLevel(res1.data.data)
 })
 const headImg = computed(() => {
   if (userInfo.value.head) {
     return API_DOMAIN + userInfo.value.head
   } else {
-    return loadImg('default.png')
+    return loadImg('default.webp')
   }
 })
 

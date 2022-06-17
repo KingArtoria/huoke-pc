@@ -11,9 +11,9 @@
     <div class="grid grid-cols-3 gap-10 px-10 mt-40">
       <div v-for="item in friends" class="item">
         <div class="flex">
-          <img :src="loadImg('banner_big@2x.png')" alt="" class="w-50 h-50 app-round mr-22">
+          <img :src="loadImg('banner_big@2x.webp')" alt="" class="w-50 h-50 app-round mr-22">
           <div class="flex-1">
-            <p class="color-303030 mb-10">{{ item.name }}</p>
+            <p class="color-303030 mb-10 pr-70">{{ item.name }}</p>
             <p class="color-6A6A6A fs-12 mb-6">{{ item.posi }}</p>
             <p class="color-6A6A6A fs-12">{{ item.comp }}</p>
           </div>
@@ -38,37 +38,12 @@
         <button class="btn">发信息</button>
       </div>
     </div>
-    <!-- 分页 -->
-    <footer class="footer flex justify-center pt-80 pb-60">
-      <el-pagination :current-page="pageIndex" :total="total" background layout="total, prev, pager, next, jumper"
-        @current-change="changePage" />
-    </footer>
   </div>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
 import { loadImg } from '@/utils';
-import VipIcon from '@/components/VipIcon.vue';
-const friends = ref([
-  { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
-  { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
-  { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
-  { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
-  { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
-  { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
-  { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
-  { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
-  { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
-  { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
-  { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
-  { name: '张三', posi: '经理', comp: '徐州恭送发送大附件', count: 3 },
-])
-const pageIndex = ref(0)
-const total = ref(0)
-// 翻页
-const changePage = (index: number) => {
-  pageIndex.value = index
-}
+const friends = ref([])
 // 查询关键词
 const searchText = ref('')
 const doSearch = () => {

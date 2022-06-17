@@ -3,15 +3,15 @@
     <div class="content ml-24">
       <div class="content_1">
         <div class="content_1_1">
-          <img src="../../assets/fanhui_lt@2x.png" class="content_1_1_1">
+          <img src="../../assets/fanhui_lt@2x.webp" class="content_1_1_1">
           <div class="content_1_1_2">
             <div class="content_1_1_2_1">
               <div class="content_1_1_2_1_1">我是名字</div>
-              <img src="../../assets/svip2.png" class="content_1_1_2_1_2">
+              <img src="../../assets/svip2.webp" class="content_1_1_2_1_2">
             </div>
             <div class="content_1_1_2_2">我是一个网络科技有限公司</div>
           </div>
-          <img src="../../assets/jubao_red@2x.png" class="content_1_1_3">
+          <img src="../../assets/jubao_red@2x.webp" class="content_1_1_3">
         </div>
       </div>
       <div class="content_2">
@@ -30,7 +30,7 @@ const goEasy = GoEasy.getGoEasy()
 onMounted(() => {
   goEasy.connect({
     // id: "001",
-    // data: { "avatar": "/www/xxx.png", "nickname": "Neo" },
+    // data: { "avatar": "/www/xxx.webp", "nickname": "Neo" },
     onSuccess: () => { },
   })
 })

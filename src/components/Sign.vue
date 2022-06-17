@@ -60,10 +60,10 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
-import closeImg from '@/assets/close_jf@2x.png'
-import signImg from '@/assets/xuan_x@2x.png'
-import giftImg from '@/assets/diqit@2x.png'
-import blackCloseImg from '@/assets/close_qdcg@2x.png'
+import closeImg from '@/assets/close_jf@2x.webp'
+import signImg from '@/assets/xuan_x@2x.webp'
+import giftImg from '@/assets/diqit@2x.webp'
+import blackCloseImg from '@/assets/close_qdcg@2x.webp'
 const call = defineEmits(['close'])
 // 用户积分
 const score = ref(0)
@@ -119,7 +119,7 @@ const successVisible = ref(false)
 }
 
 .header {
-  background: url('@/assets/qiandao_banner@2x.png') no-repeat;
+  background: url('@/assets/qiandao_banner@2x.webp') no-repeat;
   background-size: cover;
   height: 100px;
   display: flex;
@@ -338,7 +338,7 @@ const successVisible = ref(false)
     width: 374px;
     height: 226px;
     margin: 0 auto;
-    background: url('@/assets/libao@2x.png') no-repeat;
+    background: url('@/assets/libao@2x.webp') no-repeat;
     background-size: cover;
   }
 

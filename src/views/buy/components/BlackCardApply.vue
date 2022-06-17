@@ -1,11 +1,11 @@
 <template>
   <el-dialog v-model="modelValue" width="530px" :close-on-click-modal="false" :before-close="close">
     <div class="content">
-      <img :src="loadImg('heika_k@2x.png')" alt="" class="logo-img">
+      <img :src="loadImg('heika_k@2x.webp')" alt="" class="logo-img">
       <input type="text" class="input" placeholder="请输入您的姓名">
       <input type="text" class="input" placeholder="请输入您的联系方式">
       <button class="apply-btn" @click="submit">提交申请</button>
-      <img :src="loadImg('round_close (1)@2x.png')" alt="" @click="close" class="close-img">
+      <img :src="loadImg('round_close (1)@2x.webp')" alt="" @click="close" class="close-img">
     </div>
   </el-dialog>
 </template>
@@ -40,7 +40,7 @@ const submit = () => {
 <style lang="scss" scoped>
 .content {
   height: 503px;
-  background: url('@/assets/tanchuang-hk@2x.png') no-repeat;
+  background: url('@/assets/tanchuang-hk@2x.webp') no-repeat;
   background-size: cover;
   position: relative;
 

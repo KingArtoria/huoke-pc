@@ -5,7 +5,7 @@
         <div class="relative div1">
           <button class="btn" @click="navTo('/deal-form')">发起交易</button>
           <div class="flex items-center color-616161 fs-16">
-            <img :src="loadImg('jydt@2x.png')" alt="" class="img1 mr-22">
+            <img :src="loadImg('jydt@2x.webp')" alt="" class="img1 mr-22">
             <span class="mr-60">
               <span class="font-bold color-393939">田**</span>
               与
@@ -14,14 +14,14 @@
             </span>
             <span>金额<span class="color-FB0101 ml-10">￥300</span></span>
           </div>
-          <img :src="loadImg('gzzb@2x.png')" alt="" class="right">
+          <img :src="loadImg('gzzb@2x.webp')" alt="" class="right">
         </div>
       </div>
     </div>
     <div class="app-page">
       <p class="title">交易流程</p>
       <div class="bg-white pt-50 pb-70 flex flex-col items-center">
-        <img :src="loadImg('jiaoylc@2x.png')" alt="" class="img2 mb-30">
+        <img :src="loadImg('jiaoylc@2x.webp')" alt="" class="img2 mb-30">
         <div class="grid grid-cols-4 gap-x-100 div2">
           <div class="text-center">
             <p class="mb-20 fs-18">发起交易</p>
@@ -84,7 +84,7 @@ const navTo = (path: string) => {
 <style lang="scss" scoped>
 .bg {
   height: 305px;
-  background: url('@/assets/ptjy-banner@2x.png') no-repeat;
+  background: url('@/assets/ptjy-banner@2x.webp') no-repeat;
   background-size: cover;
 }
 

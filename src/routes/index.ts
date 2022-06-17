@@ -70,7 +70,13 @@ const routes: RouteRecordRaw[] = [
 // 创建路由
 export const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
+  scrollBehavior: (to, from, savedPosition) => {
+    if (savedPosition) {
+      return savedPosition
+    }
+    return { left: 0, top: 0 }
+  }
 })
 
 // 注册拦截器

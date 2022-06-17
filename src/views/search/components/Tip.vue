@@ -30,7 +30,7 @@ const close = () => {
 <style lang="scss" scoped>
 .content {
   position: absolute;
-  background: url('@/assets/tc-llkhy@2x.png') no-repeat;
+  background: url('@/assets/tc-llkhy@2x.webp') no-repeat;
   background-size: cover;
   width: 453px;
   height: 521px;

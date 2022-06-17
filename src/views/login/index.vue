@@ -83,8 +83,8 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
-import tipImg from '@/assets/tishi@2x.png';
-import wxImg from '@/assets/weixin@2x.png';
+import tipImg from '@/assets/tishi@2x.webp';
+import wxImg from '@/assets/weixin@2x.webp';
 import { loginApi, loginnopassApi, forgetPassApi, signApi } from '@/utils/api';
 import { useRouter, useRoute } from 'vue-router';
 import { ElMessage } from 'element-plus'
@@ -218,7 +218,7 @@ const reLogin = () => {
 }
 
 .content {
-  background-image: url('@/assets/banner_dl@2x.png');
+  background-image: url('@/assets/banner_dl@2x.webp');
   background-size: 100% 102%;
   height: 660px;
   position: relative;

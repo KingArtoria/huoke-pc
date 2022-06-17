@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <div class="wrap flex">
-      <img :src="loadImg('huizh@2x.png')" alt="" class="img2">
+      <img :src="loadImg('huizh@2x.webp')" alt="" class="img2">
       <div class="flex-1">
         <p class="title">火客黑卡</p>
         <p class="sub-title">开通火客黑卡，送专属定制纯金名片，超多黑卡用户专享特权</p>
@@ -13,7 +13,7 @@
         <button class="btn btn2">已申请</button>
       </div>
     </div>
-    <img :src="loadImg('heikaquanyi@2x.png')" alt="" class="img1">
+    <img :src="loadImg('heikaquanyi@2x.webp')" alt="" class="img1">
     <BlackCardApply v-model="applyVisible" />
   </div>
 </template>
@@ -26,7 +26,7 @@ const applyVisible = ref(false)
 
 <style lang="scss" scoped>
 .page {
-  background: url('@/assets/bg-hk@2x.png') no-repeat;
+  background: url('@/assets/bg-hk@2x.webp') no-repeat;
   background-size: cover;
   height: 1833px;
 }

@@ -2,10 +2,10 @@
   <img v-if="fmtVipImg(item)" :src="fmtVipImg(item)" alt="">
 </template>
 <script setup lang="ts">
-import vipImg from '@/assets/puthy.png'
-import superVipImg from '@/assets/svip2.png'
-import blackVipImg from '@/assets/heikahuizhang@2x@2x.png'
-import companyVipImg from '@/assets/qiyehy@2x@2x.png'
+import vipImg from '@/assets/puthy.webp'
+import superVipImg from '@/assets/svip2.webp'
+import blackVipImg from '@/assets/heikahuizhang@2x@2x.webp'
+import companyVipImg from '@/assets/qiyehy@2x@2x.webp'
 const props = defineProps<{
   item: any
 }>()

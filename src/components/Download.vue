@@ -13,7 +13,7 @@
   width: 305px;
   height: 448px;
   background-size: cover;
-  background: url('@/assets/xaizait@2x.png') no-repeat;
+  background: url('@/assets/xaizait@2x.webp') no-repeat;
   background-size: cover;
 
   .name {

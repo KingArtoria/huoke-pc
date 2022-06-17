@@ -2,7 +2,7 @@
   <div class="app-page flex py-30">
     <nav class="nav">
       <div class="bg-white px-20 pt-40 pb-6 flex flex-col items-center">
-        <img :src="loadImg('banner_big@2x.png')" alt="" class="w-80 h-80 app-round mx-auto">
+        <img :src="loadImg('banner_big@2x.webp')" alt="" class="w-80 h-80 app-round mx-auto">
         <p class="fs-17 m-16 mb-8">{{ userInfo.name }}</p>
         <p class="flex desc items-center justify-center mb-22">
           <span>{{ userInfo.posi }}</span>

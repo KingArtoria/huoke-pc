@@ -137,17 +137,17 @@
             <div v-else class="contract-type show my-30">
               <div class="flex justify-center show1">
                 <div class="flex items-center">
-                  <img :src="loadImg('dianh@2x.png')" alt="" class="img">
+                  <img :src="loadImg('dianh@2x.webp')" alt="" class="img">
                   <span class="line"></span>
                   <span>{{ contactInfo.contact }}</span>
                 </div>
                 <div v-if="contactInfo.wx" class="flex items-center show2">
-                  <img :src="loadImg('wechat@2x.png')" alt="" class="img">
+                  <img :src="loadImg('wechat@2x.webp')" alt="" class="img">
                   <span class="line"></span>
                   <span>{{ contactInfo.wx }}</span>
                 </div>
                 <div v-if="contactInfo.qq" class="flex items-center">
-                  <img :src="loadImg('QQ@2x.png')" alt="" class="img">
+                  <img :src="loadImg('QQ@2x.webp')" alt="" class="img">
                   <span class="line"></span>
                   <span>{{ contactInfo.qq }}</span>
                 </div>
@@ -184,7 +184,7 @@
 
             <div class="text-center">
               <p class="text1 fs-16 mb-38">扫一扫下方二维码，下载BD火客AP，商务合作更快捷</p>
-              <img :src="loadImg('erwm.png')" alt="" class="code-img">
+              <img :src="loadImg('erwm.webp')" alt="" class="code-img">
             </div>
           </div>
         </div>
@@ -274,11 +274,11 @@
       </aside>
       <div class="side">
         <div class="side-item" @click="doFavorite">
-          <img :src="loadImg(detailData.keep === 1 ? 'yishoucang@2x.png' : 'shoucang@2x.png')" alt="" class="img1">
+          <img :src="loadImg(detailData.keep === 1 ? 'yishoucang@2x.webp' : 'shoucang@2x.webp')" alt="" class="img1">
           <span class="mt-12">收藏</span>
         </div>
         <div class="side-item">
-          <img :src="loadImg('图层 622@2x.png')" alt="" class="img2">
+          <img :src="loadImg('图层 622@2x.webp')" alt="" class="img2">
           <span class="mt-12">递名片</span>
         </div>
       </div>
@@ -293,7 +293,7 @@
 import { ref, computed } from 'vue';
 import Download from '@/components/Download.vue';
 import { useRoute } from 'vue-router';
-import iconImg from '@/assets/baozhang@2x.png'
+import iconImg from '@/assets/baozhang@2x.webp'
 import { loadImg, once, getUser } from '@/utils'
 import Tip from './components/Tip.vue';
 import UserList from './components/UserList.vue';

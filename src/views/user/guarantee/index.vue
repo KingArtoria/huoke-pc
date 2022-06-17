@@ -41,9 +41,9 @@ const listData = ref<any>([])
 const total = ref(0)
 const page = ref(1)
 const stateMap: any = {
-  1: 'yiwanc@2x.png',
-  2: "yiwanc@2x (1).png",
-  3: 'yiwanc@2x (2).png'
+  1: 'yiwanc@2x.webp',
+  2: "yiwanc@2x (1).webp",
+  3: 'yiwanc@2x (2).webp'
 }
 const getData = () => {
   memberGuaranteeAPI({ page: page.value, num: 10 }).then(res => {

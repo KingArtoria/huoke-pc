@@ -8,7 +8,7 @@
       </div>
       <div v-if="activeTab === 1" class="flex items-center ml-auto pr-16">
         <div>
-          <el-input v-model="searchText" placeholder="查找好友" />
+          <el-input v-model="searchText" placeholder="查找好友" clearable />
         </div>
         <button class="search-btn" @click="doSearch">搜索</button>
       </div>

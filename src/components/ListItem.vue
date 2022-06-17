@@ -52,8 +52,8 @@
 import dayjs from 'dayjs'
 import { COOPERATION_TYPES } from '@/utils/const'
 import { matchLabel } from '@/utils/index'
-import superImg from '@/assets/cjzhiding.png'
-import normalImg from '@/assets/zhiding.png'
+import superImg from '@/assets/cjzhiding.webp'
+import normalImg from '@/assets/zhiding.webp'
 import { useRouter } from 'vue-router'
 import VipIcon from './VipIcon.vue'
 defineProps<{
