@@ -15,12 +15,30 @@
         <img :src="signImgActive" alt="" class="active img">
         <span>签到</span>
       </li>
-      <li class="concat-item">
-        <img :src="concatImg" alt="" class="normal img">
-        <img :src="concatImgActive" alt="" class="active img">
-        <span>客服</span>
-      </li>
-      <li class="concat-item">
+      <el-popover placement="left" :width="300" trigger="hover">
+        <template #reference>
+          <li class="concat-item">
+            <img :src="concatImg" alt="" class="normal img">
+            <img :src="concatImgActive" alt="" class="active img">
+            <span>客服</span>
+          </li>
+        </template>
+        <div class="p-20">
+          <p class="fs16">技术咨询：<span class="color-066FFF">15190664662</span></p>
+          <p class="fs16 mt-12">商务合作：<span class="color-066FFF">15190664662</span></p>
+          <div class="grid grid-cols-2 gap-x-34 mt-30">
+            <div class="flex flex-col items-center">
+              <img src="" alt="" class="code-img">
+              <span class="mt-14">（技术咨询）</span>
+            </div>
+            <div class="flex flex-col items-center">
+              <img src="" alt="" class="code-img">
+              <span class="mt-14">（商务合作）</span>
+            </div>
+          </div>
+        </div>
+      </el-popover>
+      <li class="concat-item" @click="navTo('/user/item')">
         <img :src="propImg" alt="" class="normal img">
         <img :src="propImgActive" alt="" class="active img">
         <span>道具</span>
@@ -31,7 +49,7 @@
         <span>反馈</span>
       </li>
     </ul>
-    <img :src="preferenceImg" alt="" class="vip-img">
+    <img :src="preferenceImg" alt="" class="vip-img" @click="navTo('/buy')">
   </div>
   <!-- 签到 -->
   <Sign v-if="signVisible" @close="signVisible = false" />
@@ -52,6 +70,7 @@ import feedbackImgActive from '@/assets/fankui_bai@2x.webp';
 import preferenceImg from '@/assets/xianshith@2x.webp'
 import Sign from '@/components/Sign.vue'
 import Feedback from '@/components/Feedback.vue'
+import { useRouter } from 'vue-router';
 
 // 广告
 const isShowLeft = ref(true)
@@ -62,6 +81,10 @@ const signVisible = ref(false)
 const feedbackRef = ref()
 const openFeedback = () => {
   feedbackRef.value.open()
+}
+const router = useRouter()
+const navTo = (path: string) => {
+  router.push(path)
 }
 </script>
 
@@ -145,5 +168,14 @@ const openFeedback = () => {
     margin-top: 11px;
     cursor: pointer;
   }
+}
+
+.color-066FFF {
+  color: #066FFF;
+}
+
+.code-img {
+  width: 113px;
+  height: 113px;
 }
 </style>

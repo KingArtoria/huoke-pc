@@ -2,7 +2,9 @@
   <!-- 导航 -->
   <nav class="nav">
     <div class="center">
-      <span class="brand">用火客，必定获客</span>
+      <slot name="title">
+        <span class="brand">用火客，必定获客</span>
+      </slot>
       <ul class="flex nav-items">
         <li v-if="!isLogin" class="nav-item flex items-center">
           <span>请<a href="javascript:;" class="link mr-26" @click="navToLogin('login')">登录</a><a href="javascript:;"

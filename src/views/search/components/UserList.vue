@@ -12,9 +12,9 @@
             <span class="mb-10 text">{{ item.nick_name }}</span>
           </p>
           <p class="desc flex items-center">
-            <span>{{ companyShort(item.company || '暂未填写') }}</span>
-            <span class="line"></span>
             <span>{{ item.position || '暂未填写' }}</span>
+            <span class="line"></span>
+            <span>{{ companyShort(item.company || '暂未填写') }}</span>
           </p>
         </div>
         <button v-if="member_id !== item.member_id" class="btn app-flex-center" @click="addFriend({ id: item.member_id || item.id })">加好友</button>
@@ -22,7 +22,7 @@
     </div>
     <!-- 分页 -->
     <footer class="footer flex justify-center mt-30">
-      <el-pagination :current-page="page" :total="total" background layout="total, prev, pager, next, jumper"
+      <el-pagination :current-page="page" :total="total" background layout="prev, pager, next"
         @current-change="changePage" />
     </footer>
   </el-dialog>

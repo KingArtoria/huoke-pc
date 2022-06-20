@@ -10,7 +10,7 @@
         <span>资质办理</span>
         <img :src="newImg" alt="" class="tag">
       </div>
-      <div class="nav-item">
+      <div class="nav-item" @click="navTo('/card')">
         <span>商务名片</span>
         <img :src="newImg" alt="" class="tag">
       </div>
