@@ -22,30 +22,6 @@
 </template>
 
 <script setup lang="ts">
-import GoEasy2 from 'goeasy';
-import { onMounted } from 'vue';
-import GoEasy from '@/utils/goEasy'
-import { getUser } from '@/utils';
-const goEasy = GoEasy.getGoEasy()
-const im = goEasy.im
-const userInfo = getUser()
-onMounted(() => {
-  goEasy.connect({
-    id: userInfo.member_id,
-    data: { "avatar": `https://admin.bdhuoke.com${userInfo.head}`, "nickname": userInfo.nick_name },
-    onSuccess: () => {
-      im.latestConversations({
-        onSuccess: (latestConversationsRes: any) => {
-          console.log(latestConversationsRes, '22')
-          let onConversationsUpdated = function (conversations: any) {
-            console.log(conversations, '123123')
-          }
-          im.on(GoEasy2.IM_EVENT.CONVERSATIONS_UPDATED, onConversationsUpdated);
-        }
-      })
-    }
-  })
-})
 </script>
 
 <style lang="scss" scoped>
