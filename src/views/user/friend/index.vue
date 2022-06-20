@@ -8,7 +8,7 @@
       </div>
       <div v-if="activeTab === 1" class="flex items-center ml-auto pr-16">
         <div>
-          <el-input v-model="searchText" placeholder="查找好友" />
+          <el-input v-model="searchText" placeholder="查找好友" clearable />
         </div>
         <button class="search-btn" @click="doSearch">搜索</button>
       </div>
@@ -18,10 +18,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { memberGuaranteeAPI } from '@/utils/api'
-import Empty from '@/components/Empty.vue';
-import { loadImg } from '@/utils';
+import { ref } from 'vue';
 import Friends from './components/Friends.vue';
 import Recommends from './components/Recommends.vue';
 
@@ -32,26 +29,6 @@ const tabItems = [
 ]
 const activeTab = ref(1)
 
-const listData = ref<any>([])
-const total = ref(0)
-const page = ref(1)
-const stateMap: any = {
-  1: 'yiwanc@2x.png',
-  2: "yiwanc@2x (1).png",
-  3: 'yiwanc@2x (2).png'
-}
-const getData = () => {
-  memberGuaranteeAPI({ page: page.value, num: 10 }).then(res => {
-    listData.value = res.data.data
-    total.value = res.data.num
-  })
-}
-getData()
-// 翻页
-const changePage = (pageIndex: number) => {
-  page.value = pageIndex
-  getData()
-}
 // 查询关键词
 const searchText = ref('')
 const doSearch = () => {

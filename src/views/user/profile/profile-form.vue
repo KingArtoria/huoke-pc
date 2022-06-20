@@ -9,11 +9,11 @@
         <el-row :gutter="56">
           <el-col>
             <el-form-item label="头像:" prop="head">
-              <el-upload accept=".jpg,.png" class="uploader" action="http://nad.bdhuoke.com/web_v1/member/upload"
+              <el-upload accept=".jpg,.webp" class="uploader" action="http://nad.bdhuoke.com/web_v1/member/upload"
                 :show-file-list="false" :on-success="uploadSuccess">
                 <img v-if="formData.head" :src="API_DOMAIN + formData.head" class="img" />
                 <div v-else class="flex items-center flex-col">
-                  <img :src="loadImg('tupian@2x.png')" alt="" class="w-30 h-30">
+                  <img :src="loadImg('tupian@2x.webp')" alt="" class="w-30 h-30">
                   <span class="link">上传图片</span>
                 </div>
               </el-upload>

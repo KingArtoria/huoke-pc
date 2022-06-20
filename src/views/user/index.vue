@@ -29,14 +29,7 @@ const routes = [
   { text: '我的收藏', path: 'favorite' },
   { text: '担保记录', path: 'guarantee' },
   { text: '我的好友', path: 'friend' },
-  {
-    text: '人脉管理', children: [
-      { text: '待处理请求', path: '3' },
-      { text: '已发出请求', path: '4' },
-    ]
-  },
-  { text: '我的钱包', path: 'profile' },
-  { text: '积分商城', path: 'profile' },
+  { text: '人脉管理', path: 'friend-apply' },
   { text: '我的道具', path: 'item' },
   { text: '会员特权', path: 'vip' },
   {

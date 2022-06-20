@@ -2,7 +2,7 @@
   <div class="bg-white">
     <p class="title">全部通知</p>
     <div class="item relative">
-      <img :src="loadImg('banner_big@2x.png')" alt="" class="w-60 h-60 app-round mr-24">
+      <img :src="loadImg('banner_big@2x.webp')" alt="" class="w-60 h-60 app-round mr-24">
       <div class="flex-1">
         <p class="flex items-end color-989898">
           <span class="fs-16 mr-20">好友请求</span>
@@ -11,34 +11,34 @@
         <p class="fs-16 color-1b1b1b mt-16">英梨梨请求加您为好友,同行2个共同好友</p>
         <div class="right flex">
           <div class="right-item app-flex-center mr-40">
-            <img :src="loadImg('jujue@2x.png')" alt="" class="x-icon">
+            <img :src="loadImg('jujue@2x.webp')" alt="" class="x-icon">
           </div>
           <div class="right-item app-flex-center">
-            <img :src="loadImg('tongyi@2x.png')" alt="" class="check-icon">
+            <img :src="loadImg('tongyi@2x.webp')" alt="" class="check-icon">
           </div>
         </div>
       </div>
     </div>
     <div class="item">
-      <img :src="loadImg('banner_big@2x.png')" alt="" class="w-60 h-60 app-round mr-24">
+      <img :src="loadImg('banner_big@2x.webp')" alt="" class="w-60 h-60 app-round mr-24">
       <div class="flex-1">
         <p class="flex items-end color-989898">
           <span class="fs-16 mr-20">公告</span>
           <span>2022-02-17 12:33</span>
         </p>
         <p class="fs-16 color-1b1b1b mt-16">您有一个免费会员待领取，APP个人中心-分享好友查看邀请好友总数。</p>
-        <img :src="loadImg('yqhy_banner@2x.png')" alt="" class="mt-10">
+        <img :src="loadImg('yqhy_banner@2x.webp')" alt="" class="mt-10">
       </div>
     </div>
     <div class="item">
-      <img :src="loadImg('banner_big@2x.png')" alt="" class="w-60 h-60 app-round mr-24">
+      <img :src="loadImg('banner_big@2x.webp')" alt="" class="w-60 h-60 app-round mr-24">
       <div class="flex-1">
         <p class="flex items-end color-989898">
           <span class="fs-16 mr-20">公告</span>
           <span>2022-02-17 12:33</span>
         </p>
         <p class="fs-16 color-1b1b1b mt-16">发布优质项目，即可获得现金奖励，现金奖励将于次日11点到账用户钱包。</p>
-        <img :src="loadImg('fbyzxm_banner@2x.png')" alt="" class="mt-10">
+        <img :src="loadImg('fbyzxm_banner@2x.webp')" alt="" class="mt-10">
       </div>
     </div>
     <div class="item"></div>

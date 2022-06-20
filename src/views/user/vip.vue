@@ -245,10 +245,10 @@
             </el-icon>
           </td>
           <td class="td">
-            <img :src="loadImg('puthy.png')" alt="" class="vip-img">
+            <img :src="loadImg('puthy.webp')" alt="" class="vip-img">
           </td>
           <td class="td">
-            <img :src="loadImg('svip2.png')" alt="" class="vip-img">
+            <img :src="loadImg('svip2.webp')" alt="" class="vip-img">
           </td>
         </tr>
         <tr class="tr">
@@ -332,12 +332,19 @@
         </tr>
       </tbody>
     </table>
-    <div class="btn app-flex-center fs-18 text-white">立即开通，尽享权益</div>
+    <div class="btn app-flex-center fs-18 text-white" @click="navTo">立即开通，尽享权益</div>
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
 import { loadImg } from '@/utils';
+import { useRouter } from 'vue-router';
+
+const router = useRouter()
+const navTo = () => {
+  router.push({
+    path: '/buy',
+  })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -400,7 +407,7 @@ import { loadImg } from '@/utils';
   }
 
   .th2 {
-    background: url('@/assets/ptyh@2x.png') no-repeat;
+    background: url('@/assets/ptyh@2x.webp') no-repeat;
     background-size: cover;
     width: 218px;
     color: #747474;
@@ -408,7 +415,7 @@ import { loadImg } from '@/utils';
   }
 
   .th3 {
-    background: url('@/assets/pthy_@2x.png') no-repeat;
+    background: url('@/assets/pthy_@2x.webp') no-repeat;
     background-size: cover;
     width: 218px;
     color: #61636B;
@@ -416,7 +423,7 @@ import { loadImg } from '@/utils';
   }
 
   .th4 {
-    background: url('@/assets/cjhy_@2x.png') no-repeat;
+    background: url('@/assets/cjhy_@2x.webp') no-repeat;
     width: 218px;
     background-size: cover;
     color: #8A4E11;

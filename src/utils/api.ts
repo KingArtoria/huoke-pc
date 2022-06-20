@@ -305,3 +305,58 @@ export const addFriendapplyAPI = (data: any): AxiosPromise<any> => {
     data
   });
 };
+// 发布评论
+export const setCommentsAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/comprehensive/setComments',
+    data
+  });
+};
+// 预设的评论模板
+export const getCommentContentAPI = (): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/comprehensive/getCommentContent',
+  });
+};
+// 1 待处理请求 2 已发出请求
+export const manageFriendapplyAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/friend/manageFriendapply',
+    data
+  });
+};
+// 同意/拒绝好友请求
+export const agreeFriendapplyAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/friend/agreeFriendapply',
+    data
+  });
+};
+// 删除好友
+export const putDelFriendAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/friend/putDelFriend',
+    data
+  });
+};
+// 给好友设置备注
+export const setRemarkAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/friend/saveName',
+    data
+  });
+};
+// 删除加好友申请
+export const putDelapplyAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/friend/putDelapply',
+    data
+  });
+};

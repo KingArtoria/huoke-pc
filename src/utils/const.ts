@@ -44,3 +44,29 @@ export const API_DOMAIN = 'http://nad.bdhuoke.com/'
  * 头像图片域名
  */
 export const HEAD_DOMAIN = 'https://admin.bdhuoke.com/'
+
+/**
+ * 会员等级
+ */
+export const VIP_LEVEL = {
+  /**
+   * 普通用户
+   */
+  ORDINARY: 'ordinary',
+  /**
+   * 普通会员
+   */
+  VIP: 'vip',
+  /**
+   * 超级会员
+   */
+  SVIP: 'svip',
+  /**
+   * 企业会员
+   */
+  FVIP: 'fvip',
+  /**
+   * 黑卡会员
+   */
+  BVIP: 'bvip',
+}

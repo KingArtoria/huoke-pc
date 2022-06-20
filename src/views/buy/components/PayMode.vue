@@ -3,11 +3,11 @@
   <div class="flex">
     <div class="pay-mode app-flex-center mr-36" :class="{ active: activePayMode === 'alipay' }"
       @click="activePayMode = 'alipay'">
-      <img :src="loadImg('zhifub@2x.png')" alt="" class="img1">
+      <img :src="loadImg('zhifub@2x.webp')" alt="" class="img1">
     </div>
     <div class="pay-mode app-flex-center" :class="{ active: activePayMode === 'weixin' }"
       @click="activePayMode = 'weixin'">
-      <img :src="loadImg('weixin_pay@2x.png')" alt="" class="img2">
+      <img :src="loadImg('weixin_pay@2x.webp')" alt="" class="img2">
     </div>
   </div>
   <div class="flex items-center mt-60">

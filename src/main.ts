@@ -8,7 +8,7 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import Swiper, { Pagination } from "swiper";
 import NProgress from 'nprogress'
 
-NProgress.configure({ parent: '#main' });
+NProgress.configure({ parent: 'body' });
 
 Swiper.use([Pagination]);
 const app = createApp(App)

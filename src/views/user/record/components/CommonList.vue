@@ -41,12 +41,7 @@ const addtimeFmt = (row: any) => {
 const router = useRouter()
 // 跳转到详情页面
 const navToDetail = (id: number) => {
-  router.push({
-    path: '/detail',
-    query: {
-      id
-    }
-  })
+  router.push(`/detail/${id}`)
 }
 </script>
 

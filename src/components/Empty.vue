@@ -1,6 +1,6 @@
 <template>
   <div class="empty-wrap">
-    <img :src="loadImg('zanwushuju@2x (1).png')" alt="" class="empty-img">
+    <img :src="loadImg('zanwushuju@2x (1).webp')" alt="" class="empty-img">
     <p class="empty-text">暂无数据</p>
   </div>
 </template>

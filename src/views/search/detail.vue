@@ -23,7 +23,7 @@
               <span v-if="detailData.company" class="line"></span>
               <span>{{ detailData.company }}</span>
               <VipIcon :item="detailData" class="ml-10" />
-              <template v-if="isCreator">
+              <template v-if="!isCreator">
                 <button class="btn primary mx-22" @click="addFriend">+添加好友</button>
                 <button class="btn info" @click="sendMsg">发消息</button>
               </template>
@@ -43,25 +43,87 @@
                 <span class="label">合作类型：</span>
                 <span class="value">{{ detailData.cooptype_id }}</span>
               </p>
-              <p>
-                <span class="label">发布时间：</span>
-                <span class="value">{{ fmtDate(detailData.addtime) }}</span>
+              <!-- 产品类型 -->
+              <p v-if="[3, 4, 7, 8, 9, 10].includes(detailData.type)">
+                <span class="label">{{ productLabelMap[detailData.type].label }}：</span>
+                <span class="value">{{ detailData.product }}</span>
               </p>
-              <p>
-                <span class="label">结算方式：</span>
-                <span class="value">{{ detailData.settmod_id }}</span>
+              <!-- 货源类型 -->
+              <p v-if="[3, 4, 5, 6].includes(detailData.type)">
+                <span class="label">{{ sourceLabelMap[detailData.type].label }}：</span>
+                <span class="value">{{ detailData.source }}</span>
               </p>
-              <p>
-                <span class="label">结算周期：</span>
-                <span class="value">{{ detailData.settcycle_id }}</span>
+              <!-- 需求类型 -->
+              <p v-if="[5, 6, 7, 9].includes(detailData.type)">
+                <span class="label">{{ comprehensiveLabelMap[detailData.type].label }}：</span>
+                <span class="value">{{ detailData.comprehensive }}</span>
               </p>
-              <p>
+              <!-- 4渠道优势 -->
+              <p v-if="[4].includes(detailData.type)">
+                <span class="label">渠道优势：</span>
+                <span class="value">{{ detailData.channel_advantage }}</span>
+              </p>
+              <!-- 用户量 -->
+              <p v-if="[6, 8].includes(detailData.type)">
+                <span class="label">{{ userNumberLabelMap[detailData.type].label }}：</span>
+                <span class="value">{{ detailData.user_number }}</span>
+              </p>
+              <!-- 3产品名称 7项目名称 -->
+              <p v-if="[3, 7].includes(detailData.type)">
+                <span class="label">{{ productNameLabelMap[detailData.type].label }}：</span>
+                <span class="value">{{ detailData.product_name }}</span>
+              </p>
+              <!-- 3一件代发 4一件代发 9场地所在区域 -->
+              <p v-if="[3, 4, 9].includes(detailData.type)">
+                <span class="label">{{ issuingLabelMap[detailData.type].label }}：</span>
+                <span class="value">{{ detailData.issuing }}</span>
+              </p>
+              <!-- 3相关资质 4其他补充 5其他补充 6其他补充 7其他要求 9场地概况 10其他补充 -->
+              <p v-if="[3, 4, 5, 6, 7, 9, 10].includes(detailData.type)">
+                <span class="label">{{ supplementLabelMap[detailData.type].label }}：</span>
+                <span class="value">{{ detailData.supplement }}</span>
+              </p>
+
+              <!-- 4销货能力 5合作要求 6合作要求 8广告位资源描述 10合作要求 -->
+              <p v-if="[4, 5, 6, 8, 10].includes(detailData.type)">
+                <span class="label">{{ assessmentLabelMap[detailData.type].label }}：</span>
+                <span class="value">{{ detailData.assessment }}</span>
+              </p>
+              <!-- 4合作模式 6合作模式 7加盟条件 8合作要求 10合作模式 -->
+              <p v-if="[4, 6, 7, 8, 10].includes(detailData.type)">
+                <span class="label">{{ allianceLabelMap[detailData.type].label }}：</span>
+                <span class="value">{{ detailData.alliance }}</span>
+              </p>
+              <!-- 7预计年利润 -->
+              <p v-if="[7].includes(detailData.type)">
+                <span class="label">预计年利润：</span>
+                <span class="value">{{ detailData.profits }}</span>
+              </p>
+              <!-- 8广告位数量 -->
+              <p v-if="[8].includes(detailData.type)">
+                <span class="label">广告位数量：</span>
+                <span class="value">{{ detailData.quantity }}</span>
+              </p>
+              <!-- 9线下场地数量 -->
+              <p v-if="[9].includes(detailData.type)">
+                <span class="label">线下场地数量：</span>
+                <span class="value">{{ detailData.amount }}</span>
+              </p>
+              <p v-if="[1, 2, 11].includes(detailData.type)">
                 <span class="label">推广方式：</span>
                 <span class="value">{{ detailData.promotion }}</span>
               </p>
-              <p>
-                <span class="label">结算单价：</span>
+              <p v-if="[1, 2, 3, 11].includes(detailData.type)">
+                <span class="label">单价：</span>
                 <span class="value">{{ detailData.price }}</span>
+              </p>
+              <p v-if="[1, 2, 11].includes(detailData.type)">
+                <span class="label">结算方式：</span>
+                <span class="value">{{ detailData.settmod_id }}</span>
+              </p>
+              <p v-if="[1, 2, 4, 11].includes(detailData.type)">
+                <span class="label">结算周期：</span>
+                <span class="value">{{ detailData.settcycle_id }}</span>
               </p>
             </div>
             <div class="flex items-center justify-between">
@@ -75,42 +137,54 @@
             <div v-else class="contract-type show my-30">
               <div class="flex justify-center show1">
                 <div class="flex items-center">
-                  <img :src="loadImg('dianh@2x.png')" alt="" class="img">
+                  <img :src="loadImg('dianh@2x.webp')" alt="" class="img">
                   <span class="line"></span>
                   <span>{{ contactInfo.contact }}</span>
                 </div>
                 <div v-if="contactInfo.wx" class="flex items-center show2">
-                  <img :src="loadImg('wechat@2x.png')" alt="" class="img">
+                  <img :src="loadImg('wechat@2x.webp')" alt="" class="img">
                   <span class="line"></span>
                   <span>{{ contactInfo.wx }}</span>
                 </div>
                 <div v-if="contactInfo.qq" class="flex items-center">
-                  <img :src="loadImg('QQ@2x.png')" alt="" class="img">
+                  <img :src="loadImg('QQ@2x.webp')" alt="" class="img">
                   <span class="line"></span>
                   <span>{{ contactInfo.qq }}</span>
                 </div>
               </div>
               <span class="text">联系我时请说明是从<span class="light">BD火客</span>上看到的（未经授权严禁转载和使用）</span>
             </div>
-            <div>
-              <span class="leader">考核标准</span>
-            </div>
-            <div class="mt-32 mb-48 div2">
-              <p>1、这是一段需求详情，这是一段需求详情，这是一段需求详情，这是一段需求详情，这是一段需求详情，这是一段需求详情，这是一段需求详</p>
-              <p>2、线上流量互推</p>
-              <p>3、实物或高价值优惠券、视频网站会员等（需全国范围内使用）</p>
-            </div>
-            <div>
-              <span class="leader">需求详情</span>
-            </div>
-            <div class="mt-32 mb-48 div2">
-              {{ detailData.info }}
-              <!-- <p>1、提供优质流量资源,寻运营商号卡,电商,教育等甲方,可按表单线索合作</p>
-              <p>2、寻求微信支付后流量、短信流量、电子发票流量等各种出</p> -->
-            </div>
+            <!-- 4渠道简介 6可互换位置 7加盟扶持政策 -->
+            <template v-if="[4, 6, 7].includes(detailData.type)">
+              <div>
+                <span class="leader">{{ introduceLabelMap[detailData.type].label }}</span>
+              </div>
+              <div class="mt-32 mb-48 div2">
+                {{ detailData.introduce }}
+              </div>
+            </template>
+            <!-- 3产品优势 4产品要求 5提供的资源 6流量载体类型 10资源描述 -->
+            <template v-if="[3, 4, 5, 6, 10].includes(detailData.type)">
+              <div>
+                <span class="leader">{{ productAdvantageLabelMap[detailData.type].label }}</span>
+              </div>
+              <div class="mt-32 mb-48 div2">
+                {{ detailData.product_advantage }}
+              </div>
+            </template>
+            <!-- 需求详情 -->
+            <template v-if="[1, 2, 5, 8, 9, 11].includes(detailData.type)">
+              <div>
+                <span class="leader">{{ infoLabelMap[detailData.type].label }}</span>
+              </div>
+              <div class="mt-32 mb-48 div2">
+                {{ detailData.info }}
+              </div>
+            </template>
+
             <div class="text-center">
               <p class="text1 fs-16 mb-38">扫一扫下方二维码，下载BD火客AP，商务合作更快捷</p>
-              <img :src="loadImg('erwm.png')" alt="" class="code-img">
+              <img :src="loadImg('erwm.webp')" alt="" class="code-img">
             </div>
           </div>
         </div>
@@ -122,9 +196,10 @@
             <div class="flex justify-end mt-12">
               <button class="btn primary" @click="sendReply">评论</button>
             </div>
-            <p class="mt-12 mb-26 fs-16">快捷回复：</p>
+            <p class="mt-12 mb-26 fs-16">快捷回复</p>
             <div class="flex option-wrap">
-              <div v-for="item in replyOptions" class="option" @click="comment = item">{{ item }}</div>
+              <div v-for="item in replyOptions" :key="item.id" class="option" @click="setComment(item)">{{ item.content
+              }}</div>
             </div>
           </div>
           <div class="hr-line"></div>
@@ -136,34 +211,34 @@
                 <div class="flex-1">
                   <p class="flex items-end">
                     <span class="mr-10 mb-12 fs-16">{{ item.nick_name }}</span>
-                    <!-- <img :src="dom" alt=""> -->
                   </p>
                   <p class="flex items-center color-949494">
-                    <span>{{ item.position }}</span>
+                    <span>{{ item.position || '暂未填写' }}</span>
                     <span class="line"></span>
-                    <span>{{ item.company }}</span>
+                    <span>{{ item.company || '暂未填写' }}</span>
                   </p>
                   <p class="py-20 color-4D4D4D">{{ item.content }}</p>
                   <div class="bottom">
                     <p class="color-949494">{{ fmtDate(item.createtime) }}</p>
-                    <button class="btn info" @click="openReply(item.id)">回复</button>
+                    <!-- 只有发布者可以回复评论 -->
+                    <button v-if="isCreator" class="btn info" @click="openReply(item)">回复</button>
                   </div>
                 </div>
               </div>
               <!-- 楼中楼 -->
-              <div v-if="item.children && item.children.length" class="reply-wrap">
-                <div v-for="reply in item.children" class="reply">
+              <div v-if="item.child && item.child.length" class="reply-wrap">
+                <div v-for="reply in item.child" class="reply">
                   <div class="flex">
                     <img :src="HEAD_DOMAIN + reply.head" alt="" class="img">
                     <div class="flex-1">
                       <p class="flex items-end">
-                        <span class="mr-10 mb-12 fs-16">{{ reply.nick_name }}</span>
+                        <span class="mr-10 mb-12 fs-16">{{ reply.nick_name + '（发布人）' }}</span>
                         <img src="" alt="">
                       </p>
-                      <p class="flex items-center color-949494 fs-16">
-                        <span>{{ reply.position }}</span>
+                      <p class="flex items-center color-949494">
+                        <span>{{ reply.position || '暂未填写' }}</span>
                         <span class="line"></span>
-                        <span>{{ reply.company }}</span>
+                        <span>{{ reply.company || '暂未填写' }}</span>
                       </p>
                       <p class="py-20 color-4D4D4D">{{ reply.content }}</p>
                       <p class="color-949494">{{ fmtDate(item.createtime) }}</p>
@@ -172,29 +247,23 @@
                 </div>
               </div>
             </div>
+            <p class="color-B4B4B4 mt-40 text-center fs-16">没有更多了</p>
           </div>
         </div>
       </div>
       <aside class="aside">
         <!-- 浏览用户 -->
-        <div class="visitor">
-          <p class="p1 py-20 fs-16">浏览用户（89）</p>
+        <div v-if="visitorList.length" class="visitor">
+          <p class="p1 py-20 fs-16">浏览用户（{{ visitorList.length }}）</p>
           <div class="pl-16 pr-10">
-            <div v-for="item in visitorList" class="py-20 flex visitor-item">
-              <img src="" alt="">
+            <div v-for="item in visitorList.slice(0, 3)" class="py-20 flex visitor-item">
+              <img :src="HEAD_DOMAIN + item.head" alt="" class="img mr-10">
               <div class="flex-1">
-                <p>杨月</p>
+                <p>{{ item.nick_name }}</p>
                 <p class="flex color-949494 fs-14 my-10">
-                  <span>产品</span>
+                  <span>{{ item.position || '暂未填写' }}</span>
                   <span class="line"></span>
-                  <span>徐州星月联动网络科技</span>
-                </p>
-                <p class="flex justify-between items-center">
-                  <span class="color-949494">
-                    <span class="light">2</span>
-                    <span>条合作信息</span>
-                  </span>
-                  <span class="tag1 app-flex-center">互联网</span>
+                  <span>{{ item.company || '暂未填写' }}</span>
                 </p>
               </div>
             </div>
@@ -205,30 +274,31 @@
       </aside>
       <div class="side">
         <div class="side-item" @click="doFavorite">
-          <img :src="loadImg(detailData.keep === 1 ? 'yishoucang@2x.png' : 'shoucang@2x.png')" alt="" class="img1">
+          <img :src="loadImg(detailData.keep === 1 ? 'yishoucang@2x.webp' : 'shoucang@2x.webp')" alt="" class="img1">
           <span class="mt-12">收藏</span>
         </div>
         <div class="side-item">
-          <img :src="loadImg('图层 622@2x.png')" alt="" class="img2">
+          <img :src="loadImg('图层 622@2x.webp')" alt="" class="img2">
           <span class="mt-12">递名片</span>
         </div>
       </div>
     </div>
   </div>
   <Tip v-if="vipTipVisible" @close="vipTipVisible = false" />
-  <UserList v-if="userListVisible" @close="userListVisible = false" />
-  <Reply ref="replyRef" @update="getProjectInfo" />
+  <UserList v-model="userListVisible" :users="visitorList" />
+  <Reply ref="replyRef" :project-data="detailData" :is-vip="isVip" :reply-options="replyOptions"
+    @update="getProjectInfo" />
 </template>
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import Download from '@/components/Download.vue';
 import { useRoute } from 'vue-router';
-import iconImg from '@/assets/baozhang@2x.png'
+import iconImg from '@/assets/baozhang@2x.webp'
 import { loadImg, once, getUser } from '@/utils'
 import Tip from './components/Tip.vue';
 import UserList from './components/UserList.vue';
-import { projectInfoAPI, contactInfoAPI, addTofavoriteAPI, addFriendapplyAPI } from '@/utils/api'
-import { COOPERATION_TYPES, HEAD_DOMAIN } from '@/utils/const'
+import { projectInfoAPI, contactInfoAPI, addTofavoriteAPI, addFriendapplyAPI, userInfoAPI, setCommentsAPI, getCommentContentAPI } from '@/utils/api'
+import { COOPERATION_TYPES, HEAD_DOMAIN, VIP_LEVEL } from '@/utils/const'
 import { matchLabel } from '@/utils/index'
 import VipIcon from '@/components/VipIcon.vue';
 import dayjs from 'dayjs'
@@ -237,34 +307,23 @@ import Reply from './components/Reply.vue'
 import useTypeOptions from '@/composables/useTypeOptions'
 
 const route = useRoute()
+const { id } = route.params
+
 // 浏览用户
-const visitorList = ref<any>([
-  {},
-  {},
-  {},
-])
-// getHot().then(res => {
-//   todayHot.value = (res.data.data || []).slice(0, 2)
-// })
-const { id } = route.query
-const detailData = ref<any>({})
+const visitorList = ref<any>([])
+
 // 获取当前用户是否是vip
 const isVip = ref(false)
+userInfoAPI().then(res => {
+  isVip.value = res.data.data.user_info.maxvip !== VIP_LEVEL.ORDINARY
+})
+
 // 当前项目是否是项目发布者
 const isCreator = ref(false)
 // 用户信息
 const userInfo = getUser()
 // 根据类型获取对应的选项数据
 const {
-  cooperationTypes,
-  settleOptions,
-  cycleOptions,
-  productOptions,
-  sourceOptions,
-  comprehensiveOptions,
-  channelOptions,
-  userNumberOptions,
-
   infoLabelMap,
   productLabelMap,
   sourceLabelMap,
@@ -281,16 +340,18 @@ const {
 } = useTypeOptions()
 
 // 获取详情
+const detailData = ref<any>({})
 const getProjectInfo = () => {
   projectInfoAPI({ fid: id }).then(res => {
     detailData.value = res.data.data
     commentList.value = detailData.value.comment
     isCreator.value = detailData.value.member_id === userInfo.member_id
+    visitorList.value = detailData.value.visitors || []
     updateTypeOptions(detailData.value.type)
   })
 }
-
 getProjectInfo()
+
 // 格式化合作类型
 const fmtType = (val: number) => {
   return val ? matchLabel(val, COOPERATION_TYPES) : val
@@ -330,19 +391,20 @@ const vipTipVisible = ref(false)
 const userListVisible = ref(false)
 // 回复窗口
 const replyRef = ref()
+
 // 评论
 const comment = ref('')
 // 快捷回复
-const replyOptions = [
-  '怎么合作请联系我',
-  '我有您需要的资源可合作',
-  '您好，期待与您的合作',
-  '有兴趣可聊聊',
-  '聊聊',
-  '欢迎私信对接合作',
-  '您好，合作有什么要求吗？'
-]
-// 发表回复
+const replyOptions = ref<any>([])
+let selectedOptionId: any = null
+getCommentContentAPI().then(res => {
+  replyOptions.value = res.data.data
+})
+const setComment = (item: any) => {
+  selectedOptionId = item.id
+  comment.value = item.content
+}
+// 发表评论
 let replyLoading = false
 const sendReply = () => {
   if (replyLoading) return
@@ -350,12 +412,35 @@ const sendReply = () => {
     return ElMessage.info('请输入评论内容')
   }
   replyLoading = true
-  replyLoading = false
+  setCommentsAPI({
+    art_m_id: detailData.value.member_id, // 发布人id
+    article_id: detailData.value.id, // 项目id
+    pid: 0, // 评论父级id（默认0） 
+    immobilization_id: selectedOptionId, // 评论内容id
+    c_id: null,
+    content: comment.value, // 评论内容
+    re_member: null,
+  }).then(() => {
+    selectedOptionId = null
+    comment.value = ''
+    ElMessage.success('评论成功')
+    // 刷新评论
+    getProjectInfo()
+    replyLoading = false
+  }).catch(() => {
+    replyLoading = false
+  })
 }
 // 评论列表
 const commentList = ref<any>([])
-const openReply = (id: number) => {
-  replyRef.value.open(id)
+
+// 作者回复
+const openReply = (comment: any) => {
+  replyRef.value.open({
+    pid: comment.id,
+    c_id: comment.id,
+    re_member: comment.member_id,
+  })
 }
 // 收藏项目
 const doFavorite = once((done: Function) => {
@@ -363,7 +448,7 @@ const doFavorite = once((done: Function) => {
   addTofavoriteAPI({
     fid: detailData.value.id,
     type: detailData.value.type,
-  }).then(res => {
+  }).then(() => {
     done()
     ElMessage.success('收藏成功')
     detailData.value.keep = 1
@@ -410,6 +495,10 @@ const sendMsg = () => {
 
 .nav {
   color: #202020;
+}
+
+.color-B4B4B4 {
+  color: #B4B4B4;
 }
 
 .content-header {
@@ -712,6 +801,11 @@ const sendMsg = () => {
 .visitor {
   background: white;
   border-radius: 5px;
+
+  .img {
+    width: 45px;
+    height: 45px;
+  }
 
   .p1 {
     &::before {

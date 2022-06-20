@@ -30,24 +30,17 @@
               <p class="more-text ml">更多会员套餐</p>
               <div class="meal-list">
                 <div class="meal">
-                  <div class="tag app-flex-center">体验会员</div>
+                  <div class="tag app-flex-center">超值优惠</div>
                   <p class="meal-price">
-                    <span>1个月</span>
+                    <span>3个月</span>
                     <span class="price-money">￥<span class="num">298</span></span>
                   </p>
                 </div>
                 <div class="meal">
-                  <div class="tag app-flex-center">体验会员</div>
+                  <div class="tag app-flex-center">超值优惠</div>
                   <p class="meal-price">
-                    <span>半年</span>
-                    <span class="price-money">￥<span class="num">298</span></span>
-                  </p>
-                </div>
-                <div class="meal">
-                  <div class="tag app-flex-center">体验会员</div>
-                  <p class="meal-price">
-                    <span>一年</span>
-                    <span class="price-money">￥<span class="num">298</span></span>
+                    <span>12个月</span>
+                    <span class="price-money">￥<span class="num">998</span></span>
                   </p>
                 </div>
               </div>
@@ -120,15 +113,18 @@ const navToBuy = (tab: string) => {
 }
 // 跳转到个人中心
 const navToUser = () => {
-  if (isLogin.value) {
-    router.push({
-      path: `/user/profile`
-    })
-  } else {
-    router.push({
-      path: '/login',
-    })
-  }
+  // if (isLogin.value) {
+  //   router.push({
+  //     path: `/user/profile`
+  //   })
+  // } else {
+  //   router.push({
+  //     path: '/login',
+  //   })
+  // }
+  router.push({
+    path: `/user/profile`
+  })
 }
 // 跳转到登录
 const navToLogin = (tab: string) => {
@@ -205,7 +201,7 @@ const navToMessage = () => {
     &.super {
       width: 481px;
       height: 216px;
-      background: url('@/assets/svip_stc@2x.png') no-repeat;
+      background: url('@/assets/svip_stc@2x.webp') no-repeat;
       background-size: contain;
       z-index: 10;
       padding: 20px;
@@ -273,7 +269,7 @@ const navToMessage = () => {
     }
 
     &.company {
-      background: url('@/assets/qyhy_stc@2x.png') no-repeat;
+      background: url('@/assets/qyhy_stc@2x.webp') no-repeat;
       background-size: contain;
 
       .price {
@@ -291,7 +287,7 @@ const navToMessage = () => {
 
     &.normal {
       min-height: 362px;
-      background: url('@/assets/pthy-stcc@2x.png') no-repeat;
+      background: url('@/assets/pthy-stcc@2x.webp') no-repeat;
       background-size: contain;
 
       .meal-list {
@@ -310,13 +306,7 @@ const navToMessage = () => {
         border-radius: 5px;
         color: #767376;
         font-size: 16px;
-        cursor: pointer;
         padding: 0 15px 0 12px;
-
-        &:hover {
-          color: #0078FF;
-          border-color: #0078FF;
-        }
       }
 
       .present {
