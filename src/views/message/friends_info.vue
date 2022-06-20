@@ -22,18 +22,6 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
-import GoEasy from '@/utils/goEasy'
-import { getUser } from '@/utils';
-const goEasy = GoEasy.getGoEasy()
-// const userInfo = getUser()
-onMounted(() => {
-  goEasy.connect({
-    // id: "001",
-    // data: { "avatar": "/www/xxx.webp", "nickname": "Neo" },
-    onSuccess: () => { },
-  })
-})
 </script>
 
 <style lang="scss" scoped>

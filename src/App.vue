@@ -23,8 +23,9 @@ import Aside from './components/Aside.vue';
 import Nav from './components/Nav.vue';
 import { computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router'
-import GoEasy from 'goeasy';
-
+import GoEasy2 from 'goeasy';
+import GoEasy from '@/utils/goEasy'
+import { getUser } from '@/utils';
 const route = useRoute()
 // 通知栏在某些页面不显示
 const isShowHeader = computed(() => {
@@ -32,5 +33,17 @@ const isShowHeader = computed(() => {
 })
 const isShowNav = computed(() => {
   return !['/login', '/card', '/about'].includes(route.path)
+})
+const goEasy = GoEasy.getGoEasy()
+const im = goEasy.im
+const userInfo = getUser()
+onMounted(() => {
+  goEasy.connect({
+    id: userInfo.member_id,
+    data: { "avatar": `https://admin.bdhuoke.com${userInfo.head}`, "nickname": userInfo.nick_name },
+    onSuccess: () => {
+      console.log('链接成功')
+    }
+  })
 })
 </script>
