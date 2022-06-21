@@ -12,4 +12,53 @@
     font-weight: 500;
     padding-left: 11px;
   }
+  .content_2 {
+    display: block;
+    margin: 0 auto;
+    margin-top: 12px;
+    width: 1382px;
+    height: 75px;
+  }
+  .content_3 {
+    width: 1382px;
+    height: 134px;
+    background: #ffffff;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    flex-wrap: wrap;
+    .content_3_1 {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+      .content_3_1_1 {
+        font-size: 13px;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #1e1e1e;
+        line-height: 1;
+        margin-right: 20px;
+        width: 56px;
+      }
+      .content_3_1_2 {
+        display: flex;
+        flex-wrap: wrap;
+        flex: 1;
+        .content_3_1_2_1 {
+          font-size: 13px;
+          font-family: PingFang SC;
+          font-weight: 400;
+          color: #525252;
+          line-height: 24px;
+          height: 24px;
+          border-radius: 3px;
+          padding: 0 10px;
+          background: transparent;
+          cursor: pointer;
+        }
+      }
+    }
+  }
 }
