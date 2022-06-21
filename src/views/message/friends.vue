@@ -9,7 +9,7 @@
     </div>
 
     <div class="grid grid-cols-3 gap-10 px-10 mt-40">
-      <div v-for="item in friends" class="item">
+      <div v-for="(item, index) in friends" class="item" :key="index">
         <div class="flex">
           <img :src="loadImg('banner_big@2x.webp')" alt="" class="w-50 h-50 app-round mr-22">
           <div class="flex-1">
@@ -46,11 +46,9 @@ import { loadImg } from '@/utils';
 const friends = ref([])
 // 查询关键词
 const searchText = ref('')
-const doSearch = () => {
-
-}
+const doSearch = () => { }
 </script>
 
 <style lang="scss" scoped>
-@import './friends.scss'
+@import './friends.scss';
 </style>
