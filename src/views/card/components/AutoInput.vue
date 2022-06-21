@@ -43,6 +43,7 @@ const value = ref(props.value)
   left: 0;
   border: 1px solid transparent;
   resize: none;
+  word-break: break-all;
 
   &::-webkit-scrollbar {
     display: none;

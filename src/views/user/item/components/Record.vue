@@ -19,22 +19,13 @@
   </div>
 </template>
 <script setup lang="ts">
-import { couponsLogAPI, goodslistAPI } from '@/utils/api';
-import { DOMAIN, GOOD_TYPE } from '@/utils/const';
+import { couponsLogAPI } from '@/utils/api';
 import { ref } from 'vue';
 import Empty from '@/components/Empty.vue';
 
 // 兑换记录
 const listData = ref<any>([])
 couponsLogAPI().then(res => {
-  // listData.value = res.data.data
-})
-goodslistAPI({
-  type: GOOD_TYPE.DJK
-}).then(res => {
-  res.data.data.forEach((v: any) => {
-    v.image = DOMAIN + v.image
-  })
   listData.value = res.data.data
 })
 </script>

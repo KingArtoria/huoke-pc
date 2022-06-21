@@ -38,6 +38,10 @@
           <p class="title">联系我们</p>
           <div class="grid gap-y-16">
             <span class="sub-title" href="#">客服热线：156566555</span>
+            <div>
+              <div class="code-img"></div>
+              <p class="text-center">BD火客</p>
+            </div>
           </div>
         </div>
       </div>
@@ -66,7 +70,7 @@ import { ref } from 'vue';
 
 <style lang="scss" scoped>
 .footer {
-  height: 470px;
+  height: 430px;
   background-color: #33383E;
 
   .main {
@@ -124,5 +128,10 @@ import { ref } from 'vue';
   font-weight: 500;
   color: #DBE1E9;
   margin-top: 20px;
+}
+
+.code-img {
+  width: 68px;
+  height: 68px;
 }
 </style>
