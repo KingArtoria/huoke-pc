@@ -7,6 +7,8 @@ import locale from "element-plus/lib/locale/lang/zh-cn";
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import Swiper, { Pagination } from "swiper";
 import NProgress from 'nprogress'
+console.log(ElementPlus);
+
 
 NProgress.configure({ parent: 'body' });
 

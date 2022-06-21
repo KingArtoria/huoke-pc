@@ -88,13 +88,13 @@
           </div>
         </div>
         <div v-else class="user">
-          <div class="flex">
+          <div class="flex pb-20">
             <img :src="userInfo.head ? API_DOMAIN + userInfo.head : photoImg" alt="" class="user-photo">
             <div>
               <div class="text">
                 <span>hi，{{ userInfo.nick_name }}</span>
                 <span></span>
-                <button class="btn">开通会员</button>
+                <button class="vip-btn" @click="navTo('/buy')">开通会员</button>
               </div>
               <div v-if="userInfo.company" class="tag app-flex-center">待企业认证</div>
               <div v-else>{{ userInfo.company }}</div>
@@ -479,6 +479,15 @@ if (loginInfo) {
       font-weight: 300;
       color: #1B1B1B;
       margin: 13px 0 11px 0;
+    }
+
+    .vip-btn {
+      width: 70px;
+      height: 22px;
+      background: #0071FA;
+      border-radius: 12px;
+      color: white;
+      margin-left: 18px;
     }
 
     .tag {

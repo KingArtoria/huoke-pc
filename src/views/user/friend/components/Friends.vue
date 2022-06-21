@@ -11,7 +11,7 @@
           </div>
         </div>
         <div class="bottom flex justify-between items-center mt-30">
-          <span class="remark truncate mr-10" :title="item.remark">{{ item.remark }}</span>
+          <span class="remark truncate mr-10" :title="item.remark">备注：{{ item.remark }}</span>
           <el-popover placement="bottom" :width="78" trigger="hover">
             <template #reference>
               <span class="color-0078FF flex items-center cursor-pointer flex-shrink-0">

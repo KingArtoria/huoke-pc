@@ -1,5 +1,5 @@
 <template>
-  <div ref="templateRef" class="template">
+  <div ref="templateRef" class="template mx-auto">
     <div class="top flex">
       <div class="top-left flex flex-col justify-center">
         <AutoInput class="fs-25 company" value="公司名称" placeholder="公司名称" :print="isPrint" />
@@ -24,11 +24,11 @@
       </div>
       <div class="flex">
         <span class="flex-shrink-0">地址：</span>
-        <AutoInput value="地址" placeholder="地址" :print="isPrint" />
+        <AutoInput value="地址" placeholder="地址" :print="false" />
       </div>
       <div class="flex">
         <span class="flex-shrink-0">业务：</span>
-        <AutoInput value="业务" placeholder="业务" :print="isPrint" />
+        <AutoInput value="业务" placeholder="业务" :print="false" />
       </div>
     </div>
   </div>
@@ -37,27 +37,14 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import AutoInput from './AutoInput.vue';
-import html2canvs from 'html2canvas'
+import useTemplate from '../composables/useTemplate'
 
 const templateRef = ref()
-const img = ref('')
-const isPrint = ref(false)
 
+const { isPrint, img } = useTemplate(templateRef)
 const save = () => {
-  return new Promise((resolve => {
-    isPrint.value = true
-    html2canvs(templateRef.value).then(canvas => {
-      img.value = canvas.toDataURL('image/jpg')
-      canvas.toBlob((blob: any) => {
-        const file = new File([blob], '名片.jpg', { type: 'image/jpg' })
-        const formData = new FormData()
-        formData.append('pic', file)
-        resolve()
-      })
-    })
-  }))
+  isPrint.value = !isPrint.value
 }
-
 defineExpose({
   save
 })

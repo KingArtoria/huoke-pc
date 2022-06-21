@@ -29,10 +29,11 @@
       <div class="menu bg-white h-full">
         <!-- 模板 -->
         <div v-if="activeToolbar === 'template'" class="grid grid-cols-2 gap-x-4 gap-y-10 px-10 py-20">
-          <div v-for="item in templates" class="card flex items-center">
+          <div v-for="item in templates" class="card flex items-center justify-center"
+            :class="{ horizontal: item.style === 'horizontal' }">
             <img :src="loadImg(item.preview)" alt="" class="preview-img">
-            <div class="mask app-flex-center">
-              <button class="change-btn">立即更换</button>
+            <div v-if="item.value !== activeTemplate.value" class="mask app-flex-center">
+              <button class="change-btn" @click="activeTemplate = item">立即更换</button>
             </div>
           </div>
         </div>
@@ -41,8 +42,8 @@
         <!-- 我的 -->
       </div>
       <div class="workspace flex-1 relative h-full">
-        <div v-if="activeToolbar === 'template'">
-          <component ref="templateRef" :is="activeTemplate.component" class="mt-80 mx-auto"></component>
+        <div v-if="activeToolbar === 'template'" class="pt-80">
+          <component ref="templateRef" :is="activeTemplate.component"></component>
         </div>
       </div>
       <div class="side bg-white h-full">
@@ -61,6 +62,13 @@ import Nav from '@/components/Nav.vue';
 import { useRouter } from 'vue-router';
 import { loadImg, once } from '@/utils';
 import Template1 from './components/Template1.vue';
+import Template2 from './components/Template2.vue';
+import Template3 from './components/Template3.vue';
+import Template4 from './components/Template4.vue';
+import Template5 from './components/Template5.vue';
+import Template6 from './components/Template6.vue';
+import Template7 from './components/Template7.vue';
+import Template8 from './components/Template8.vue';
 
 const router = useRouter()
 const navToHome = () => {
@@ -78,10 +86,14 @@ const switchToolbar = (item: any) => {
 
 // 模板
 const templates = ref([
-  // { value: 1, material: 'mingpian-2.png', preview: 'heng4.png', visible: false, width: '990px', height: '627px' },
-  // { value: 2, material: 'mingpian-3.png', preview: 'heng2.png', visible: false, },
-  { value: 1, component: Template1, preview: 'heng4.png' },
-  { value: 2, component: Template1, preview: 'heng2.png' },
+  { value: 1, component: Template1, preview: 'heng4.png', style: 'horizontal' },
+  { value: 2, component: Template2, preview: 'heng2.png', style: 'horizontal' },
+  { value: 3, component: Template3, preview: 'heng3.png', style: 'horizontal' },
+  { value: 4, component: Template4, preview: 'heng1.png', style: 'horizontal' },
+  { value: 5, component: Template5, preview: 'shu2.png', style: 'vertical' },
+  { value: 6, component: Template6, preview: 'shu3.png', style: 'vertical' },
+  { value: 7, component: Template7, preview: 'shu1.png', style: 'vertical' },
+  { value: 8, component: Template8, preview: 'shu4.png', style: 'vertical' },
 ])
 const activeTemplate = ref(templates.value[0])
 const changeVisible = (item: any) => {
@@ -91,8 +103,9 @@ const changeVisible = (item: any) => {
 }
 const templateRef = ref()
 const submit = once((done: Function) => {
+  done()
   templateRef.value.save().then(() => {
-    done()
+    // done()
   })
 })
 </script>
@@ -170,7 +183,9 @@ const submit = once((done: Function) => {
     padding: 10px 0;
     position: relative;
     cursor: pointer;
-
+    &.horizontal {
+      height: 150px;
+    }
     &:hover {
       .mask {
         display: flex;
