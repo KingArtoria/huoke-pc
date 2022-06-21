@@ -5,7 +5,7 @@
         <div>
           <p class="title">关于我们</p>
           <div class="grid gap-y-16">
-            <a class="sub-title" href="#">平台简介</a>
+            <router-link class="sub-title" to="/about">平台简介</router-link>
             <a class="sub-title" href="#">加入我们</a>
             <a class="sub-title" href="#">新闻公告</a>
           </div>

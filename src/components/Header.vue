@@ -7,7 +7,7 @@
     <!-- 搜索 -->
     <div class="search center">
       <div class="logo">
-        <img :src="logo" alt="" class="logo-img" @click="navToIndex">
+        <img :src="loadImg('huoke.png')" alt="" class="logo-img cursor-pointer" @click="navToIndex">
       </div>
       <div class="search-wrap">
         <div class="input-wrap">
@@ -28,10 +28,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import bannerImg from '@/assets/dingbbanner@2x.webp'
-import logo from '@/assets/huoke@2x.webp'
 import { useRouter } from 'vue-router';
-import { ElMessage } from 'element-plus'
 import Publish from './Publish.vue';
+import { loadImg } from '@/utils';
 
 const router = useRouter()
 // 搜索类型
@@ -102,15 +101,6 @@ const navToIndex = () => {
   justify-content: space-between;
   margin-top: 25px;
 
-  .logo {
-    margin-top: -14px;
-  }
-
-  .logo-img {
-    width: 155px;
-    height: 72px;
-  }
-
   .btn {
     width: 229px;
     height: 44px;
@@ -130,7 +120,7 @@ const navToIndex = () => {
 
 .search-wrap {
   flex: 1;
-  margin-left: 140px;
+  margin-left: 70px;
 
   .input-wrap {
     display: flex;
@@ -179,6 +169,7 @@ const navToIndex = () => {
     font-family: PingFang SC;
     font-weight: 400;
     color: #9D9D9D;
+
     .link {
       &:hover {
         text-decoration: underline;

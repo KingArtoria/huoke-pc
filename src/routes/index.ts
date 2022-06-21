@@ -67,6 +67,10 @@ const routes: RouteRecordRaw[] = [
   { path: '/deal', component: () => import('@/views/deal/index.vue'), meta: { authentication: true } },
   // 发起交易
   { path: '/deal-form', component: () => import('@/views/deal/form.vue') },
+  // 商务名片
+  { path: '/card', component: () => import('@/views/card/index.vue') },
+  // 关于我们
+  { path: '/about', component: () => import('@/views/about/index.vue') },
   // 人脉列表
   { path: '/contacts-list', component: () => import('@/views/contacts/list.vue') },
 ];

@@ -360,3 +360,58 @@ export const putDelapplyAPI = (data: any): AxiosPromise<any> => {
     data
   });
 };
+// 分享给我的名片删除
+export const delpushVistingcardAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/Visitingcard/delpushVistingcard',
+    data
+  });
+};
+// 分享给我的名片
+export const pushVisitingcardAPI = (): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/Visitingcard/pushVisitingcard',
+  });
+};
+// 分享名片
+export const shareVisitingcardAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/Visitingcard/shareVisitingcard',
+    data
+  });
+};
+// 删除名片
+export const delVistingcardAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/Visitingcard/delVistingcard',
+    data
+  });
+};
+// 我的名片
+export const myVisitingcardAPI = (): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/Visitingcard/myVisitingcard',
+  });
+};
+// 保存名片
+export const createVisitingcardAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/Visitingcard/createVisitingcard',
+    data
+  });
+};
+// 上传名片
+export const uploadVisitingcardAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'upload.php',
+    data
+  });
+};
+

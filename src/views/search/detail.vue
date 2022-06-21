@@ -12,7 +12,8 @@
           <span class="header-sub-title">双方资金安全保障</span>
         </header>
         <div class="p-22 bg-white">
-          <div class="detail">
+          <Empty v-if="loading" />
+          <div v-else class="detail">
             <div class="tag mb-20">{{ fmtType(detailData.type) }}</div>
             <p class="detail-title fs-22 mb-32">{{ detailData.title }}</p>
             <div class="flex items-center div1">
@@ -305,6 +306,7 @@ import dayjs from 'dayjs'
 import { ElMessage } from 'element-plus';
 import Reply from './components/Reply.vue'
 import useTypeOptions from '@/composables/useTypeOptions'
+import Empty from '@/components/Empty.vue';
 
 const route = useRoute()
 const { id } = route.params
@@ -341,6 +343,7 @@ const {
 
 // 获取详情
 const detailData = ref<any>({})
+const loading = ref(true)
 const getProjectInfo = () => {
   projectInfoAPI({ fid: id }).then(res => {
     detailData.value = res.data.data
@@ -348,6 +351,7 @@ const getProjectInfo = () => {
     isCreator.value = detailData.value.member_id === userInfo.member_id
     visitorList.value = detailData.value.visitors || []
     updateTypeOptions(detailData.value.type)
+    loading.value = false
   })
 }
 getProjectInfo()

@@ -29,10 +29,10 @@ import { getUser } from '@/utils';
 const route = useRoute()
 // 通知栏在某些页面不显示
 const isShowHeader = computed(() => {
-  return !['/login', '/message'].some((path: string) => route.path.startsWith(path))
+  return !['/login', '/message', '/card', '/about'].some((path: string) => route.path.startsWith(path))
 })
 const isShowNav = computed(() => {
-  return !['/login'].includes(route.path)
+  return !['/login', '/card', '/about'].includes(route.path)
 })
 const goEasy = GoEasy.getGoEasy()
 const im = goEasy.im
