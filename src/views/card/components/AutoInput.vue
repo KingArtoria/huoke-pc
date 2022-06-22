@@ -1,10 +1,7 @@
 <template>
   <div class="input-wrap">
-    <p v-if="print" class="print">{{ value }}</p>
-    <template v-else>
-      <p class="label">{{ value || placeholder }}</p>
-      <textarea type="text" v-model="value" :placeholder="placeholder" class="input"></textarea>
-    </template>
+    <p class="label" :class="{ show: print }">{{ value || placeholder }}</p>
+    <textarea v-show="!print" type="text" v-model="value" :placeholder="placeholder" class="input" rows="1"></textarea>
   </div>
 </template>
 <script setup lang="ts">
@@ -21,14 +18,14 @@ const value = ref(props.value)
 .input-wrap {
   position: relative;
 
-  .print {
-    padding: 3px;
-  }
-
   .label {
     visibility: hidden;
     border: 1px solid transparent;
-    padding: 2px;
+    line-height: inherit;
+
+    &.show {
+      visibility: visible;
+    }
   }
 }
 
@@ -44,6 +41,7 @@ const value = ref(props.value)
   border: 1px solid transparent;
   resize: none;
   word-break: break-all;
+  line-height: inherit;
 
   &::-webkit-scrollbar {
     display: none;

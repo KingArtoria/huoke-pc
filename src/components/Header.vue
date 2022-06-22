@@ -11,7 +11,7 @@
       </div>
       <div class="search-wrap">
         <div class="input-wrap">
-          <input v-model="keyword" type="text" class="input" placeholder="输入关键词进行搜索">
+          <input v-model="keyword" type="text" class="input" placeholder="输入关键词进行搜索" @keyup.enter="doSearch">
           <div class="search-btn app-flex-center" @click="doSearch">搜索</div>
         </div>
         <div class="grid auto-cols-max grid-flow-col links">

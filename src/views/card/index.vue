@@ -38,16 +38,52 @@
           </div>
         </div>
         <!-- 图片 -->
-
+        <div v-if="activeToolbar === 'img'">
+          <div class="grid grid-cols-2 gap-x-4 gap-y-10 px-10 py-20">
+            <div v-for="item in uploadImgs" class="img-wrap flex items-center justify-center">
+              <img :src="item.src" alt="">
+              <div v-if="item.value !== activeImg.value" class="mask app-flex-center">
+                <button class="change-btn" @click="activeImg = item">替换</button>
+              </div>
+            </div>
+            <div v-if="uploadImgs.length > 0" class="img-wrap flex items-center justify-center" @click="doUpload">
+              <el-icon class="add-icon">
+                <Plus />
+              </el-icon>
+            </div>
+          </div>
+          <div v-if="uploadImgs.length === 0" class="empty flex flex-col items-center pt-50">
+            <img :src="loadImg('kong.png')" alt="" class="empty-img">
+            <button class="empty-btn mt-10" @click="doUpload">上传图片</button>
+          </div>
+        </div>
+        <input type="file" ref="fileRef" accept="image/*" class="hidden" />
         <!-- 我的 -->
+        <div v-if="activeToolbar === 'user'">
+          <div class="grid grid-cols-2 gap-x-4 gap-y-10 px-10 py-20">
+            <div v-for="item in userCards" class="user-card flex items-center justify-center"
+              :class="{ active: item.id === activeCard.id }" @click="activeCard = item">
+              <img :src="item.url" alt="" class="preview-img">
+            </div>
+          </div>
+        </div>
       </div>
       <div class="workspace flex-1 relative h-full">
-        <div v-if="activeToolbar === 'template'" class="pt-80">
-          <component ref="templateRef" :is="activeTemplate.component"></component>
+        <div v-if="activeToolbar === 'template' || activeToolbar === 'img'" class="pt-80">
+          <component ref="templateRef" :is="activeTemplate.component" :src="activeImg.src"
+            @change="activeToolbar = 'img'"></component>
+        </div>
+        <div v-if="activeToolbar === 'user'">
+          <div class="pt-80 flex justify-center">
+            <img :src="activeCard.url" alt="" />
+          </div>
         </div>
       </div>
       <div class="side bg-white h-full">
-        <div v-if="activeToolbar === 'template'" class="pt-50 px-30">
+        <div class="pt-50 px-30">
+          <div v-if="activeCard.id" class="flex justify-center mb-30">
+            <button v-if="activeToolbar === 'user'" class="del-btn" @click="delUserCard">删除</button>
+          </div>
           <p class="fs-12 color-7D7D7D line-height-22">*依据国家相关法律法规，禁止上传包含色情、违法、侵权等性质内容，违规内容将会删除处理。</p>
           <p class="primary fs-13 mt-26 line-height-22">普通用户有3次制作名片模板机会，
             会员用户不限制作名片模板。</p>
@@ -57,7 +93,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue';
+import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
 import Nav from '@/components/Nav.vue';
 import { useRouter } from 'vue-router';
 import { loadImg, once } from '@/utils';
@@ -69,6 +105,8 @@ import Template5 from './components/Template5.vue';
 import Template6 from './components/Template6.vue';
 import Template7 from './components/Template7.vue';
 import Template8 from './components/Template8.vue';
+import { createVisitingcardAPI, delVistingcardAPI, myVisitingcardAPI } from '@/utils/api';
+import { ElMessage, ElMessageBox } from 'element-plus';
 
 const router = useRouter()
 const navToHome = () => {
@@ -102,10 +140,84 @@ const changeVisible = (item: any) => {
   }
 }
 const templateRef = ref()
+// const submit = () => {
+//   templateRef.value.save()
+// }
 const submit = once((done: Function) => {
-  done()
-  templateRef.value.save().then(() => {
-    // done()
+  nextTick(() => {
+    templateRef.value.save().then((url: string) => {
+      createVisitingcardAPI({ url }).then(() => {
+        ElMessage.success('保存成功')
+        done()
+      }).catch(() => {
+        done()
+      })
+    })
+  })
+})
+
+// 上传图片素材
+const uploadImgs = ref<any>([])
+const activeImg = ref<any>({
+  value: '',
+  src: loadImg('code.png')
+})
+const fileRef = ref()
+onMounted(() => {
+  fileRef.value.addEventListener('change', handleFile)
+})
+onUnmounted(() => {
+  fileRef.value.removeEventListener('change', handleFile)
+})
+const handleFile = (e: any) => {
+  const file = e.target.files[0]
+  const reader = new FileReader()
+  reader.readAsDataURL(file)
+  reader.onload = (file: any) => {
+    uploadImgs.value.push({
+      file,
+      src: file.target.result,
+      value: new Date().getTime()
+    })
+  }
+}
+const doUpload = () => {
+  fileRef.value.click()
+}
+
+// 用户名片
+const userCards = ref<any>([])
+const activeCard = ref<any>({})
+const getUserCards = () => {
+  myVisitingcardAPI().then(res => {
+    userCards.value = res.data.data
+    if (userCards.value.length) {
+      activeCard.value = userCards.value[0]
+    }
+  })
+}
+watch(activeToolbar, () => {
+  if (activeToolbar.value === 'user') {
+    getUserCards()
+  }
+})
+const delUserCard = once((done: Function) => {
+  ElMessageBox.confirm('确定删除吗？', '提示', {
+    confirmButtonText: "确定",
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    delVistingcardAPI({ id: activeCard.value.id }).then(() => {
+      ElMessage.success('删除成功')
+      // 刷新数据
+      activeCard.value = {}
+      getUserCards()
+      done()
+    }).catch(() => {
+      done()
+    })
+  }).catch(() => {
+    done()
   })
 })
 </script>
@@ -183,38 +295,40 @@ const submit = once((done: Function) => {
     padding: 10px 0;
     position: relative;
     cursor: pointer;
+
     &.horizontal {
       height: 150px;
     }
+
     &:hover {
       .mask {
         display: flex;
       }
     }
-
-    .preview-img {
-      max-height: 100%;
-      max-width: 100%;
-    }
-
-    .mask {
-      display: none;
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      background: rgba(0, 0, 0, 0.2);
-    }
-
-    .change-btn {
-      width: 80px;
-      height: 30px;
-      background: #0171FB;
-      border-radius: 3px;
-      color: white;
-    }
   }
+}
+
+.preview-img {
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.mask {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.change-btn {
+  width: 80px;
+  height: 30px;
+  background: #0171FB;
+  border-radius: 3px;
+  color: white;
 }
 
 .line-height-22 {
@@ -223,5 +337,61 @@ const submit = once((done: Function) => {
 
 .area {
   background-repeat: no-repeat;
+}
+
+.empty {
+  &-btn {
+    width: 122px;
+    height: 40px;
+    background: #0171FB;
+    border-radius: 3px;
+    color: white;
+  }
+
+  &-img {
+    width: 226px;
+    height: 147px;
+  }
+}
+
+.img-wrap {
+  height: 126px;
+  border: 1px solid #D9D9D9;
+  border-radius: 3px;
+  padding: 4px;
+  position: relative;
+  cursor: pointer;
+
+  &:hover {
+    .mask {
+      display: flex;
+    }
+  }
+}
+
+.add-icon {
+  color: #D9D9D9;
+  font-size: 50px;
+}
+
+.user-card {
+  height: 168px;
+  border: 1px solid #D9D9D9;
+  border-radius: 3px;
+  cursor: pointer;
+  padding: 6px;
+
+  &.active {
+    border-color: #0171FB;
+  }
+}
+
+.del-btn {
+  width: 190px;
+  height: 60px;
+  background: #FF5959;
+  border-radius: 5px;
+  font-size: 16px;
+  color: white;
 }
 </style>

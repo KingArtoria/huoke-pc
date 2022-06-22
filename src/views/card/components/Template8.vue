@@ -35,13 +35,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import AutoInput from './AutoInput.vue';
-import { loadImg } from '@/utils';
 import useTemplate from '../composables/useTemplate'
 
 const templateRef = ref()
 const img = ref('')
 const { isPrint, save } = useTemplate(templateRef)
-
 defineExpose({
   save
 })
@@ -49,7 +47,7 @@ defineExpose({
 
 <style lang="scss" scoped>
 .template {
-  background: url('@/assets/shuban3.png') no-repeat;
+  background: url('@/assets/shuban-4.png') no-repeat;
   width: 355px;
   height: 632px;
   color: #fff;
@@ -62,12 +60,12 @@ defineExpose({
 }
 
 .code {
-  top: 35px;
-  right: 24px;
+  top: 46px;
+  left: 23px;
 
   .code-temp {
-    width: 67px;
-    height: 68px;
+    width: 52px;
+    height: 53px;
     border: 1px solid red;
   }
 }
@@ -87,19 +85,19 @@ defineExpose({
   top: 505px;
   left: 33px;
   font-size: 12px;
-  writing-mode: tb;
+  width: 16px;
   z-index: 1;
 }
 
 .info {
   line-height: 20px;
   font-size: 12px;
+  color: #D7CBBF;
 }
 
 .company {
-  top: 185px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 413px;
+  left: 30px;
 
   .company-name {
     font-size: 14px;
