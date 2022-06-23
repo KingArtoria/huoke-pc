@@ -96,7 +96,7 @@ defineExpose({
 
   .company-name {
     font-size: 13px;
-    writing-mode: tb;
+    width: 16px;
   }
 }
 </style>

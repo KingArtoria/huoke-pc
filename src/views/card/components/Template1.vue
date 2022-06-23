@@ -24,13 +24,14 @@
       </div>
       <div class="flex">
         <span class="flex-shrink-0">地址：</span>
-        <AutoInput value="地址" placeholder="地址" :print="false" />
+        <AutoInput value="地址" placeholder="地址" :print="isPrint" />
       </div>
       <div class="flex">
         <span class="flex-shrink-0">业务：</span>
-        <AutoInput value="业务" placeholder="业务" :print="false" />
+        <AutoInput value="业务" placeholder="业务" :print="isPrint" />
       </div>
     </div>
+    <CodeImg width="140px" height="140px" top="326px" left="802px" :src="src" :is-print="isPrint" @change="callImg" />
   </div>
   <img :src="img" alt="">
 </template>
@@ -38,13 +39,18 @@
 import { ref } from 'vue';
 import AutoInput from './AutoInput.vue';
 import useTemplate from '../composables/useTemplate'
+import CodeImg from './CodeImg.vue';
+defineProps<{
+  src: string, // 图片地址
+}>()
+const call = defineEmits(['change'])
+const callImg = () => {
+  call('change')
+}
 
 const templateRef = ref()
+const { isPrint, img, save } = useTemplate(templateRef)
 
-const { isPrint, img } = useTemplate(templateRef)
-const save = () => {
-  isPrint.value = !isPrint.value
-}
 defineExpose({
   save
 })
@@ -88,12 +94,11 @@ defineExpose({
 
 .bottom {
   position: absolute;
-  // margin: 178px 270px 0 111px;
-  top: 348px;
+  top: 346px;
   right: 270px;
   left: 111px;
   font-size: 19px;
   color: #D2A671;
-  line-height: 34px;
+  line-height: 38px;
 }
 </style>

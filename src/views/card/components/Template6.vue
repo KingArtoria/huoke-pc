@@ -87,7 +87,7 @@ defineExpose({
   top: 505px;
   left: 33px;
   font-size: 12px;
-  writing-mode: tb;
+  width: 16px;
   z-index: 1;
 }
 
