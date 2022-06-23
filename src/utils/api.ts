@@ -88,10 +88,11 @@ export const getMenu = (): AxiosPromise<any> => {
   });
 };
 // 获取人脉
-export const getRecommendList = (): AxiosPromise<any> => {
+export const getRecommendList = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/index/getRecommendList',
+    data: qs.stringify(data),
   });
 };
 // 获取首页右侧热门数据
@@ -106,7 +107,7 @@ export const getListData = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/index/index',
-    data
+    data,
   });
 };
 // 搜索
@@ -114,7 +115,7 @@ export const searchApi = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/index/search',
-    data
+    data,
   });
 };
 // 项目详情
@@ -122,7 +123,7 @@ export const projectInfoAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/comprehensive/Info',
-    data
+    data,
   });
 };
 // 项目详情-获取联系方式
@@ -130,7 +131,7 @@ export const contactInfoAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/comprehensive/GetContactInfo',
-    data
+    data,
   });
 };
 // 项目发布-获得省份
@@ -145,7 +146,7 @@ export const cityAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/area/getCity',
-    data
+    data,
   });
 };
 // 项目发布
@@ -153,7 +154,7 @@ export const saveProjectAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/Comprehensive/comprehensiveAdd',
-    data
+    data,
   });
 };
 // 项目发布-获取下拉框选项
@@ -161,7 +162,7 @@ export const typeListAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/Comprehensive/typeList',
-    data
+    data,
   });
 };
 // 个人中心-我的好友
@@ -169,7 +170,7 @@ export const getFriendListAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/Friend/getFriendList',
-    data
+    data,
   });
 };
 // 个人中心-修改手机号
@@ -177,7 +178,7 @@ export const changephoneAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/member/changephone',
-    data
+    data,
   });
 };
 // 个人中心-我的发布
@@ -185,7 +186,7 @@ export const memberProjectAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/member/member_project',
-    data
+    data,
   });
 };
 // 个人中心-获取二级行业
@@ -193,7 +194,7 @@ export const getIndustryInfoAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/member/getIndustryInfo',
-    data
+    data,
   });
 };
 // 个人中心-获取一级行业
@@ -208,7 +209,7 @@ export const getSchoolListAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/member/getSchoolList',
-    data
+    data,
   });
 };
 // 个人中心-修改个人信息
@@ -216,7 +217,7 @@ export const memberInfoEditAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/member/memberInfoEdit',
-    data
+    data,
   });
 };
 // 个人中心-我的道具
@@ -238,7 +239,7 @@ export const useCouponsAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/coupons/useCoupons',
-    data
+    data,
   });
 };
 // 道具卡使用 及变色卡置顶卡列表
@@ -246,7 +247,7 @@ export const useCouponsListAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/coupons/useCouponsList',
-    data
+    data,
   });
 };
 // 获取商品
@@ -254,7 +255,7 @@ export const goodslistAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/order/goodslist',
-    data
+    data,
   });
 };
 
@@ -263,7 +264,7 @@ export const uploadFile = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/member/upload',
-    data
+    data,
   });
 };
 // 个人中心
@@ -278,7 +279,7 @@ export const favoriteAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/member/member_keep',
-    data
+    data,
   });
 };
 // 收藏项目
@@ -286,7 +287,7 @@ export const addTofavoriteAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/member/keep',
-    data
+    data,
   });
 };
 // 担保记录
@@ -294,7 +295,7 @@ export const memberGuaranteeAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/Guarantee/member_Guarantee',
-    data
+    data,
   });
 };
 // 添加好友
@@ -302,7 +303,7 @@ export const addFriendapplyAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/friend/addFriendapply',
-    data
+    data,
   });
 };
 // 发布评论
@@ -310,7 +311,7 @@ export const setCommentsAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/comprehensive/setComments',
-    data
+    data,
   });
 };
 // 预设的评论模板
@@ -325,7 +326,7 @@ export const manageFriendapplyAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/friend/manageFriendapply',
-    data
+    data,
   });
 };
 // 同意/拒绝好友请求
@@ -333,7 +334,7 @@ export const agreeFriendapplyAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/friend/agreeFriendapply',
-    data
+    data,
   });
 };
 // 删除好友
@@ -341,7 +342,7 @@ export const putDelFriendAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/friend/putDelFriend',
-    data
+    data,
   });
 };
 // 给好友设置备注
@@ -349,7 +350,7 @@ export const setRemarkAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/friend/saveName',
-    data
+    data,
   });
 };
 // 删除加好友申请
@@ -357,7 +358,7 @@ export const putDelapplyAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/friend/putDelapply',
-    data
+    data,
   });
 };
 // 分享给我的名片删除
@@ -365,7 +366,7 @@ export const delpushVistingcardAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/Visitingcard/delpushVistingcard',
-    data
+    data,
   });
 };
 // 分享给我的名片
@@ -380,7 +381,7 @@ export const shareVisitingcardAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/Visitingcard/shareVisitingcard',
-    data
+    data,
   });
 };
 // 删除名片
@@ -388,7 +389,7 @@ export const delVistingcardAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/Visitingcard/delVistingcard',
-    data
+    data,
   });
 };
 // 我的名片
@@ -403,7 +404,7 @@ export const createVisitingcardAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/Visitingcard/createVisitingcard',
-    data
+    data,
   });
 };
 // 上传名片
@@ -411,7 +412,6 @@ export const uploadVisitingcardAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'upload.php',
-    data
+    data,
   });
 };
-
