@@ -22,8 +22,6 @@ const useTemplate = (templateRef: any) => {
       isPrint.value = true
       nextTick(() => {
         html2canvs(templateRef.value).then(canvas => {
-          img.value = canvas.toDataURL('image/jpg')
-          return
           canvas.toBlob((blob: any) => {
             const file = new File([blob], '名片.jpg', { type: 'image/jpg' })
             // 将生成的图片下载到本地
