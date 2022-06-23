@@ -30,7 +30,8 @@
         </div>
       </div>
       <div class="content_4">
-        <networkVue :marginBottom="'18px'" v-for="(item, index) in recommend" :key="index" :item="item" />
+        <networkVue :marginBottom="'18px'" v-for="(item, index) in recommend" :key="index" :item="item"
+          @addFriendapply="addFriendapply" />
       </div>
       <div class="content_5" @click="getRecommendListSpecial">换一批</div>
     </div>
@@ -38,15 +39,18 @@
 </template>
 
 <script setup lang="ts">
-import { getIndustryListAPI, getRecommendList, provinceAPI } from "@/utils/api";
+import { addFriendapplyAPI, getIndustryListAPI, getRecommendList, provinceAPI } from "@/utils/api";
 import { ref } from "@vue/reactivity";
 import { useRoute } from "vue-router";
 // @ts-ignore
 import networkVue from "@/components/Network.vue";
+import { pa } from "element-plus/es/locale";
+import { ElMessage } from "element-plus";
 const title = ref('')
 const province = ref([])
 const industry = ref([])
 const recommend = ref([])
+const params = ref({ limit: 15, industry_one: 0, city: 0 })
 title.value = useRoute().query.title as string
 provinceAPI().then(res => {
   res.data.data.unshift({ id: 0, name: '全部' })
@@ -65,6 +69,8 @@ const selectItem = (item: any) => {
   });
   item.background = '#016BFF'
   item.color = '#fff'
+  params.value.city = item.id
+  getRecommendListSpecial()
 }
 getIndustryListAPI().then(res => {
   res.data.data.unshift({ id: 0, name: '全部' })
@@ -83,9 +89,11 @@ const selectIndustryItem = (item: any) => {
   });
   item.background = '#016BFF'
   item.color = '#fff'
+  params.value.industry_one = item.id
+  getRecommendListSpecial()
 }
 const getRecommendListSpecial = () => {
-  getRecommendList({ limit: 15 }).then(res => {
+  getRecommendList(params.value).then(res => {
     res.data.data.forEach((item: any) => {
       item.position == "" && (item.position = "暂未填写")
       item.company == "" && (item.company = "暂未填写")
@@ -94,6 +102,12 @@ const getRecommendListSpecial = () => {
   })
 }
 getRecommendListSpecial()
+const addFriendapply = (item: any) => {
+  addFriendapplyAPI({ toid: item.member_id }).then(res => {
+    if (res.data.code != 1) return ElMessage.error(res.data.msg)
+    ElMessage.success(res.data.msg)
+  })
+}
 </script>
 
 <style lang="scss" scoped>

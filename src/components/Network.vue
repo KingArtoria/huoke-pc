@@ -13,7 +13,7 @@
             <div class="content_1_1_2_2">{{ item.company }}</div>
           </div>
         </div>
-        <div class="content_1_2">加好友</div>
+        <div class="content_1_2" @click="addFriendapply(item)">加好友</div>
       </div>
       <div class="content_2">{{ item.count }}条合作信息</div>
     </div>
@@ -21,16 +21,22 @@
 </template>
 
 <script setup lang="ts">
+const emit = defineEmits(['addFriendapply'])
 // @ts-ignore
 interface Props {
   marginBottom?: string,
   item?: any,
+  addFriendapply?: Function
 }
 // @ts-ignore
 const props = withDefaults(defineProps<Props>(), {
   marginBottom: '0px',
-  item: ""
+  item: "",
+  addFriendapply: () => { }
 })
+const addFriendapply = (item: any) => {
+  emit('addFriendapply', item)
+}
 </script>
 
 <style lang="scss" scoped>
@@ -56,6 +62,7 @@ const props = withDefaults(defineProps<Props>(), {
         height: 59px;
         border-radius: 30px;
         margin-right: 25px;
+        transition: all .3s;
       }
 
       .content_1_1_2 {
