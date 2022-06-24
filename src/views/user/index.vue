@@ -30,6 +30,12 @@ const routes = [
   { text: '担保记录', path: 'guarantee' },
   { text: '我的好友', path: 'friend' },
   { text: '人脉管理', path: 'friend-apply' },
+  {
+    text: '名片夹', children: [
+      { text: '我的名片', path: 'card-user' },
+      { text: '我收到的', path: 'card-receive' },
+    ]
+  },
   { text: '我的道具', path: 'item' },
   { text: '会员特权', path: 'vip' },
   {

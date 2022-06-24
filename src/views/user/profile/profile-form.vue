@@ -11,7 +11,7 @@
             <el-form-item label="头像:" prop="head">
               <el-upload accept=".jpg,.webp" class="uploader" action="http://nad.bdhuoke.com/web_v1/member/upload"
                 :show-file-list="false" :on-success="uploadSuccess">
-                <img v-if="formData.head" :src="API_DOMAIN + formData.head" class="img" />
+                <img v-if="formData.head" :src="formData.head" class="img" />
                 <div v-else class="flex items-center flex-col">
                   <img :src="loadImg('tupian@2x.webp')" alt="" class="w-30 h-30">
                   <span class="link">上传图片</span>
@@ -209,7 +209,7 @@ memberInfoEditAPI({ type: 'get' }).then(res => {
 
 // 上传成功回调
 const uploadSuccess = (res: any) => {
-  formData.value.head = res.data
+  formData.value.head = API_DOMAIN + res.data
 }
 </script>
 

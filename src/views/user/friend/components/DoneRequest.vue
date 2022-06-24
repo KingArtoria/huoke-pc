@@ -3,7 +3,7 @@
     <div class="grid grid-cols-3 gap-10 mt-40">
       <div v-for="item in listData" class="item">
         <div class="flex">
-          <img :src="HEAD_DOMAIN + item.head" alt="" class="w-50 h-50 app-round mr-22">
+          <img :src="item.head" alt="" class="w-50 h-50 app-round mr-22">
           <div class="flex-1">
             <p class="color-303030 mb-10 pr-70">{{ item.nick_name }}</p>
             <p v-if="item.position" class="color-6A6A6A fs-12 mb-6">{{ item.position }}</p>

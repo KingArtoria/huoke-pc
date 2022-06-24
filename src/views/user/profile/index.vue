@@ -69,10 +69,9 @@
 </template>
 <script setup lang="ts">
 import { computed, ref } from 'vue';
-import { loadImg, once, getVipLevel } from '@/utils';
+import { loadImg, once, getVipLevel, removeToekn } from '@/utils';
 import { useRouter } from 'vue-router';
 import { userInfoAPI, memberInfoEditAPI } from '@/utils/api'
-import { API_DOMAIN, TOKEN, USER } from '@/utils/const'
 import Owner from '../item/components/Owner.vue';
 import CommonList from '../record/components/CommonList.vue';
 import Publish from '@/components/Publish.vue';
@@ -95,9 +94,7 @@ const logout = once((done: Function) => {
   }).then(() => {
     done()
     // 移除缓存
-    sessionStorage.removeItem(TOKEN)
-    localStorage.removeItem(TOKEN)
-    localStorage.removeItem(USER)
+    removeToekn()
     router.replace({
       path: '/login'
     })
@@ -120,7 +117,7 @@ Promise.all([
 })
 const headImg = computed(() => {
   if (userInfo.value.head) {
-    return API_DOMAIN + userInfo.value.head
+    return userInfo.value.head
   } else {
     return loadImg('default.webp')
   }

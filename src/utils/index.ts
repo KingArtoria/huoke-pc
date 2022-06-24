@@ -112,3 +112,12 @@ export const getVipLevel = (level: string) => {
       return {}
   }
 }
+
+/**
+ * 移除token
+ */
+export const removeToekn = () => {
+  sessionStorage.removeItem(TOKEN)
+  localStorage.removeItem(TOKEN)
+  localStorage.removeItem(USER)
+}

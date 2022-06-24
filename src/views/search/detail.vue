@@ -208,7 +208,7 @@
             <p class="p1 fs-16">全部回复（{{ commentList.length }}）</p>
             <div v-for="item in commentList" class="comment">
               <div class="flex">
-                <img :src="HEAD_DOMAIN + item.head" alt="" class="img">
+                <img :src="item.head" alt="" class="img">
                 <div class="flex-1">
                   <p class="flex items-end">
                     <span class="mr-10 mb-12 fs-16">{{ item.nick_name }}</span>
@@ -230,7 +230,7 @@
               <div v-if="item.child && item.child.length" class="reply-wrap">
                 <div v-for="reply in item.child" class="reply">
                   <div class="flex">
-                    <img :src="HEAD_DOMAIN + reply.head" alt="" class="img">
+                    <img :src="reply.head" alt="" class="img">
                     <div class="flex-1">
                       <p class="flex items-end">
                         <span class="mr-10 mb-12 fs-16">{{ reply.nick_name + '（发布人）' }}</span>
@@ -258,7 +258,7 @@
           <p class="p1 py-20 fs-16">浏览用户（{{ visitorList.length }}）</p>
           <div class="pl-16 pr-10">
             <div v-for="item in visitorList.slice(0, 3)" class="py-20 flex visitor-item">
-              <img :src="HEAD_DOMAIN + item.head" alt="" class="img mr-10">
+              <img :src="item.head" alt="" class="img mr-10">
               <div class="flex-1">
                 <p>{{ item.nick_name }}</p>
                 <p class="flex color-949494 fs-14 my-10">
@@ -278,7 +278,7 @@
           <img :src="loadImg(detailData.keep === 1 ? 'yishoucang@2x.webp' : 'shoucang@2x.webp')" alt="" class="img1">
           <span class="mt-12">收藏</span>
         </div>
-        <div class="side-item">
+        <div class="side-item" @click="cardVisible = true">
           <img :src="loadImg('图层 622@2x.webp')" alt="" class="img2">
           <span class="mt-12">递名片</span>
         </div>
@@ -289,6 +289,7 @@
   <UserList v-model="userListVisible" :users="visitorList" />
   <Reply ref="replyRef" :project-data="detailData" :is-vip="isVip" :reply-options="replyOptions"
     @update="getProjectInfo" />
+  <ShareCard v-if="cardVisible" v-model="cardVisible" :to-id="detailData.member_id" />
 </template>
 <script setup lang="ts">
 import { ref, computed } from 'vue';
@@ -307,6 +308,7 @@ import { ElMessage } from 'element-plus';
 import Reply from './components/Reply.vue'
 import useTypeOptions from '@/composables/useTypeOptions'
 import Empty from '@/components/Empty.vue';
+import ShareCard from './components/ShareCard.vue';
 
 const route = useRoute()
 const { id } = route.params
@@ -473,6 +475,8 @@ const sendMsg = () => {
 
 }
 
+// 递名片
+const cardVisible = ref(false)
 </script>
 
 <style lang="scss" scoped>

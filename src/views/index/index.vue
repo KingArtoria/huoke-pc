@@ -89,7 +89,7 @@
         </div>
         <div v-else class="user">
           <div class="flex pb-20">
-            <img :src="userInfo.head ? API_DOMAIN + userInfo.head : photoImg" alt="" class="user-photo">
+            <img :src="userInfo.head ? userInfo.head : photoImg" alt="" class="user-photo">
             <div>
               <div class="text">
                 <span>hi，{{ userInfo.nick_name }}</span>

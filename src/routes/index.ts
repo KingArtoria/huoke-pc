@@ -43,6 +43,10 @@ const routes: RouteRecordRaw[] = [
       { path: 'phone', component: () => import('@/views/user/account/phone.vue') },
       // 修改密码
       { path: 'password', component: () => import('@/views/user/account/password.vue') },
+      // 名片夹(我的名片)
+      { path: 'card-user', component: () => import('@/views/user/card/index.vue') },
+      // 名片夹(收到的名片)
+      { path: 'card-receive', component: () => import('@/views/user/card/index.vue') },
     ],
     meta: { authentication: true },
   },

@@ -16,8 +16,8 @@
             <el-cascader v-model="formData.areaArr" :props="cascaderProps" collapse-tags collapse-tags-tooltip clearable
               :show-all-levels="false" />
           </el-form-item>
-          <el-form-item v-if="[1, 2, 11].includes(type)" label="合作类型" prop="cooptype_id">
-            <el-radio-group v-model="formData.cooptype_id">
+          <el-form-item v-if="[1, 2, 11].includes(type)" label="合作类型" prop="cooptype">
+            <el-radio-group v-model="formData.cooptype">
               <el-radio v-for="item in cooperationTypes" :label="item.id">{{ item.name }}</el-radio>
             </el-radio-group>
           </el-form-item>
@@ -157,11 +157,11 @@ type.value = parseInt(route.query.type as string || '0')
 const formRef = ref()
 const formData = ref({
   type, // 合作类型
-  title: '优质货源', // 合作标题
+  title: '', // 合作标题
   areaArr: [], // 合作区域
-  cooptype_id: null, // 合作类型
+  cooptype: null, // 合作类型
   promotion: null, // 推广方式
-  price: 9.9, // 单价
+  price: '', // 单价
   settmod_id: null, // 结算方式
   settcycle_id: null, // 结算周期
   info: null, // 需求详情
@@ -180,7 +180,7 @@ const formData = ref({
   profits: null, // 预计年利润
   quantity: null, // 广告位数量
   amount: null, // 线下场地数量
-  contact: '18112341234', // 联系电话
+  contact: '', // 联系电话
   wx: null, // 微信
   qq: null, // qq
   platform: 1, // 支持平台交易
@@ -204,7 +204,7 @@ const rules = {
   profits: [{ required: true, message: '请输入', trigger: 'blur' }], // 预计年利润
   quantity: [{ required: true, message: '请输入', trigger: 'blur' }], // 广告位数量
   amount: [{ required: true, message: '请输入', trigger: 'blur' }], // 线下场地数量
-  cooptype_id: [{ required: true, message: '请选择合作类型', trigger: 'change' }], // 合作类型
+  cooptype: [{ required: true, message: '请选择合作类型', trigger: 'change' }], // 合作类型
   promotion: [{ required: true, message: '请选择推广方式', trigger: 'change' }],
   price: [{
     validator: (rule: any, value: string, callback: Function) => {

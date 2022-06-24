@@ -30,10 +30,10 @@
               <el-checkbox v-model="isRemember">记住登录状态</el-checkbox>
               <div class="box_tabs_login_link_text" @click="isFoundPwd = true">忘记密码</div>
             </div>
-            <div class="third">
+            <!-- <div class="third">
               <span>第三方账号登录</span>
               <img :src="wxImg" alt="" class="img">
-            </div>
+            </div> -->
           </el-tab-pane>
           <el-tab-pane label="注册" name="register" class="box_tabs_login">
             <div class="tip-wrap">

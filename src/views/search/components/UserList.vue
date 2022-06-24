@@ -6,7 +6,7 @@
     <p class="mb-14">浏览人数：{{ users.length }}</p>
     <div class="grid grid-cols-2 gap-10">
       <div v-for="item in currentData" class="item flex items-center">
-        <img :src="HEAD_DOMAIN + item.head" alt="" class="img">
+        <img :src="item.head" alt="" class="img">
         <div>
           <p class="flex items-end">
             <span class="mb-10 text">{{ item.nick_name }}</span>
