@@ -42,8 +42,8 @@
           <div class="grid grid-cols-2 gap-x-4 gap-y-10 px-10 py-20">
             <div v-for="item in uploadImgs" class="img-wrap flex items-center justify-center">
               <img :src="item.src" alt="">
-              <div v-if="item.value !== activeImg.value" class="mask app-flex-center">
-                <button class="change-btn" @click="activeImg = item">替换</button>
+              <div :style="{ display: isShowSelect ? 'flex' : 'none' }" class="mask app-flex-center">
+                <button class="change-btn" @click="setActiveImg(item)">替换</button>
               </div>
             </div>
             <div v-if="uploadImgs.length > 0" class="img-wrap flex items-center justify-center" @click="doUpload">
@@ -70,8 +70,8 @@
       </div>
       <div class="workspace flex-1 relative h-full">
         <div v-if="activeToolbar === 'template' || activeToolbar === 'img'" class="pt-80">
-          <component ref="templateRef" :is="activeTemplate.component" :src="activeImg.src"
-            @change="activeToolbar = 'img'"></component>
+          <component ref="templateRef" :is="activeTemplate.component" :src="materialImgs" @change="chooseImg">
+          </component>
         </div>
         <div v-if="activeToolbar === 'user'">
           <div class="pt-80 flex justify-center">
@@ -134,15 +134,7 @@ const templates = ref([
   { value: 8, component: Template8, preview: 'shu4.png', style: 'vertical' },
 ])
 const activeTemplate = ref(templates.value[0])
-const changeVisible = (item: any) => {
-  if (item.value !== activeTemplate.value.value) {
-    item.visible = true
-  }
-}
 const templateRef = ref()
-// const submit = () => {
-//   templateRef.value.save()
-// }
 const submit = once((done: Function) => {
   nextTick(() => {
     templateRef.value.save().then((url: string) => {
@@ -156,12 +148,26 @@ const submit = once((done: Function) => {
   })
 })
 
-// 上传图片素材
+// 用户上传的图片素材
 const uploadImgs = ref<any>([])
-const activeImg = ref<any>({
-  value: '',
-  src: loadImg('code.png')
-})
+// 传递给模板的图片素材
+const materialImgs = ref<any>()
+// 标识要替换的图片在模板里是哪一个
+const curMaterialIndex = ref(0)
+// 是否在左侧用户上传的图片素材区显示替换按钮
+const isShowSelect = ref(false)
+// 模板中的图片点击了替换按钮
+const chooseImg = (index: number = 0) => {
+  curMaterialIndex.value = index
+  activeToolbar.value = 'img'
+  isShowSelect.value = true
+}
+const setActiveImg = (item: any) => {
+  if (!materialImgs.value) {
+    materialImgs.value = []
+  }
+  materialImgs.value[curMaterialIndex.value] = item.src
+}
 const fileRef = ref()
 onMounted(() => {
   fileRef.value.addEventListener('change', handleFile)
@@ -361,12 +367,6 @@ const delUserCard = once((done: Function) => {
   padding: 4px;
   position: relative;
   cursor: pointer;
-
-  &:hover {
-    .mask {
-      display: flex;
-    }
-  }
 }
 
 .add-icon {

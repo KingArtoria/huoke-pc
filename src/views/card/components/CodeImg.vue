@@ -1,5 +1,5 @@
 <template>
-  <div v-if="visible" class="code absolute" :style="{ left, top }">
+  <div v-if="visible" class="code__img absolute" :style="{ left, top }">
     <img :src="src" alt="" :style="{ width, height }" class="cursor-pointer">
     <div v-if="!isPrint" class="close app-flex-center" @click="removeImg">x</div>
     <div class="mask app-flex-center">
@@ -9,14 +9,17 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
-defineProps<{
-  width: string, // 图片宽度
-  height: string, // 图片高度
+withDefaults(defineProps<{
+  width?: string, // 图片宽度
+  height?: string, // 图片高度
   left: string, // 图片x轴位置
   top: string, // 图片y轴位置
   src: string, // 图片地址
   isPrint: boolean,
-}>()
+}>(), {
+  width: 'auto',
+  height: 'auto',
+})
 
 const call = defineEmits(['change'])
 const callImg = () => {
@@ -29,7 +32,7 @@ const removeImg = () => {
 </script>
 
 <style lang="scss" scoped>
-.code {
+.code__img {
   border: 2px solid transparent;
   padding: 6px;
 

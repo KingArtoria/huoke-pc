@@ -26,6 +26,8 @@
       <span class="flex-shrink-0">业务：</span>
       <AutoInput value="业务" placeholder="业务" :print="isPrint" />
     </div>
+    <CodeImg width="113px" height="113px" top="73px" left="832px" :src="src[0] || img1" :is-print="isPrint"
+      @change="callImg(0)" />
   </div>
   <img :src="img" alt="">
 </template>
@@ -34,7 +36,18 @@ import { ref } from 'vue';
 import AutoInput from './AutoInput.vue';
 import { loadImg } from '@/utils';
 import useTemplate from '../composables/useTemplate'
+import CodeImg from './CodeImg.vue';
 
+withDefaults(defineProps<{
+  src: any, // 图片地址
+}>(), {
+  src: []
+})
+const call = defineEmits(['change'])
+const callImg = (index: number) => {
+  call('change', index)
+}
+const img1 = loadImg('code.png')
 const templateRef = ref()
 const img = ref('')
 const { isPrint, save } = useTemplate(templateRef)
@@ -56,17 +69,6 @@ defineExpose({
 .logo {
   top: 88px;
   left: 98px;
-}
-
-.code {
-  top: 73px;
-  right: 45px;
-
-  .code-temp {
-    width: 113px;
-    height: 116px;
-    border: 1px solid red;
-  }
 }
 
 .name {

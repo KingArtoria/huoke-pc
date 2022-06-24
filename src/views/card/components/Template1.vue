@@ -31,7 +31,7 @@
         <AutoInput value="业务" placeholder="业务" :print="isPrint" />
       </div>
     </div>
-    <CodeImg width="140px" height="140px" top="326px" left="802px" :src="src" :is-print="isPrint" @change="callImg" />
+    <CodeImg width="140px" height="140px" top="326px" left="802px" :src="src[0]" :is-print="isPrint" @change="callImg(0)" />
   </div>
   <img :src="img" alt="">
 </template>
@@ -40,12 +40,16 @@ import { ref } from 'vue';
 import AutoInput from './AutoInput.vue';
 import useTemplate from '../composables/useTemplate'
 import CodeImg from './CodeImg.vue';
-defineProps<{
-  src: string, // 图片地址
-}>()
+import { loadImg } from '@/utils/index'
+
+withDefaults(defineProps<{
+  src: any, // 图片地址
+}>(), {
+  src: [loadImg('code.png')]
+})
 const call = defineEmits(['change'])
-const callImg = () => {
-  call('change')
+const callImg = (index: number) => {
+  call('change', index)
 }
 
 const templateRef = ref()
