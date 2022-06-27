@@ -299,8 +299,8 @@ import iconImg from '@/assets/baozhang@2x.webp'
 import { loadImg, once, getUser } from '@/utils'
 import Tip from './components/Tip.vue';
 import UserList from './components/UserList.vue';
-import { projectInfoAPI, contactInfoAPI, addTofavoriteAPI, addFriendapplyAPI, userInfoAPI, setCommentsAPI, getCommentContentAPI } from '@/utils/api'
-import { COOPERATION_TYPES, HEAD_DOMAIN, VIP_LEVEL } from '@/utils/const'
+import { projectInfoAPI, contactInfoAPI, addTofavoriteAPI, addFriendapplyAPI, setCommentsAPI, getCommentContentAPI } from '@/utils/api'
+import { COOPERATION_TYPES } from '@/utils/const'
 import { matchLabel } from '@/utils/index'
 import VipIcon from '@/components/VipIcon.vue';
 import dayjs from 'dayjs'
@@ -309,6 +309,8 @@ import Reply from './components/Reply.vue'
 import useTypeOptions from '@/composables/useTypeOptions'
 import Empty from '@/components/Empty.vue';
 import ShareCard from './components/ShareCard.vue';
+import useUser from '@/composables/useUser';
+import { router } from '@/routes';
 
 const route = useRoute()
 const { id } = route.params
@@ -317,10 +319,7 @@ const { id } = route.params
 const visitorList = ref<any>([])
 
 // 获取当前用户是否是vip
-const isVip = ref(false)
-userInfoAPI().then(res => {
-  isVip.value = res.data.data.user_info.maxvip !== VIP_LEVEL.ORDINARY
-})
+const { isVip } = useUser()
 
 // 当前项目是否是项目发布者
 const isCreator = ref(false)
@@ -472,7 +471,12 @@ const addFriend = once((done: Function) => {
 })
 // 发消息
 const sendMsg = () => {
-
+  router.push({
+    path: '/message/chat',
+    query: {
+      userId: detailData.value.member_id
+    }
+  })
 }
 
 // 递名片

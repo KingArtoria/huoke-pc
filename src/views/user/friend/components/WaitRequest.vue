@@ -45,7 +45,7 @@ getData()
 let loading = false
 const setState = (member_id: number, type: number) => {
   if (loading) return
-  ElMessageBox.confirm(`确定${type === 1 ? '同意' : '不同意'}吗？`, '提示', {
+  ElMessageBox.confirm(`确定${type === 1 ? '同意' : '拒绝'}吗？`, '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning',

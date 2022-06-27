@@ -1,7 +1,9 @@
 <template>
   <div class="empty-wrap">
     <img :src="loadImg('zanwushuju@2x (1).webp')" alt="" class="empty-img">
-    <p class="empty-text">暂无数据</p>
+    <p class="empty-text">
+      <slot>暂无数据</slot>
+    </p>
   </div>
 </template>
 <script setup lang="ts">

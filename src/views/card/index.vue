@@ -12,7 +12,7 @@
           <span class="dot ml-10 mr-6"></span>
           <span class="primary fs-20">商务名片</span>
         </div>
-        <img :src="loadImg('nianka.png')" alt="">
+        <img :src="loadImg('nianka.png')" alt="" class="cursor-pointer" @click="nav('/buy')">
       </div>
       <div class="btn-wrap flex justify-end">
         <button class="btn" @click="submit">保存并下载</button>
@@ -66,6 +66,7 @@
               <img :src="item.url" alt="" class="preview-img">
             </div>
           </div>
+          <Empty v-if="userCards.length === 0" />
         </div>
       </div>
       <div class="workspace flex-1 relative h-full">
@@ -107,6 +108,7 @@ import Template7 from './components/Template7.vue';
 import Template8 from './components/Template8.vue';
 import { createVisitingcardAPI, delVistingcardAPI, myVisitingcardAPI } from '@/utils/api';
 import { ElMessage, ElMessageBox } from 'element-plus';
+import Empty from '@/components/Empty.vue';
 
 const router = useRouter()
 const navToHome = () => {
@@ -226,6 +228,9 @@ const delUserCard = once((done: Function) => {
     done()
   })
 })
+const nav = (path: string) => {
+  router.push(path)
+}
 </script>
 
 <style lang="scss" scoped>

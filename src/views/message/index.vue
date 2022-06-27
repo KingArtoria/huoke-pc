@@ -2,15 +2,15 @@
   <div class="app-page flex py-30">
     <nav class="nav">
       <div class="bg-white px-20 pt-40 pb-6 flex flex-col items-center">
-        <img :src="loadImg('banner_big@2x.webp')" alt="" class="w-80 h-80 app-round mx-auto">
-        <p class="fs-17 m-16 mb-8">{{ userInfo.name }}</p>
+        <img :src="userInfo.head" alt="" class="w-80 h-80 app-round mx-auto">
+        <p class="fs-17 m-16 mb-8">{{ userInfo.nick_name }}</p>
         <p class="flex desc items-center justify-center mb-22">
-          <span>{{ userInfo.posi }}</span>
-          <span class="line"></span>
-          <span>{{ userInfo.comp }}</span>
+          <span>{{ userInfo.position }}</span>
+          <span v-if="userInfo.position && userInfo.company" class="line"></span>
+          <span>{{ userInfo.company }}</span>
         </p>
-        <button class="btn primary">发布合作</button>
-        <button class="btn default">找人脉</button>
+        <button class="btn primary" @click="openPublish">发布合作</button>
+        <button class="btn default" @click="nav('/contacts-list')">找人脉</button>
       </div>
       <!-- 好友列表 -->
       <div class="bg-white mt-14 py-20">
@@ -24,32 +24,51 @@
     <div class="flex-1">
       <router-view></router-view>
     </div>
+    <!-- 发布合作信息 -->
+    <Publish ref="publishRef" />
   </div>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { loadImg } from '@/utils';
+import Publish from '@/components/Publish.vue';
+import { memberInfoEditAPI, userInfoAPI } from '@/utils/api';
+
 const route = useRoute()
 const router = useRouter()
 const routes = [
   { text: '好友列表', path: '/message/friends' },
   { text: '通知', path: '/message/inform' },
-  { text: '私信', path: '/message/chat-list' },
+  { text: '私信', path: '/message/chat' },
 ]
 
-const userInfo = ref({
-  name: '张三',
-  posi: '商务经理',
-  comp: '徐州奉佛跟你说',
-  img: '',
+const userInfo = ref<any>({})
+// 发布合作信息
+const publishRef = ref()
+const openPublish = () => {
+  publishRef.value.open()
+}
+
+Promise.all([
+  userInfoAPI(),
+  memberInfoEditAPI({ type: 'get' })
+]).then(([res1, res2]) => {
+  res1.data.data.user_info.phone = res1.data.data.user_info.phone.replace(/^(\d{3})\d{4}(\d{4})$/, "$1****$2");
+  userInfo.value = Object.assign(res2.data.data || {}, res1.data.data.user_info)
+  if (!userInfo.value.head) {
+    userInfo.value.head = loadImg('default.webp')
+  }
 })
+
+const nav = (path: string) => {
+  router.push(path)
+}
 </script>
 
 <style lang="scss" scoped>
 .nav {
   width: 258px;
-  margin-right: 24px;
   color: #1B1B1B;
 }
 

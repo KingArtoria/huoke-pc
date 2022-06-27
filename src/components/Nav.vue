@@ -85,9 +85,11 @@
         <li class="nav-item"><span class="item-text">帮助中心</span></li>
         <li class="nav-item"><span class="item-text">APP下载</span></li>
         <li class="nav-item relative" @mouseover="messageBoxVisible = true" @mouseleave="messageBoxVisible = false">
-          <span class="item-text" @click="navToMessage">消息</span>
+          <el-badge :is-dot="hasMessage" class="h-full">
+            <span class="item-text" @click="navToMessage">消息</span>
+          </el-badge>
           <Transition name="fade">
-            <MessageBox v-show="messageBoxVisible" />
+            <MessageBox v-show="messageBoxVisible" @change="msgChange" />
           </Transition>
         </li>
       </ul>
@@ -99,6 +101,7 @@ import { useRouter } from 'vue-router';
 import { getUser } from '@/utils/index'
 import MessageBox from '@/views/index/components/MessageBox.vue';
 import { computed, ref } from 'vue';
+import { getMessageAPI } from '@/utils/api';
 
 const router = useRouter()
 const isLogin = computed(() => {
@@ -115,15 +118,6 @@ const navToBuy = (tab: string) => {
 }
 // 跳转到个人中心
 const navToUser = () => {
-  // if (isLogin.value) {
-  //   router.push({
-  //     path: `/user/profile`
-  //   })
-  // } else {
-  //   router.push({
-  //     path: '/login',
-  //   })
-  // }
   router.push({
     path: `/user/profile`
   })
@@ -139,11 +133,16 @@ const navToLogin = (tab: string) => {
 }
 
 const messageBoxVisible = ref(false)
+// 是否有消息
+const hasMessage = ref(false)
 // 跳转到消息页面
 const navToMessage = () => {
   router.push({
     path: '/message/friends'
   })
+}
+const msgChange = (msgLen: number) => {
+  hasMessage.value = msgLen > 0
 }
 </script>
 
@@ -380,5 +379,10 @@ const navToMessage = () => {
 .fade-enter-active,
 .fade-leave-active {
   transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+::v-deep(.el-badge__content.is-fixed.is-dot) {
+  top: 20px;
+  right: 20px;
 }
 </style>

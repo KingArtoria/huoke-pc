@@ -36,54 +36,18 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
-import { getFriendListAPI, putDelFriendAPI } from '@/utils/api';
 import Remark from './Remark.vue';
-import { ElMessage, ElMessageBox } from 'element-plus';
-import { HEAD_DOMAIN } from '@/utils/const';
-import { once } from '@/utils';
 import Empty from '@/components/Empty.vue';
+import useFriends from '../composables/useFriends'
 
 // 添加备注
 const remarkRef = ref()
 const openRemark = (id: number) => {
   remarkRef.value.open(id)
 }
-// 删除好友
-const delFriend = once((done: Function, friend: any) => {
-  ElMessageBox.confirm(`将好友“${friend.nick_name}”删除，将同时删除与该好友的聊天记录`, '删除好友', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning',
-  }).then(() => {
-    putDelFriendAPI({ toid: friend.id }).then(() => {
-      done()
-      ElMessage.success('删除成功')
-      getData()
-    }).catch(() => {
-      done()
-    })
-  }).catch(() => {
-    done()
-  })
-})
 
-const friends = ref<any>([])
-let searchText = ''
-const getData = () => {
-  getFriendListAPI({ nick_name: searchText }).then(res => {
-    const { list } = res.data.data
-    let data: any = []
-    list.forEach((v: any) => {
-      data = data.concat(v.data)
-    })
-    friends.value = data
-  })
-}
+const { friends, search, delFriend, getData } = useFriends()
 getData()
-const search = (val: string) => {
-  searchText = val
-  getData()
-}
 
 defineExpose({
   search
@@ -92,7 +56,6 @@ defineExpose({
 
 <style lang="scss" scoped>
 @import '@/views/message/friends.scss';
-.remark {
-  color: #56689B;
-}
+
+
 </style>

@@ -415,3 +415,39 @@ export const uploadVisitingcardAPI = (data: any): AxiosPromise<any> => {
     data,
   });
 };
+// 签到
+export const setPunchCardAPI = (): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/coupons/setPunchCard',
+  });
+};
+// 获取签到信息
+export const getSignInfoAPI = (): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/coupons/getSignInfo',
+  });
+};
+// 兑换列表
+export const getCouponsAPI = (): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/order/getCoupons',
+  });
+};
+// 系统消息
+export const getMessageAPI = (): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/member/getMessage',
+  });
+};
+// 系统消息
+export const getMemberInfoAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/member/getMemberInfo',
+    data
+  });
+};

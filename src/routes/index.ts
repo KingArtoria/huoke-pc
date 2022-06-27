@@ -61,7 +61,7 @@ const routes: RouteRecordRaw[] = [
       // 好友
       { path: 'friends', component: () => import('@/views/message/friends.vue') },
       // 私信
-      { path: 'chat-list', component: () => import('@/views/message/chat-list.vue') },
+      // { path: 'chat-list', component: () => import('@/views/message/chat-list.vue') },
       // 聊天
       { path: 'chat', component: () => import('@/views/message/friends_info.vue') },
     ],

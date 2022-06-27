@@ -1,52 +1,88 @@
 <template>
   <div class="bg-white">
     <p class="title">全部通知</p>
-    <div class="item relative">
-      <img :src="loadImg('banner_big@2x.webp')" alt="" class="w-60 h-60 app-round mr-24">
+    <div v-for="item in friendRequest" :key="item.id" class="item relative">
+      <img :src="item.head" alt="" class="w-60 h-60 app-round mr-24">
       <div class="flex-1">
         <p class="flex items-end color-989898">
           <span class="fs-16 mr-20">好友请求</span>
-          <span>2022-02-17 12:33</span>
         </p>
-        <p class="fs-16 color-1b1b1b mt-16">英梨梨请求加您为好友,同行2个共同好友</p>
+        <p class="fs-16 color-1b1b1b mt-16"><span class="light">{{ item.nick_name }}</span>请求加您为好友,同行{{ item.count
+        }}个共同好友</p>
         <div class="right flex">
-          <div class="right-item app-flex-center mr-40">
+          <div class="right-item app-flex-center mr-40" @click="setState(item.member_id, 2)">
             <img :src="loadImg('jujue@2x.webp')" alt="" class="x-icon">
           </div>
-          <div class="right-item app-flex-center">
+          <div class="right-item app-flex-center" @click="setState(item.member_id, 1)">
             <img :src="loadImg('tongyi@2x.webp')" alt="" class="check-icon">
           </div>
         </div>
       </div>
     </div>
-    <div class="item">
-      <img :src="loadImg('banner_big@2x.webp')" alt="" class="w-60 h-60 app-round mr-24">
+    <div v-for="item in notify" :key="item.id" class="item" @click="clickNotify(item.url)">
+      <img src="http://39.106.208.234/pic/img_/zs.png" alt="" class="w-60 h-60 app-round mr-24">
       <div class="flex-1">
         <p class="flex items-end color-989898">
           <span class="fs-16 mr-20">公告</span>
-          <span>2022-02-17 12:33</span>
         </p>
-        <p class="fs-16 color-1b1b1b mt-16">您有一个免费会员待领取，APP个人中心-分享好友查看邀请好友总数。</p>
-        <img :src="loadImg('yqhy_banner@2x.webp')" alt="" class="mt-10">
+        <p class="fs-16 color-1b1b1b mt-16">{{ item.content }}</p>
+        <img :src="item.pic" alt="" class="mt-10">
       </div>
     </div>
-    <div class="item">
-      <img :src="loadImg('banner_big@2x.webp')" alt="" class="w-60 h-60 app-round mr-24">
-      <div class="flex-1">
-        <p class="flex items-end color-989898">
-          <span class="fs-16 mr-20">公告</span>
-          <span>2022-02-17 12:33</span>
-        </p>
-        <p class="fs-16 color-1b1b1b mt-16">发布优质项目，即可获得现金奖励，现金奖励将于次日11点到账用户钱包。</p>
-        <img :src="loadImg('fbyzxm_banner@2x.webp')" alt="" class="mt-10">
-      </div>
-    </div>
-    <div class="item"></div>
+    <Empty v-if="friendRequest.length === 0 && notify.length === 0" />
   </div>
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
 import { loadImg } from '@/utils';
+import { manageFriendapplyAPI, agreeFriendapplyAPI, getMessageAPI } from '@/utils/api'
+import { ElMessage, ElMessageBox } from 'element-plus';
+import Empty from '@/components/Empty.vue';
+
+// 好友请求
+const friendRequest = ref<any>([])
+const getData = () => {
+  manageFriendapplyAPI({ type: 1 }).then(res => {
+    friendRequest.value = res.data.data
+  })
+}
+getData()
+// 通过(1)/不同意(2)
+let loading = false
+const setState = (member_id: number, type: number) => {
+  if (loading) return
+  ElMessageBox.confirm(`确定${type === 1 ? '同意' : '拒绝'}吗？`, '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning',
+  }).then(() => {
+    loading = true
+    agreeFriendapplyAPI({
+      toid: member_id,
+      status: type
+    }).then(() => {
+      ElMessage.success('操作成功')
+      loading = false
+      // 刷新数据
+      getData()
+    }).catch(() => {
+      loading = false
+    })
+  }).catch(() => {
+  })
+}
+
+// 公告
+const notify = ref<any>([])
+getMessageAPI().then(res => {
+  notify.value = res.data.data
+})
+// 打开公告链接
+const clickNotify = (url: string) => {
+  if (url) {
+    window.open(url)
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -108,5 +144,9 @@ import { loadImg } from '@/utils';
 
 .color-1b1b1b {
   color: #1b1b1b;
+}
+
+.light {
+  color: #1F73F1;
 }
 </style>

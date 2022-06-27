@@ -1,10 +1,11 @@
 .content {
-  width: 1109px;
   height: 719px;
   background: #fff;
   display: flex;
+
   .content_1 {
     width: 822px;
+
     .content_1_1 {
       width: 100%;
       height: 66px;
@@ -14,16 +15,19 @@
       justify-content: space-between;
       padding: 0 34px;
       cursor: pointer;
+
       .content_1_1_1 {
         width: 10px;
         height: 19px;
       }
+
       .content_1_1_2 {
         .content_1_1_2_1 {
           display: flex;
           align-items: center;
           margin-bottom: 8px;
           justify-content: flex-end;
+
           .content_1_1_2_1_1 {
             font-size: 16px;
             font-family: PingFang SC;
@@ -32,11 +36,13 @@
             line-height: 1;
             margin-right: 7px;
           }
+
           .content_1_1_2_1_2 {
             width: 37px;
             height: 13px;
           }
         }
+
         .content_1_1_2_2 {
           font-size: 12px;
           font-family: PingFang SC;
@@ -46,22 +52,142 @@
           text-align: end;
         }
       }
+
       .content_1_1_3 {
         width: 16px;
         height: 14px;
       }
     }
   }
-  .content_2 {
+
+  .contacts {
     border-left: 1px solid #f3f3f3;
-    .content_2_1 {
+    width: 287px;
+
+    .contacts-header {
       height: 66px;
       line-height: 66px;
       font-size: 16px;
       font-family: PingFang SC;
       font-weight: 500;
       color: #393939;
-      margin-left: 17px;
+      padding-left: 17px;
+      border-bottom: 1px solid #f3f3f3;
+    }
+
+    .contacts-item {
+      color: #1B1B1B;
+      padding: 4px 20px 14px 16px;
+      border-bottom: 1px solid #f3f3f3;
+      cursor: pointer;
+      transition: all 0.3s;
+
+      &:hover {
+        background: #F3F3F3;
+      }
+
+      &:last-of-type {
+        border-bottom: 0;
+      }
+
+      .head {
+        border-radius: 50%;
+      }
+
+      .time {
+        color: #ABABAB;
+      }
+
+      .text {
+        line-height: 25px;
+        margin-top: 10px;
+      }
     }
   }
+}
+
+.main {
+  height: 423px;
+  overflow: auto;
+  padding: 20px 30px;
+
+  .text {
+    padding: 10px 15px;
+    border-radius: 5px;
+    color: #0F0F0F;
+    line-height: 29px;
+    font-size: 15px;
+    max-width: 400px;
+  }
+
+  .self {
+    .text {
+      margin: 0 15px 0 20px;
+      background: #E5EFFF;
+    }
+
+    flex-direction: row-reverse;
+  }
+
+  .target {
+    .text {
+      margin: 0 20px 0 15px;
+      background: #F4F4F4;
+    }
+  }
+  .time {
+    font-size: 12px;
+    color: #9F9F9F;
+  }
+}
+
+.write {
+  height: 230px;
+  border-top: 1px #f3f3f3 solid;
+
+  .options {
+    font-size: 15px;
+    color: #454545;
+  }
+
+  .line {
+    width: 1px;
+    height: 13px;
+    background: #D3D3D3;
+    margin-right: 20px;
+  }
+
+  .btn {
+    width: 109px;
+    height: 40px;
+    background: #1F73F1;
+    border-radius: 5px;
+    font-size: 16px;
+    color: white;
+
+    &.disabled {
+      background: #E9E9E9;
+      color: #A2A2A2;
+    }
+  }
+}
+
+.head {
+  border-radius: 50%;
+}
+
+.action-item-wrap {
+  padding: 8px 0;
+}
+
+.action-item {
+  padding: 12px 20px;
+  color: #6A6A6A;
+  cursor: pointer;
+
+  &:hover {
+    background: #eff5fe;
+    color: #2074F1;
+  }
+
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="p-34 bg-white fs-16">
     <p class="fs-18 mb-44">会员特权</p>
-    <p class="tip">您还不是会员哦，开通会员享受超多超值特权</p>
+    <p v-if="!isVip" class="tip">您还不是会员哦，开通会员享受超多超值特权</p>
     <table class="table">
       <thead class="thead">
         <tr>
@@ -338,7 +338,9 @@
 <script setup lang="ts">
 import { loadImg } from '@/utils';
 import { useRouter } from 'vue-router';
+import useUser from '@/composables/useUser';
 
+const { isVip } = useUser()
 const router = useRouter()
 const navTo = () => {
   router.push({

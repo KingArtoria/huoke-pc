@@ -24,7 +24,7 @@ export const loadImg = (url: string) => {
 /**
  * 从会话缓存或本地缓存里获取用户信息
  */
-export const getUser = () => {
+export const getUser = (): IUser | boolean => {
   const token = sessionStorage.getItem(TOKEN) || localStorage.getItem(TOKEN);
   if (!token) return false
   const userStr = sessionStorage.getItem(USER) || localStorage.getItem(USER);

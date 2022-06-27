@@ -31,13 +31,15 @@
       <div class="conversion">
         <div class="leader">积分兑换</div>
         <div class="grid grid-cols-3 gap-y-16">
-          <div v-for="item in items" class="flex items-center item">
-            <div class="img-wrap"></div>
+          <div v-for="item in items" :key="item.id" class="flex items-center item">
+            <div class="img-wrap app-flex-center">
+              <img :src="DOMAIN + item.image" alt="" class="img">
+            </div>
             <div class="flex-1">
               <p class="title">{{ item.title }}</p>
-              <p class="desc overflow-clip">{{ item.desc }}</p>
-              <p class="score">{{ item.score }} <span>积分</span></p>
-              <button class="btn app-flex-center">兑换</button>
+              <p class="desc overflow-clip">{{ item.remark }}</p>
+              <p class="score">{{ item.integral }} <span>积分</span></p>
+              <button class="btn app-flex-center" @click="exchange(item)">兑换</button>
             </div>
           </div>
         </div>
@@ -50,7 +52,7 @@
       <img :src="blackCloseImg" alt="" class="close" @click="successVisible = false">
       <p class="title">签到成功</p>
       <div class="img-wrap">
-        <p class="sub-title">恭喜您获得100积分</p>
+        <p class="sub-title">恭喜您获得{{ todayScore }}积分</p>
       </div>
       <div class="btn-wrap">
         <button class="btn">知道了</button>
@@ -64,36 +66,68 @@ import closeImg from '@/assets/close_jf@2x.webp'
 import signImg from '@/assets/xuan_x@2x.webp'
 import giftImg from '@/assets/diqit@2x.webp'
 import blackCloseImg from '@/assets/close_qdcg@2x.webp'
+import { getSignInfoAPI, setPunchCardAPI, getCouponsAPI } from '@/utils/api'
+import { DOMAIN } from '@/utils/const'
+import { ElMessage, ElMessageBox } from 'element-plus';
+
+
 const call = defineEmits(['close'])
 // 用户积分
 const score = ref(0)
+// 今日签到积分
+const todayScore = ref(0)
 // 用户VIP天数
 const vipDays = ref(0)
 // 签到天数
 const signDay = ref([
-  { day: 1, isSign: true, score: 100, isGift: false },
-  { day: 2, isSign: true, score: 88, isGift: false },
-  { day: 3, isSign: false, score: 100, isGift: false },
-  { day: 4, isSign: false, score: 88, isGift: false },
-  { day: 5, isSign: false, score: 100, isGift: false },
-  { day: 6, isSign: false, score: 88, isGift: false },
-  { day: 7, isSign: false, score: 100, isGift: true },
+  { day: 1, isSign: false, score: 0, isGift: false },
+  { day: 2, isSign: false, score: 0, isGift: false },
+  { day: 3, isSign: false, score: 0, isGift: false },
+  { day: 4, isSign: false, score: 0, isGift: false },
+  { day: 5, isSign: false, score: 0, isGift: false },
+  { day: 6, isSign: false, score: 0, isGift: false },
+  { day: 7, isSign: false, score: 0, isGift: true },
 ])
 // 积分兑换的道具
-const items = [
-  { img: '', title: '单次查看联系方式', desc: '置顶一条已发布内容在首页 推荐栏并带有超级置顶标志', score: 350 },
-  { img: '', title: '广告甲方置顶卡', desc: '置顶一条已发布广告甲方内容', score: 350 },
-  { img: '', title: '流量乙方置顶卡', desc: '置顶一条已发布流量乙方内容', score: 350 },
-  { img: '', title: '一天会员卡', desc: '普通会员一天试用', score: 350 },
-  { img: '', title: '加人脉卡（5次）', desc: '5次免费加人脉', score: 350 },
-  { img: '', title: '标题变色卡', desc: '仅限一次使用查看联系方式', score: 350 },
-]
+const items = ref<any>([])
+getCouponsAPI().then(res => {
+  items.value = res.data.data
+})
 // 关闭窗口
 const close = () => {
   call('close')
 }
 // 签到成功
 const successVisible = ref(false)
+// 签到信息
+const signInfo = () => {
+  getSignInfoAPI().then(res => {
+    const { integral, is_sign, integrallsst, dayslog } = res.data.data
+    score.value = integral
+    // 今日未签到
+    if (is_sign === 0) {
+      setPunchCardAPI().then(() => {
+        todayScore.value = integrallsst[dayslog].number
+        successVisible.value = true
+        signInfo()
+      })
+    }
+    const _dayslog = is_sign === 1 ? dayslog + 1 : dayslog
+    signDay.value.forEach((val: any, ind: number) => {
+      val.isSign = ind < _dayslog
+      val.score = integrallsst[ind].number
+    })
+  })
+}
+signInfo()
+
+// 兑换道具
+const exchange = (item: any) => {
+  if (score.value < item.integral) {
+    ElMessage.error('积分不足')
+    return
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -109,7 +143,7 @@ const successVisible = ref(false)
   .content {
     position: absolute;
     width: 842px;
-    height: 673px;
+    // height: 673px;
     background: #F4F4F4;
     top: 50%;
     left: 50%;
@@ -254,6 +288,11 @@ const successVisible = ref(false)
     background: #F6F6F6;
     border-radius: 50%;
     margin-right: 6px;
+
+    .img {
+      width: 75px;
+      height: 47px;
+    }
   }
 
   .item {
