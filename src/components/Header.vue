@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <!-- banner -->
-    <div class="banner center">
+    <div class="banner center cursor-pointer" @click="nav('/buy')">
       <img :src="bannerImg" alt="" class="banner-img">
     </div>
     <!-- 搜索 -->
@@ -73,6 +73,10 @@ const navToIndex = () => {
   router.push({
     path: '/'
   })
+}
+// 跳转到购买会员页面
+const nav = (path: string) => {
+  router.push(path)
 }
 </script>
 

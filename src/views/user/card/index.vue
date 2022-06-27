@@ -1,6 +1,6 @@
 <template>
   <div class="p-34 bg-white">
-    <p class="fs-18">我的好友</p>
+    <p class="fs-18">{{ title }}</p>
     <div class="grid grid-cols-4 gap-x-12 gap-y-24 mt-40">
       <div v-for="item in cards" :key="item.id" class="item">
         <div class="cursor-pointer content">
@@ -25,9 +25,7 @@ import Empty from '@/components/Empty.vue';
 
 const route = useRoute()
 const cards = ref<any>([])
-const title = ref(
-  
-)
+const title = ref('')
 let fetchMethod: Function, delMethod: Function
 const getData = () => {
   fetchMethod().then((res: any) => {
@@ -40,9 +38,11 @@ watch(() => route.path, () => {
   if (type === 'card-user') {
     fetchMethod = myVisitingcardAPI
     delMethod = delVistingcardAPI
+    title.value = '我的名片'
   } else {
     fetchMethod = pushVisitingcardAPI
     delMethod = delpushVistingcardAPI
+    title.value = '我收到的'
   }
   getData()
 }, { immediate: true })
