@@ -43,7 +43,7 @@
         </span>
       </div>
     </div>
-    <img :src="loadImg('weikaitong-grzx@2x.webp')" alt="" class="img1">
+    <img :src="loadImg('weikaitong-grzx@2x.webp')" alt="" class="img1 cursor-pointer" @click="nav('/buy')">
     <!-- 我的道具 -->
     <div class="tabbar flex mt-20">
       <div v-for="tab in itemTabbar" class="tab-item app-flex-center"
@@ -153,6 +153,10 @@ const projectList = ref<any>([])
 const publishRef = ref()
 const doPublish = () => {
   publishRef.value.open()
+}
+// 跳转到购买会员页面
+const nav = (path: string) => {
+  router.push(path)
 }
 </script>
 
