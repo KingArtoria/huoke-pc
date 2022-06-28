@@ -451,3 +451,27 @@ export const getMemberInfoAPI = (data: any): AxiosPromise<any> => {
     data
   });
 };
+// 创建订单
+export const goodsorderaddAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/order/goodsorderadd',
+    data
+  });
+};
+// 微信支付
+export const wxpay_webAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/Wxpay/wxpay_web',
+    data
+  });
+};
+// 支付宝支付
+export const alipay_webAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/Zfbpay/alipay_web',
+    data
+  });
+};

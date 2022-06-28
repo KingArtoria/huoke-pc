@@ -178,7 +178,10 @@ const doLogin = () => {
     if (isRemember.value) localStorage.setItem(TOKEN, res.data.data.token);
     localStorage.setItem(USER, JSON.stringify(res.data.data));
     router.push('/');
-  }).catch(() => {
+  }).catch((err) => {
+    if (err.code == -3) {
+      loginForm.value.pass = ''
+    }
     loading = false
   })
 }

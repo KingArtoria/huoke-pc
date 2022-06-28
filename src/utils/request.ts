@@ -23,18 +23,15 @@ service.interceptors.request.use(
 )
 service.interceptors.response.use(
   response => {
+    if (response.data.code === undefined) {
+      return response;
+    }
     if (response.data.code !== 1) {
       // 相同的报错信息，5秒内不重复处理
-      /* const msg = response.data.msg
+      const msg = response.data.msg
       const time = msgHistory.get(msg)
-      console.log(msg, time, typeof time, msgHistory);
-      console.log(!time || Dayjs(new Date()).diff(time, 'second') > 5);
-      console.log(!time);
-      
       if (!time || Dayjs(new Date()).diff(time, 'second') > 5) {
         msgHistory.set(msg, Dayjs().format('YYYY-MM-DD HH:mm:ss'))
-        console.log(1);
-        
         ElMessage.error(msg);
         // 处理错误码
         switch (response.data.code) {
@@ -45,16 +42,6 @@ service.interceptors.response.use(
             router.replace('/login')
             break
         }
-      } */
-      ElMessage.error(msg);
-      // 处理错误码
-      switch (response.data.code) {
-        // 需要登录
-        case -2:
-          // 清除token
-          removeToekn()
-          router.replace('/login')
-          break
       }
       return Promise.reject(response.data);
     } else {

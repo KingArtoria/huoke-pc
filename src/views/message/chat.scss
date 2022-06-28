@@ -109,7 +109,7 @@
 .main {
   height: 423px;
   overflow: auto;
-  padding: 20px 30px;
+  padding: 20px 0 20px 30px;
 
   .text {
     padding: 10px 15px;
@@ -135,9 +135,34 @@
       background: #F4F4F4;
     }
   }
+
   .time {
     font-size: 12px;
     color: #9F9F9F;
+  }
+
+  .phone {
+    height: 34px;
+    background: #EBEBEB;
+    border-radius: 17px;
+    font-size: 13px;
+    color: #525252;
+    padding-left: 16px;
+
+    .link {
+      color: #1F73F1;
+      margin: 0 10px;
+      cursor: pointer;
+    }
+  }
+
+  .date {
+    width: 82px;
+    height: 20px;
+    background: #B2B2B2;
+    border-radius: 5px;
+    font-size: 12px;
+    color: white;
   }
 }
 
@@ -182,12 +207,36 @@
 
 .action-item {
   padding: 12px 20px;
-  color: #6A6A6A;
+  color: #121212;
   cursor: pointer;
 
   &:hover {
-    background: #eff5fe;
-    color: #2074F1;
+    background: #1F73F1;
+      color: white;
   }
 
+}
+
+.text-option {
+  .option-head {
+    background: #F3F3F3;
+    height: 42px;
+    line-height: 42px;
+    color: #121212;
+    padding-left: 20px;
+  }
+
+  .option-item {
+    height: 42px;
+    line-height: 42px;
+    background: white;
+    color: #121212;
+    padding-left: 20px;
+    cursor: pointer;
+
+    &:hover {
+      background: #1F73F1;
+      color: white;
+    }
+  }
 }

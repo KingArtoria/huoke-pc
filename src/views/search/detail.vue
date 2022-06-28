@@ -17,7 +17,7 @@
             <div class="tag mb-20">{{ fmtType(detailData.type) }}</div>
             <p class="detail-title fs-22 mb-32">{{ detailData.title }}</p>
             <div class="flex items-center div1">
-              <img :src="host + detailData.head" alt="" class="head-img">
+              <img :src="detailData.head" alt="" class="head-img">
               <span>{{ detailData.nick_name }}</span>
               <span v-if="detailData.position" class="line"></span>
               <span>{{ detailData.position }}</span>
@@ -258,7 +258,7 @@
           <p class="p1 py-20 fs-16">浏览用户（{{ visitorList.length }}）</p>
           <div class="pl-16 pr-10">
             <div v-for="item in visitorList.slice(0, 3)" class="py-20 flex visitor-item">
-              <img :src="item.head" alt="" class="img mr-10">
+              <img :src="item.head" alt="" class="img mr-10 app-round">
               <div class="flex-1">
                 <p>{{ item.nick_name }}</p>
                 <p class="flex color-949494 fs-14 my-10">
@@ -365,8 +365,6 @@ const fmtType = (val: number) => {
 const fmtDate = (val: number) => {
   return val ? dayjs(val).format('YYYY-MM-DD') : val
 }
-// 图片地址前缀
-const host = 'https://admin.bdhuoke.com/'
 // 标题字数过长做截取
 const shortTitle = computed(() => {
   const { title } = detailData.value

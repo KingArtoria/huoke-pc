@@ -3,7 +3,7 @@
   <nav class="nav">
     <div class="center">
       <slot name="title">
-        <span class="brand">用火客，必定获客</span>
+        <span class="brand" @click="navToIndex">用火客，必定获客</span>
       </slot>
       <ul class="flex nav-items">
         <li v-if="!isLogin" class="nav-item flex items-center">
@@ -101,7 +101,6 @@ import { useRouter } from 'vue-router';
 import { getUser } from '@/utils/index'
 import MessageBox from '@/views/index/components/MessageBox.vue';
 import { computed, ref } from 'vue';
-import { getMessageAPI } from '@/utils/api';
 
 const router = useRouter()
 const isLogin = computed(() => {
@@ -130,6 +129,10 @@ const navToLogin = (tab: string) => {
       tab
     }
   })
+}
+// 回到首页
+const navToIndex = () => {
+  router.push('/')
 }
 
 const messageBoxVisible = ref(false)
@@ -179,6 +182,15 @@ const msgChange = (msgLen: number) => {
         border-color: #0071FA;
       }
 
+    }
+  }
+
+  .brand {
+    cursor: pointer;
+
+    &:hover {
+      color: #0076FF;
+      text-decoration: underline;
     }
   }
 

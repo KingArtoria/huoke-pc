@@ -22,6 +22,8 @@
 import { ref } from 'vue';
 import { loadImg } from '@/utils/index'
 import Pay from './Pay.vue'
+import { alipay_webAPI } from '@/utils/api';
+
 const props = defineProps<{
   money: number, // 金额
 }>()
@@ -32,7 +34,19 @@ const isAgree = ref(false)
 const payVisible = ref(false)
 // 支付
 const doPay = () => {
-  payVisible.value = true
+  // payVisible.value = true
+  alipay_webAPI({
+    order_sn: '6259a4347cd9de0b1a2a181ffdcaf1f3'
+  }).then(res => {
+    // const div = document.createElement('formdiv');
+    // div.innerHTML = res.data;
+    // document.body.appendChild(div);
+    // document.forms['alipay_submit'].setAttribute('target', '_blank');
+    // document.forms['alipay_submit'].submit;
+    const newWindow: any = window.open('', '_blank');
+    newWindow.document.write(res.data);
+    newWindow.focus();
+  })
 }
 </script>
 

@@ -7,11 +7,13 @@
     <div class="flex-1">
       <div v-for="item in messageList" class="msg flex items-center cursor-pointer" @click="nav('/message/inform')">
         <span class="truncate flex-1">{{ `[${item.type}]${item.content}` }}</span>
-        <!-- <span class="count app-flex-center">2</span> -->
       </div>
-      <Empty v-if="messageList.length === 0" />
+      <div v-if="messageList.length === 0" class="h-full app-flex-center">
+        <Empty />
+      </div>
     </div>
-    <div class="footer py-16 text-center cursor-pointer" @click="nav('/message/inform')">查看全部</div>
+    <div v-if="messageList.length !== 0" class="footer py-16 text-center cursor-pointer"
+      @click="nav('/message/inform')">查看全部</div>
   </div>
 </template>
 <script setup lang="ts">
@@ -83,5 +85,9 @@ const nav = (path: string) => {
     font-size: 12px;
     color: white;
   }
+}
+
+::v-deep(.empty-wrap) {
+  padding: 0;
 }
 </style>

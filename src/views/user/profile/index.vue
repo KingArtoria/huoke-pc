@@ -36,7 +36,7 @@
       <span class="color-1B1B1B mr-50 ml-10">联系方式：</span>
       <div class="grid grid-cols-3 gap-x-80">
         <span class="color-818181">手机号：{{ userInfo.phone }}</span>
-        <span v-if="userInfo.wechat_name" class="color-818181">微信号：{{ userInfo.wechat_name }}</span>
+        <span v-if="userInfo.wx" class="color-818181">微信号：{{ userInfo.wx }}</span>
         <span>
           <span class="color-1B1B1B mr-30">邀请码：</span>
           <span class="color-1F73F1">{{ userInfo.Invitation_code }}</span>
