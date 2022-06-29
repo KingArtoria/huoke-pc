@@ -44,7 +44,6 @@ import { ref } from "@vue/reactivity";
 import { useRoute } from "vue-router";
 // @ts-ignore
 import networkVue from "@/components/Network.vue";
-import { pa } from "element-plus/es/locale";
 import { ElMessage } from "element-plus";
 const title = ref('')
 const province = ref([])

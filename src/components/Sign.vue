@@ -2,14 +2,16 @@
   <div class="mask">
     <div class="content">
       <header class="header">
-        <div class="flex flex-col items-center">
-          <p class="label">我的积分</p>
-          <p>{{ score }}</p>
-        </div>
-        <div class="line"></div>
-        <div class="flex flex-col items-center">
-          <p class="label">我的VIP时长</p>
-          <p>{{ vipDays }}天</p>
+        <div class="flex items-center header-wrap">
+          <div class="flex flex-col items-center head-item">
+            <p class="label">我的积分</p>
+            <p>{{ score }}</p>
+          </div>
+          <div class="line"></div>
+          <div class="flex flex-col items-center head-item">
+            <p class="label">我的VIP时长</p>
+            <p>{{ vipDays }}天</p>
+          </div>
         </div>
         <img :src="closeImg" alt="" class="close" @click="close">
       </header>
@@ -55,7 +57,7 @@
         <p class="sub-title">恭喜您获得{{ todayScore }}积分</p>
       </div>
       <div class="btn-wrap">
-        <button class="btn">知道了</button>
+        <button class="btn" @click="successVisible = false">知道了</button>
       </div>
     </div>
   </div>
@@ -66,9 +68,11 @@ import closeImg from '@/assets/close_jf@2x.webp'
 import signImg from '@/assets/xuan_x@2x.webp'
 import giftImg from '@/assets/diqit@2x.webp'
 import blackCloseImg from '@/assets/close_qdcg@2x.webp'
-import { getSignInfoAPI, setPunchCardAPI, getCouponsAPI } from '@/utils/api'
+import { getSignInfoAPI, setPunchCardAPI, getCouponsAPI, setCouponsAPI } from '@/utils/api'
 import { DOMAIN } from '@/utils/const'
 import { ElMessage, ElMessageBox } from 'element-plus';
+import { once, removeToekn } from '@/utils';
+import { useRouter } from 'vue-router';
 
 
 const call = defineEmits(['close'])
@@ -99,11 +103,13 @@ const close = () => {
 }
 // 签到成功
 const successVisible = ref(false)
+const router = useRouter()
 // 签到信息
 const signInfo = () => {
   getSignInfoAPI().then(res => {
-    const { integral, is_sign, integrallsst, dayslog } = res.data.data
+    const { integral, is_sign, integrallsst, dayslog, vip_surplus } = res.data.data
     score.value = integral
+    vipDays.value = parseInt(vip_surplus)
     // 今日未签到
     if (is_sign === 0) {
       setPunchCardAPI().then(() => {
@@ -117,17 +123,38 @@ const signInfo = () => {
       val.isSign = ind < _dayslog
       val.score = integrallsst[ind].number
     })
+  }).catch(() => {
+    // 清除token
+    removeToekn()
+    router.replace('/login')
   })
 }
 signInfo()
 
 // 兑换道具
-const exchange = (item: any) => {
-  if (score.value < item.integral) {
+const exchange = once((done: Function, payload: any) => {
+  if (score.value < payload.integral) {
     ElMessage.error('积分不足')
+    done()
     return
   }
-}
+  ElMessageBox.confirm('确定兑换吗？', '提示', {
+    confirmButtonText: "确定",
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    setCouponsAPI({ coupons_id: payload.id }).then(() => {
+      ElMessage.success('兑换成功')
+      // 刷新数据
+      signInfo()
+      done()
+    }).catch(() => {
+      done()
+    })
+  }).catch(() => {
+    done()
+  })
+})
 </script>
 
 <style lang="scss" scoped>
@@ -156,14 +183,20 @@ const exchange = (item: any) => {
   background: url('@/assets/qiandao_banner@2x.webp') no-repeat;
   background-size: cover;
   height: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   position: relative;
   font-size: 30px;
   font-family: PingFang SC;
-  // font-weight: bold;
   color: #FFFFFF;
+
+  .header-wrap {
+    width: 500px;
+    margin: 0 auto;
+    height: 100%;
+
+    .head-item {
+      width: 50%;
+    }
+  }
 
   .close {
     position: absolute;

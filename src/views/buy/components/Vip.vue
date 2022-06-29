@@ -24,7 +24,7 @@
         </div>
       </div>
     </div>
-    <PayMode :money="money" />
+    <PayMode :goodsId="activeService" />
   </div>
 </template>
 <script setup lang="ts">
@@ -43,22 +43,11 @@ const props = defineProps<{
 }>()
 
 const activeService = ref(0)
-// 支付金额
-const money = ref(0)
 watch(() => props.service, () => {
   if (props.service) {
     activeService.value = props.service[0].id
-    money.value = props.service[0].price
   }
 }, { immediate: true })
-
-// 监听套餐选择，计算支付价格
-watch(activeService, () => {
-  const temp = props.service.find((v: IService) => v.id === activeService.value)
-  if (temp) {
-    money.value = temp.price
-  }
-})
 
 </script>
 <style lang="scss" scoped>

@@ -50,12 +50,9 @@
       <div class="link-wrap">
         <p class="title">友情链接</p>
         <div class="grid auto-cols-max grid-flow-col links">
-          <a class="sub-title" href="#">平台简介</a>
-          <a class="sub-title" href="#">平台简介</a>
-          <a class="sub-title" href="#">平台简介</a>
-          <a class="sub-title" href="#">平台简介</a>
-          <a class="sub-title" href="#">平台简介</a>
-          <a class="sub-title" href="#">平台简介</a>
+          <a class="sub-title" href="https://www.haiguijsq.com/">海归加速器</a>
+          <a class="sub-title" href="http://www.huobiao.cn/">火标网</a>
+          <a class="sub-title" href="https://www.zmhttp.com/">芝麻IP代理</a>
         </div>
       </div>
       <div class="line"></div>

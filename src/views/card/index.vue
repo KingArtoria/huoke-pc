@@ -94,7 +94,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
+import { nextTick, onBeforeUnmount, onMounted, onUnmounted, ref, watch } from 'vue';
 import Nav from '@/components/Nav.vue';
 import { useRouter } from 'vue-router';
 import { loadImg, once } from '@/utils';
@@ -174,7 +174,7 @@ const fileRef = ref()
 onMounted(() => {
   fileRef.value.addEventListener('change', handleFile)
 })
-onUnmounted(() => {
+onBeforeUnmount(() => {
   fileRef.value.removeEventListener('change', handleFile)
 })
 const handleFile = (e: any) => {

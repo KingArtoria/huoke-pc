@@ -139,7 +139,7 @@
 
 <script setup lang="ts">
 import useGoEasy from '@/composables/useGoEasy'
-import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, onUnmounted, ref } from 'vue';
 import { getUser, loadImg, getVipLevel, once } from '@/utils';
 import GoEasy from 'goeasy';
 import dayjs from 'dayjs'
@@ -266,7 +266,7 @@ onMounted(async () => {
   })
 })
 
-onUnmounted(() => {
+onBeforeUnmount(() => {
   //断开连接
   goeasy.disconnect({
     onSuccess: function () {

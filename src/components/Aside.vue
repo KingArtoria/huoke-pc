@@ -15,7 +15,7 @@
         <img :src="signImgActive" alt="" class="active img">
         <span>签到</span>
       </li>
-      <el-popover placement="left" :width="300" trigger="hover">
+      <!-- <el-popover placement="left" :width="300" trigger="hover">
         <template #reference>
           <li class="concat-item">
             <img :src="concatImg" alt="" class="normal img">
@@ -37,7 +37,7 @@
             </div>
           </div>
         </div>
-      </el-popover>
+      </el-popover> -->
       <li class="concat-item" @click="navTo('/user/item')">
         <img :src="propImg" alt="" class="normal img">
         <img :src="propImgActive" alt="" class="active img">

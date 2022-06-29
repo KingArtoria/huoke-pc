@@ -1,7 +1,7 @@
 <template>
   <div class="app-page">
     <header class="nav py-20 fs-14">
-      <span>当前位置：首页 > 异业合作 > {{ shortTitle }}</span>
+      <span>当前位置：首页 > 合作信息 > {{ shortTitle }}</span>
     </header>
 
     <div class="content-wrap">
@@ -12,7 +12,20 @@
           <span class="header-sub-title">双方资金安全保障</span>
         </header>
         <div class="p-22 bg-white">
-          <Empty v-if="loading" />
+          <el-skeleton v-if="loading" animated>
+            <template #template>
+              <el-skeleton-item variant="text" style="height: 30px;" class="mb-20" />
+              <div class="flex items-center">
+                <el-skeleton-item variant="circle" style="height: 50px; width: 50px;" class=" flex-shrink-0 mr-20" />
+                <el-skeleton-item variant="text" style="height: 30px; width: 300px;" />
+              </div>
+              <el-skeleton-item variant="text" style="height: 100px;" class="mt-30" />
+              <el-skeleton-item variant="text" style="height: 30px; width: 100px;" class="my-30" />
+              <el-skeleton-item variant="text" style="height: 100px;" />
+              <el-skeleton-item variant="text" style="height: 30px; width: 100px;" class="my-30" />
+              <el-skeleton-item variant="text" style="height: 100px;" />
+            </template>
+          </el-skeleton>
           <div v-else class="detail">
             <div class="tag mb-20">{{ fmtType(detailData.type) }}</div>
             <p class="detail-title fs-22 mb-32">{{ detailData.title }}</p>
@@ -185,12 +198,12 @@
 
             <div class="text-center">
               <p class="text1 fs-16 mb-38">扫一扫下方二维码，下载BD火客AP，商务合作更快捷</p>
-              <img :src="loadImg('erwm.webp')" alt="" class="code-img">
+              <img :src="loadImg('xiaziaerwem.png')" alt="" class="code-img">
             </div>
           </div>
         </div>
         <!-- 回复 -->
-        <div class="mt-16 bg-white comment-wrap">
+        <div v-if="!loading" class="mt-16 bg-white comment-wrap">
           <div class="px-22 pt-32 pb-18">
             <textarea v-model="comment" placeholder="会员用户可以自定义回复文案，普通用户仅限于使用快捷回复。切记禁止留联系方式，违规将被禁言！"
               class="comment-input" :disabled="!isVip" />
@@ -264,7 +277,7 @@
                 <p class="flex color-949494 fs-14 my-10">
                   <span>{{ item.position || '暂未填写' }}</span>
                   <span class="line"></span>
-                  <span>{{ item.company || '暂未填写' }}</span>
+                  <span class="flex-1 truncate">{{ item.company || '暂未填写' }}</span>
                 </p>
               </div>
             </div>
@@ -371,6 +384,8 @@ const shortTitle = computed(() => {
   if (title) {
     if (title.length > 20) {
       return title.substr(0, 20) + '...'
+    } else {
+      return title
     }
   } else {
     return ''

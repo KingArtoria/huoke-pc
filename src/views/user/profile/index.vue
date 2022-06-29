@@ -10,12 +10,16 @@
       <img :src="headImg" alt="" class="head-img mr-10">
       <div class="mt-8">
         <!-- 姓名 -->
-        <div class="flex items-end">
+        <div class="flex items-center">
           <span class="fs-18 font-bold">{{ userInfo.nick_name }}</span>
           <div class="div1 app-flex-center">{{ userInfo.idcard ? '已实名认证' : '未实名认证' }}</div>
           <VipIcon :item="vipLevel" />
-          <img :src="loadImg(userInfo.phone ? 'shoujih_yt@2x.webp' : 'shoujhhwt@2x.webp')" alt="" class="bind-img">
-          <img :src="loadImg(userInfo.wx ? 'weixinhyt@2x.webp' : 'wxh_wtx@2x.webp')" alt="" class="bind-img">
+          <el-tooltip effect="dark" :content="userInfo.phone ? '已绑定手机号' : '未绑定手机号'" placement="top" :show-after="500">
+            <img :src="loadImg(userInfo.phone ? 'shoujih_yt@2x.webp' : 'shoujhhwt@2x.webp')" alt="" class="bind-img">
+          </el-tooltip>
+          <el-tooltip effect="dark" :content="userInfo.wx ? '已绑定微信' : '未绑定微信'" placement="top" :show-after="500">
+            <img :src="loadImg(userInfo.wx ? 'weixinhyt@2x.webp' : 'wxh_wtx@2x.webp')" alt="" class="bind-img">
+          </el-tooltip>
         </div>
         <p class="desc my-10 flex items-center">
           <span v-if="userInfo.position">{{ userInfo.position }}</span>
@@ -113,7 +117,7 @@ Promise.all([
   res1.data.data.user_info.phone = res1.data.data.user_info.phone.replace(/^(\d{3})\d{4}(\d{4})$/, "$1****$2");
   userInfo.value = Object.assign(res2.data.data || {}, res1.data.data.user_info)
   projectList.value = res1.data.data.user_project
-  vipLevel.value = getVipLevel(res1.data.data)
+  vipLevel.value = getVipLevel(res1.data.data.user_info.maxvip)
 })
 const headImg = computed(() => {
   if (userInfo.value.head) {

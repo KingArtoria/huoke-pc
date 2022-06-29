@@ -2,8 +2,8 @@
   <el-dialog v-model="modelValue" width="530px" :close-on-click-modal="false" :before-close="close">
     <div class="content">
       <img :src="loadImg('heika_k@2x.webp')" alt="" class="logo-img">
-      <input type="text" class="input" placeholder="请输入您的姓名">
-      <input type="text" class="input" placeholder="请输入您的联系方式">
+      <input v-model="formData.name" type="text" class="input" placeholder="请输入您的姓名">
+      <input v-model="formData.phone" type="text" class="input" placeholder="请输入您的联系方式">
       <button class="apply-btn" @click="submit">提交申请</button>
       <img :src="loadImg('round_close (1)@2x.webp')" alt="" @click="close" class="close-img">
     </div>
@@ -13,16 +13,13 @@
 import { ref } from 'vue';
 import { loadImg } from '@/utils/index'
 import { ElMessage } from 'element-plus'
+import { applyForBlackCardAPI } from '@/utils/api';
 defineProps<{
   modelValue: boolean
 }>()
-const call = defineEmits(['update:modelValue'])
-const close = (done?: any) => {
-  if (done && typeof done === 'function') {
-    done(true)
-  } else {
-    call('update:modelValue', false)
-  }
+const call = defineEmits(['update:modelValue', 'success'])
+const close = () => {
+  call('update:modelValue', false)
 }
 const formData = ref({
   name: '', // 姓名
@@ -33,7 +30,16 @@ const submit = () => {
   if (loading) return
   if (!formData.value.name) return ElMessage.info('请输入您的姓名')
   if (!formData.value.phone) return ElMessage.info('请输入您的联系方式')
+  if (!/^1[0-9]{10}$/.test(formData.value.phone)) return ElMessage.error('联系方式格式有误')
   loading = true
+  applyForBlackCardAPI({ name: formData.value.name, mobile: formData.value.phone }).then(() => {
+    ElMessage.success('申请成功')
+    loading = false
+    call('success')
+    close()
+  }).catch(() => {
+    loading = false
+  })
 }
 </script>
 

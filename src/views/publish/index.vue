@@ -147,7 +147,7 @@ import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { provinceAPI, cityAPI, saveProjectAPI } from '@/utils/api'
 import { ElMessage } from 'element-plus';
-import { showLoading } from '@/utils/index'
+import { showLoading, removeNullField } from '@/utils/index'
 import useTypeOptions from '@/composables/useTypeOptions'
 
 const route = useRoute()
@@ -252,6 +252,7 @@ const submit = () => {
       return arr.join(':')
     }).join(',')
     delete params.areaArr
+    removeNullField(params)
     saveProjectAPI(params).then(() => {
       loading.close()
       ElMessage.success('发布成功')

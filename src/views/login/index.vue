@@ -54,9 +54,12 @@
               class="box_tabs_login_input" />
             <div class="text-wrap">
               <div>
-                <el-checkbox v-model="isReceive" class="check" />
+                <el-checkbox v-model="isReceive" class="check">
+                  <span class="text whitespace-normal">我已阅读并接受<span class="light"><span
+                        @click="setProtocol('《BD火客用户服务协议》', 'http://fw.bdhuoke.com')">《BD火客用户服务协议》</span><span
+                        @click="setProtocol('《隐私政策》', 'http://app.bdhuoke.com')">《隐私政策》</span></span></span>
+                </el-checkbox>
               </div>
-              <span class="text">我已阅读并接受<span class="light">《BD火客用户服务协议》《隐私政策》</span></span>
             </div>
             <div class="box_tabs_login_btn" @click="sign">注册</div>
           </el-tab-pane>
@@ -79,6 +82,7 @@
         </el-tabs>
       </div>
     </div>
+    <Protocol v-if="protocolVisible" v-model="protocolVisible" :title="protocolTitle" :url="protocolUrl" />
   </div>
 </template>
 <script setup lang="ts">
@@ -89,6 +93,8 @@ import { useRouter, useRoute } from 'vue-router';
 import { ElMessage } from 'element-plus'
 import { TOKEN, USER } from '@/utils/const'
 import Sms from './components/Sms.vue';
+import Protocol from '@/components/Protocol.vue';
+
 const router = useRouter()
 const route = useRoute()
 // 登录选项卡
@@ -209,6 +215,16 @@ const reLogin = () => {
   }).catch(() => {
     reLoading = false
   })
+}
+
+// 协议
+const protocolVisible = ref(false)
+const protocolTitle = ref('')
+const protocolUrl = ref('')
+const setProtocol = (title: string, url: string) => {
+  protocolTitle.value = title
+  protocolUrl.value = url
+  protocolVisible.value = true
 }
 </script>
 

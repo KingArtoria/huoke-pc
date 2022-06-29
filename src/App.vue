@@ -45,3 +45,21 @@ const isShowNav = computed(() => {
 //   })
 // })
 </script>
+<script lang="ts">
+let temp = null;
+(function (y, un, q, u, e) {
+  window[un] =
+    window[un] ||
+    function (y) {
+      window[un].company_id = window[un].company_id || y;
+
+    };
+  u = document.createElement("script");
+  u.src = q + "?v=" + new Date().getUTCDate();
+  u.async = true;
+  e = document.getElementsByTagName("script")[0];
+  e.parentNode.insertBefore(u, e);
+})(window, "_YUNQUE", "//dist.yunque360.com/bundle.js");
+_YUNQUE("cjn1jvhb8io60d");
+</script>
+    

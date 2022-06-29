@@ -8,7 +8,7 @@
     </div>
 
     <!-- 我的道具 -->
-    <Owner v-if="activeTab === 'owner'" />
+    <Owner v-if="activeTab === 'owner'" class="mt-20" />
     <!-- 兑换记录 -->
     <Record v-if="activeTab === 'record'" />
   </div>

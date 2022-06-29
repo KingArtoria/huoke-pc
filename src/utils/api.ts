@@ -88,11 +88,10 @@ export const getMenu = (): AxiosPromise<any> => {
   });
 };
 // 获取人脉
-export const getRecommendList = (data: any): AxiosPromise<any> => {
+export const getRecommendList = (): AxiosPromise<any> => {
   return request({
     method: 'POST',
-    url: 'web_v1/index/getRecommendList',
-    data: qs.stringify(data),
+    url: 'web_v1/index/getRecommendList'
   });
 };
 // 获取首页右侧热门数据
@@ -472,6 +471,22 @@ export const alipay_webAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/Zfbpay/alipay_web',
+    data
+  });
+};
+// 积分兑换道具
+export const setCouponsAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/coupons/setCoupons',
+    data
+  });
+};
+// 申请黑卡
+export const applyForBlackCardAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/Blackcard/applyForBlackCard',
     data
   });
 };

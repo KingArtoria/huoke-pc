@@ -121,3 +121,17 @@ export const removeToekn = () => {
   localStorage.removeItem(TOKEN)
   localStorage.removeItem(USER)
 }
+
+/**
+ * 移除对象里值为null的字段
+ * @param object 
+ */
+export const removeNullField = (object: Object) => {
+  Object.keys(object).forEach((field) => {
+    // @ts-ignore
+    if (object[field] === null) {
+      // @ts-ignore
+      delete object[field]
+    }
+  })
+}

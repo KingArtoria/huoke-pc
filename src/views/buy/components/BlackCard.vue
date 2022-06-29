@@ -9,12 +9,12 @@
       </div>
       <div class="right flex flex-col">
         <span class="text-center text"><span class="fs-38">19,999</span><span class="fs-28"> 元 / 年</span></span>
-        <button class="btn btn1" @click="applyVisible = true">申请黑卡</button>
-        <button class="btn btn2">已申请</button>
+        <button v-if="isApply" class="btn btn2 mt-24">已申请</button>
+        <button v-else class="btn btn1 mt-24" @click="applyVisible = true">申请黑卡</button>
       </div>
     </div>
     <img :src="loadImg('heikaquanyi@2x.webp')" alt="" class="img1">
-    <BlackCardApply v-model="applyVisible" />
+    <BlackCardApply v-if="applyVisible" v-model="applyVisible" @success="isApply = true" />
   </div>
 </template>
 <script setup lang="ts">
@@ -22,6 +22,8 @@ import { ref } from 'vue';
 import { loadImg } from '@/utils';
 import BlackCardApply from './BlackCardApply.vue';
 const applyVisible = ref(false)
+// 黑卡申请状态
+const isApply = ref(false)
 </script>
 
 <style lang="scss" scoped>
@@ -34,6 +36,7 @@ const applyVisible = ref(false)
 ::v-deep(.el-dialog__header) {
   display: none;
 }
+
 ::v-deep(.el-dialog__body) {
   padding: 0;
 }
@@ -80,7 +83,6 @@ const applyVisible = ref(false)
 
     &.btn1 {
       background: linear-gradient(90deg, #FFEBD3 0%, #E1AD7D 100%);
-      margin: 22px 0 24px;
     }
 
     &.btn2 {

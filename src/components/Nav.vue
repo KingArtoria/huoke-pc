@@ -83,7 +83,11 @@
         </li>
         <li class="nav-item"><span class="item-text" @click="navToBuy('black')">黑卡</span></li>
         <li class="nav-item"><span class="item-text">帮助中心</span></li>
-        <li class="nav-item"><span class="item-text">APP下载</span></li>
+        <!-- <li class="nav-item"><span class="item-text">APP下载</span></li> -->
+        <li class="nav-item dn-app-wrap">
+          <span class="item-text">APP下载</span>
+          <Download class="dn-app" />
+        </li>
         <li class="nav-item relative" @mouseover="messageBoxVisible = true" @mouseleave="messageBoxVisible = false">
           <el-badge :is-dot="hasMessage" class="h-full">
             <span class="item-text" @click="navToMessage">消息</span>
@@ -101,6 +105,7 @@ import { useRouter } from 'vue-router';
 import { getUser } from '@/utils/index'
 import MessageBox from '@/views/index/components/MessageBox.vue';
 import { computed, ref } from 'vue';
+import Download from './Download.vue';
 
 const router = useRouter()
 const isLogin = computed(() => {
@@ -396,5 +401,25 @@ const msgChange = (msgLen: number) => {
 ::v-deep(.el-badge__content.is-fixed.is-dot) {
   top: 20px;
   right: 20px;
+}
+
+.dn-app-wrap {
+  position: relative;
+
+  &:hover {
+    .dn-app {
+      display: block;
+    }
+  }
+
+  .dn-app {
+    display: none;
+    position: absolute;
+    width: 305px;
+    height: 290px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+  }
 }
 </style>

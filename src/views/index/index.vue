@@ -6,16 +6,9 @@
         <span>平台交易</span>
         <img :src="newImg" alt="" class="tag">
       </div>
-      <div class="nav-item">
-        <span>资质办理</span>
-        <img :src="newImg" alt="" class="tag">
-      </div>
       <div class="nav-item" @click="navTo('/card')">
         <span>商务名片</span>
         <img :src="newImg" alt="" class="tag">
-      </div>
-      <div class="nav-item">
-        <span>业务订阅</span>
       </div>
     </div>
 
@@ -91,10 +84,13 @@
           <div class="flex pb-20">
             <img :src="userInfo.head ? userInfo.head : photoImg" alt="" class="user-photo">
             <div>
-              <div class="text">
+              <div class="text flex items-center">
                 <span>hi，{{ userInfo.nick_name }}</span>
-                <span></span>
-                <button class="vip-btn" @click="navTo('/buy')">开通会员</button>
+                <div class="ml-8">
+                  <VipIcon :item="vipLevel" />
+                </div>
+                <button v-if="userInfo.maxvip === VIP_LEVEL.ORDINARY" class="vip-btn"
+                  @click="navTo('/buy')">开通会员</button>
               </div>
               <div v-if="userInfo.company" class="tag app-flex-center">待企业认证</div>
               <div v-else>{{ userInfo.company }}</div>
@@ -106,7 +102,7 @@
           <div class="vip-info">
             <p class="title">VIP会员可获得全站权益</p>
             <p class="sub-title">每日不限发布、不限查看、不限拓展人脉</p>
-            <p class="text">已累计<span class="light">8555554</span>位会员</p>
+            <p class="text">已累计<span class="light">{{ vipNum }}</span>位会员</p>
           </div>
           <div class="vip-list">
             <ul>
@@ -122,7 +118,7 @@
         <div class="top">
           <img :src="topImg" alt="" class="top-img">
           <div class="top-content">
-            <div v-for="item in todayHot" class="top-item">
+            <div v-for="item in todayHot" class="top-item" @click="navTo(`/detail/${item.id}`)">
               <p class="title">
                 {{ item.title }}
               </p>
@@ -168,7 +164,7 @@
 
 <script setup lang="ts">
 import adImg1 from '@/assets/ggwzs_h@2x.webp'
-import { getVipOrder, getBanner, getMenu, getRecommendList, getHot, userInfoAPI, memberInfoEditAPI } from '@/utils/api'
+import { getVipOrder, getBanner, getMenu, getRecommendList, getHot, userInfoAPI, memberInfoEditAPI, getListData } from '@/utils/api'
 import { ref } from 'vue'
 import List from './components/List.vue'
 import photoImg from '@/assets/default.webp'
@@ -181,8 +177,9 @@ import bottomImg3 from '@/assets/heika@2x.webp'
 import newImg from '@/assets/NEW@2x.webp';
 import Download from '@/components/Download.vue'
 import { useRouter } from 'vue-router'
-import { getUser } from '@/utils'
-import { API_DOMAIN } from '@/utils/const'
+import { getUser, getVipLevel } from '@/utils'
+import VipIcon from '@/components/VipIcon.vue';
+import { VIP_LEVEL } from '@/utils/const'
 
 const router = useRouter()
 // 分类菜单
@@ -259,6 +256,7 @@ const handleAll = () => {
 
 // 用户信息
 const userInfo = ref<any>({})
+const vipLevel = ref<any>({})
 const loginInfo = getUser()
 if (loginInfo) {
   Promise.all([
@@ -266,9 +264,19 @@ if (loginInfo) {
     memberInfoEditAPI({ type: 'get' })
   ]).then(([res1, res2]) => {
     userInfo.value = Object.assign(res2.data.data || {}, res1.data.data.user_info, loginInfo)
+    vipLevel.value = getVipLevel(userInfo.value.maxvip)
   })
 }
 
+// 已开通的vip人数
+const vipNum = ref(0)
+getListData({
+  page: 1,
+  num: 10,
+  type: 0
+}).then(res => {
+  vipNum.value = res.data.data.vip_num
+})
 </script>
 
 <style lang="scss" scoped>
@@ -487,7 +495,7 @@ if (loginInfo) {
       background: #0071FA;
       border-radius: 12px;
       color: white;
-      margin-left: 18px;
+      margin-left: 14px;
     }
 
     .tag {

@@ -6,14 +6,15 @@
         <template #default="scope">
           <div class="flex items-center">
             <div class="img-wrap app-flex-center">
-              <img :src="scope.row.image" alt="" class="img">
+              <img :src="DOMAIN + scope.row.image" alt="" class="img">
             </div>
             <span>{{ scope.row.title }}</span>
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="兑换时间" prop="id" align="center" width="300"></el-table-column>
-      <el-table-column label="兑换数量" prop="price" align="center" width="200"></el-table-column>
+      <el-table-column label="兑换时间" prop="create_time" :formatter="create_timeFmt" align="center" width="300">
+      </el-table-column>
+      <el-table-column label="兑换数量" prop="num" align="center" width="200"></el-table-column>
     </el-table>
     <Empty v-else />
   </div>
@@ -22,12 +23,17 @@
 import { couponsLogAPI } from '@/utils/api';
 import { ref } from 'vue';
 import Empty from '@/components/Empty.vue';
+import { DOMAIN } from '@/utils/const'
+import dayjs from 'dayjs'
 
 // 兑换记录
 const listData = ref<any>([])
 couponsLogAPI().then(res => {
-  listData.value = res.data.data
+  listData.value = res.data.data.filter((val: any) => val.type === '积分兑换')
 })
+const create_timeFmt = (row: any) => {
+  return dayjs(row.create_time).format('YYYY-MM-DD-HH:mm')
+}
 </script>
 
 <style lang="scss" scoped>
