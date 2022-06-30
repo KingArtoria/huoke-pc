@@ -6,7 +6,7 @@
         <template v-if="isSelectTarget">
           <!-- 头部 -->
           <div class="content_1_1">
-            <img :src="loadImg('fanhui_lt@2x.webp')" class="content_1_1_1">
+            <img :src="loadImg('fanhui_lt@2x.webp')" class="content_1_1_1" @click="router.back()">
             <div class="content_1_1_2">
               <div class="content_1_1_2_1">
                 <div class="content_1_1_2_1_1">{{ target.nick_name }}</div>
@@ -144,7 +144,7 @@ import { getUser, loadImg, getVipLevel, once } from '@/utils';
 import GoEasy from 'goeasy';
 import dayjs from 'dayjs'
 import VipIcon from '@/components/VipIcon.vue'
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { getMemberInfoAPI, userInfoAPI } from '@/utils/api';
 import Empty from '@/components/Empty.vue'
 import { ElMessageBox, ElMessage } from 'element-plus';
@@ -177,105 +177,125 @@ const memberInfo = ref<any>({})
 userInfoAPI().then(res => {
   memberInfo.value = res.data.data.user_info
 })
-// 根据用户id获取用户信息
-if (targetUserId) {
-  getMemberInfoAPI({ id: targetUserId }).then(res => {
-    res.data.data.member_id = targetUserId
-    target.value = res.data.data
-    isSelectTarget.value = true
-  })
-}
 
 // 联系人列表
 const contactsList = ref<any[]>([])
 
 const goeasy = useGoEasy()
 const im = goeasy.im;
+const initListen = () => {
+  // 监听消息
+  im.on(GoEasy.IM_EVENT.PRIVATE_MESSAGE_RECEIVED, (message: any) => {
+    pushDateMsg(message)
+    messageList.value.push({
+      messageId: message.messageId,
+      receiverId: message.receiverId,
+      senderId: message.senderId,
+      date: dayjs(message.timestamp).format('YYYY-MM-DD'),
+      time: dayjs(message.timestamp).format('HH:mm'),
+      read: true,
+      status: true,
+      type: message.type,
+      payload: message.payload
+    })
+    scrollToBottom()
+    im.markPrivateMessageAsRead({
+      userId: target.value.member_id,  //聊天对象的userId
+      onSuccess: function () { //标记成功
+        console.log("Marked as read successfully.");
+      },
+      onFailed: function (error: any) { //标记失败
+        console.log("Failed to mark as read, code:" + error.code + " content:" + error.content);
+      }
+    });
+  })
+  const handleSession = (arr: any) => {
+    contactsList.value = arr.map((val: any) => {
+      let content = ''
+      if (val.lastMessage.type === 'text') {
+        content = val.lastMessage.payload.text
+      } else if (val.lastMessage.type === 'phone') {
+        content = val.lastMessage.payload.nick_name + '的' + val.lastMessage.payload.type + '：' + val.lastMessage.payload.value
+      }
+      return {
+        member_id: val.userId,
+        head: val.data.head,
+        nick_name: val.data.nick_name,
+        content,
+        date: dayjs(val.lastMessage.timestamp).format('YYYY/MM/DD HH:mm'),
+        maxvip: val.data.maxvip,
+        company: val.data.company,
+      }
+    })
+    // 如果没有选择会话，默认选中第一个
+    if (!isSelectTarget.value && contactsList.value.length) {
+      changeTarget(contactsList.value[0])
+    } else if (isSelectTarget.value && targetUserId) {
+      changeTarget(target.value)
+    }
+  }
+  // 获取最新的100条会话记录
+  im.latestConversations({
+    onSuccess: function (result: any) {
+      handleSession(result.content.conversations)
+    },
+    onFailed: function (error: any) { //获取失败
+      console.log("Failed to get the latest conversations, code:" + error.code + " content:" + error.content);
+    },
+  });
+  //监听会话列表更新
+  im.on(GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, (result: any) => {
+    handleSession(result.conversations)
+  });
+}
 onMounted(async () => {
+  // 根据用户id获取用户信息
+  if (targetUserId) {
+    const res = await getMemberInfoAPI({ id: targetUserId })
+    res.data.data.member_id = targetUserId
+    target.value = res.data.data
+    isSelectTarget.value = true
+  }
   // 获取自己的账号数据
   const temp = getUser() as IUser
   const res = await getMemberInfoAPI({ id: temp.member_id })
   res.data.data.member_id = temp.member_id
   self.value = res.data.data
-  // 建立连接
-  goeasy.connect({
-    id: self.value.member_id,
-    data: self.value,
-    onSuccess() {
-      console.log('链接成功');
-      // 监听消息
-      im.on(GoEasy.IM_EVENT.PRIVATE_MESSAGE_RECEIVED, (message: any) => {
-        pushDateMsg(message)
-        messageList.value.push({
-          messageId: message.messageId,
-          receiverId: message.receiverId,
-          senderId: message.senderId,
-          date: dayjs(message.timestamp).format('YYYY-MM-DD'),
-          time: dayjs(message.timestamp).format('HH:mm'),
-          read: true,
-          status: true,
-          type: message.type,
-          payload: message.payload
-        })
-        scrollToBottom()
-      })
-      const handleSession = (arr: any) => {
-        contactsList.value = arr.map((val: any) => {
-          let content = ''
-          if (val.lastMessage.type === 'text') {
-            content = val.lastMessage.payload.text
-          } else if (val.lastMessage.type === 'phone') {
-            content = val.lastMessage.payload.nick_name + '的' + val.lastMessage.payload.type + '：' + val.lastMessage.payload.value
-          }
-          return {
-            member_id: val.userId,
-            head: val.data.head,
-            nick_name: val.data.nick_name,
-            content,
-            date: dayjs(val.lastMessage.timestamp).format('YYYY/MM/DD HH:mm'),
-            maxvip: val.data.maxvip,
-            company: val.data.company,
-          }
-        })
-        // 如果没有选择会话，默认选中第一个
-        if (!isSelectTarget.value && contactsList.value.length) {
-          changeTarget(contactsList.value[0])
-        }
+  if (goeasy.getConnectionStatus() === 'disconnected') {
+    // 建立连接
+    goeasy.connect({
+      id: self.value.member_id,
+      data: self.value,
+      onSuccess() {
+        console.log('链接成功');
+        initListen()
+      },
+      onFailed(err: any) {
+        console.log(err.code, err.content);
+      },
+      onProgress() {
+        console.log('连接中');
       }
-      // 获取最新的100条会话记录
-      im.latestConversations({
-        onSuccess: function (result: any) {
-          handleSession(result.content.conversations)
-        },
-        onFailed: function (error: any) { //获取失败
-          console.log("Failed to get the latest conversations, code:" + error.code + " content:" + error.content);
-        },
-      });
-      //监听会话列表更新
-      im.on(GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, (result: any) => {
-        handleSession(result.conversations)
-      });
+    })
+  } else {
+    initListen()
+  }
 
-    },
-    onFailed(err: any) {
-      console.log(err.code, err.content);
-    },
-    onProgress() {
-      console.log('连接中');
-    }
-  })
 })
 
 onBeforeUnmount(() => {
   //断开连接
-  goeasy.disconnect({
-    onSuccess: function () {
-      console.log("GoEasy disconnect successfully.")
-    },
-    onFailed: function (error: any) {
-      console.log("Failed to disconnect GoEasy, code:" + error.code + ",error:" + error.content);
-    }
-  });
+  if (goeasy.getConnectionStatus() !== 'disconnected') {
+    goeasy.disconnect({
+      onSuccess: function () {
+        console.log("GoEasy disconnect successfully.")
+      },
+      onFailed: function (error: any) {
+        console.log("Failed to disconnect GoEasy, code:" + error.code + ",error:" + error.content);
+      }
+    });
+  }
+
 })
 const pushDateMsg = (message: any) => {
   const date = dayjs(message.timestamp).format('YYYY-MM-DD')
@@ -462,6 +482,15 @@ const changeTarget = (item: IUser) => {
         })
       }
       scrollToBottom()
+      im.markPrivateMessageAsRead({
+        userId: target.value.member_id,  //聊天对象的userId
+        onSuccess: function () { //标记成功
+          console.log("Marked as read successfully.");
+        },
+        onFailed: function (error: any) { //标记失败
+          console.log("Failed to mark as read, code:" + error.code + " content:" + error.content);
+        }
+      });
     },
     onFailed: function (error: any) { //获取失败
       console.log("Failed to query private message, code:" + error.code + " content:" + error.content);
@@ -493,6 +522,9 @@ const scrollToBottom = () => {
     scrollbarRef.value.wrap$.scrollTop = scrollbarRef.value.wrap$.scrollHeight
   })
 }
+
+// 返回
+const router = useRouter()
 </script>
 
 <style lang="scss" scoped>

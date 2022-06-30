@@ -1,17 +1,20 @@
 <template>
-  <el-dialog v-model="visible" width="1000px" :close-on-click-modal="false" :before-close="reset">
+  <el-dialog v-model="modelValue" width="1000px" :close-on-click-modal="false" :before-close="close">
     <template #header>
       <p class="title">意见反馈</p>
     </template>
     <div class="padding">
       <el-form ref="formRef" :model="formData" :rules="rules" label-position="top">
-        <el-form-item label="请填写反馈意见" prop="comment">
-          <el-input v-model="formData.comment" type="textarea" placeholder="请详细描述您遇到的问题或意见" :rows="10" />
+        <el-form-item label="请填写反馈意见" prop="title">
+          <el-input v-model="formData.title" type="textarea" placeholder="请详细描述您遇到的问题或意见" :rows="8" />
         </el-form-item>
-        <el-form-item label="图片" prop="img">
-          <el-upload accept=".jpg,.png" class="uploader" action="https://jsonplaceholder.typicode.com/posts/"
-            :show-file-list="false" :on-success="uploadSuccess">
-            <img v-if="formData.img" :src="formData.img" class="img" />
+        <el-form-item label="请输入您的联系电话" prop="phone">
+          <el-input v-model="formData.phone" type="number" style="width: 300px;" />
+        </el-form-item>
+        <el-form-item label="图片" prop="pic">
+          <el-upload accept=".jpg,.webp,.png,.jpeg,.bmp" class="uploader"
+            action="http://nad.bdhuoke.com/web_v1/member/upload" :show-file-list="false" :on-success="uploadSuccess">
+            <img v-if="formData.pic" :src="formData.pic" class="img" />
             <div v-else class="flex items-center flex-col">
               <img :src="loadImg('tupian@2x.webp')" alt="" class="w-30 h-30">
               <span class="link">上传图片</span>
@@ -19,48 +22,61 @@
           </el-upload>
         </el-form-item>
       </el-form>
-    </div>
-    <template #footer>
-      <div class="padding">
-        <el-button type="primary">提交</el-button>
+      <div class="mt-40">
+        <button class="btn" @click="submit">提交</button>
       </div>
-    </template>
+    </div>
+
   </el-dialog>
 </template>
   <script setup lang="ts">
 import { ref } from 'vue';
-import useForm from '@/composables/useForm';
-import { loadImg } from '@/utils/index'
+import { loadImg, validPhone } from '@/utils/index'
+import { feedbackAPI } from '@/utils/api'
+import { ElMessage } from 'element-plus';
+import { API_DOMAIN } from '@/utils/const';
+
+defineProps<{
+  modelValue: boolean,
+}>()
+const call = defineEmits(['update:modelValue'])
+// 关闭窗口
+const close = () => {
+  call('update:modelValue', false)
+}
 // 表单数据
 const formData = ref({
-  comment: '', // 反馈意见
-  img: '', // 反馈图片
+  title: '', // 反馈意见
+  pic: '', // 反馈图片
+  phone: '', // 联系方式
 })
 // 表单引用
 const formRef = ref()
 // 校验规则
 const rules = {
-  comment: [{ required: true, message: '请填写反馈意见', trigger: 'blur' }],
-  img: [{ required: true, message: '请上传图片', trigger: 'change' }],
+  title: [{ required: true, message: '请填写反馈意见', trigger: 'blur' }],
+  phone: validPhone('联系电话'),
+  pic: [{ required: true, message: '请上传图片', trigger: 'change' }],
 }
-const { visible, loading, close } = useForm(formData, formRef)
-// 打开窗口
-const open = () => {
-  visible.value = true
-}
-// 重置数据
-const reset = () => {
-  close()
+let loading = false
+const submit = () => {
+  if (loading) return
+  formRef.value.validate((valid: boolean) => {
+    if (!valid) return
+    loading = true
+    feedbackAPI(formData.value).then(() => {
+      ElMessage.success('提交成功！感谢您的反馈')
+      close()
+    }).catch(() => {
+      loading = false
+    })
+  })
 }
 // 上传成功回调
 const uploadSuccess = (res: any) => {
-  console.log(res);
-
+  formData.value.pic = API_DOMAIN + res.data
 }
 
-defineExpose({
-  open
-})
 </script>
 
 <style lang="scss" scoped>

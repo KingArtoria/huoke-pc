@@ -88,10 +88,11 @@ export const getMenu = (): AxiosPromise<any> => {
   });
 };
 // 获取人脉
-export const getRecommendList = (): AxiosPromise<any> => {
+export const getRecommendList = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
-    url: 'web_v1/index/getRecommendList'
+    url: 'web_v1/index/getRecommendList',
+    data: qs.stringify(data),
   });
 };
 // 获取首页右侧热门数据
@@ -487,6 +488,38 @@ export const applyForBlackCardAPI = (data: any): AxiosPromise<any> => {
   return request({
     method: 'POST',
     url: 'web_v1/Blackcard/applyForBlackCard',
+    data
+  });
+};
+// 人脉个人中心
+export const getFriendHomeAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/friend/getFriendHome',
+    data
+  });
+};
+// 好友发布
+export const friend_projectAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/friend/friend_project',
+    data
+  });
+};
+// 平台交易
+export const establishGuaranteeAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/Guarantee/establishGuarantee',
+    data
+  });
+};
+// 意见反馈
+export const feedbackAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/member/feedback',
     data
   });
 };

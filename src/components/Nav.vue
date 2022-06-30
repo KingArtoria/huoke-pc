@@ -89,7 +89,7 @@
           <Download class="dn-app" />
         </li>
         <li class="nav-item relative" @mouseover="messageBoxVisible = true" @mouseleave="messageBoxVisible = false">
-          <el-badge :is-dot="hasMessage" class="h-full">
+          <el-badge :value="messageCount" :hidden="messageCount === 0" class="h-full">
             <span class="item-text" @click="navToMessage">消息</span>
           </el-badge>
           <Transition name="fade">
@@ -142,15 +142,15 @@ const navToIndex = () => {
 
 const messageBoxVisible = ref(false)
 // 是否有消息
-const hasMessage = ref(false)
+const messageCount = ref(0)
 // 跳转到消息页面
 const navToMessage = () => {
   router.push({
     path: '/message/friends'
   })
 }
-const msgChange = (msgLen: number) => {
-  hasMessage.value = msgLen > 0
+const msgChange = (msgCount: number) => {
+  messageCount.value = msgCount
 }
 </script>
 
@@ -421,5 +421,10 @@ const msgChange = (msgLen: number) => {
     transform: translateX(-50%);
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
   }
+}
+
+::v-deep(.el-badge__content.is-fixed) {
+  top: 20px;
+  right: 20px;
 }
 </style>

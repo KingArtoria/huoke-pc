@@ -38,10 +38,10 @@
           <p class="title">联系我们</p>
           <div class="grid gap-y-16">
             <span class="sub-title" href="#">客服热线：156566555</span>
-            <div>
+            <!-- <div>
               <div class="code-img"></div>
               <p class="text-center">BD火客</p>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>

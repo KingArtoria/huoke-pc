@@ -1,6 +1,8 @@
 /* 工具类 */
 import { TOKEN, USER } from './const';
 import { ElLoading } from 'element-plus';
+import mitt from 'mitt'
+
 /**
  * 根据数值从数组里招到对应的文本名称
  * @param value 数值
@@ -135,3 +137,8 @@ export const removeNullField = (object: Object) => {
     }
   })
 }
+
+/**
+ * 发布/订阅
+ */
+export const emitter = mitt()

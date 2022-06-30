@@ -43,7 +43,7 @@
         <img :src="propImgActive" alt="" class="active img">
         <span>道具</span>
       </li>
-      <li class="concat-item" @click="openFeedback">
+      <li class="concat-item" @click="feedbackVisible = true">
         <img :src="feedbackImg" alt="" class="normal img">
         <img :src="feedbackImgActive" alt="" class="active img">
         <span>反馈</span>
@@ -54,7 +54,7 @@
   <!-- 签到 -->
   <Sign v-if="signVisible" @close="signVisible = false" />
   <!-- 反馈 -->
-  <Feedback ref="feedbackRef" />
+  <Feedback v-if="feedbackVisible" v-model="feedbackVisible" />
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
@@ -78,10 +78,7 @@ const isShowRight = ref(true)
 // 签到
 const signVisible = ref(false)
 // 反馈
-const feedbackRef = ref()
-const openFeedback = () => {
-  feedbackRef.value.open()
-}
+const feedbackVisible = ref(false)
 const router = useRouter()
 const navTo = (path: string) => {
   router.push(path)

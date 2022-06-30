@@ -10,6 +10,10 @@
         <span>商务名片</span>
         <img :src="newImg" alt="" class="tag">
       </div>
+      <div class="nav-item" @click="navTo('/contacts-list')">
+        <span>找人脉</span>
+        <!-- <img :src="newImg" alt="" class="tag"> -->
+      </div>
     </div>
 
   </header>

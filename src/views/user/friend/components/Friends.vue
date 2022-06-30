@@ -27,7 +27,7 @@
             </ul>
           </el-popover>
         </div>
-        <button class="btn">发信息</button>
+        <button class="btn" @click="sendMsg(item.id)">发信息</button>
       </div>
     </div>
     <Empty v-if="friends.length === 0" />
@@ -39,6 +39,7 @@ import { ref } from 'vue';
 import Remark from './Remark.vue';
 import Empty from '@/components/Empty.vue';
 import useFriends from '../composables/useFriends'
+import { useRouter } from 'vue-router';
 
 // 添加备注
 const remarkRef = ref()
@@ -48,7 +49,15 @@ const openRemark = (id: number) => {
 
 const { friends, search, delFriend, getData } = useFriends()
 getData()
-
+const router = useRouter()
+const sendMsg = (id: number) => {
+  router.push({
+    path: '/message/chat',
+    query: {
+      userId: id
+    }
+  })
+}
 defineExpose({
   search
 })
@@ -56,6 +65,4 @@ defineExpose({
 
 <style lang="scss" scoped>
 @import '@/views/message/friends.scss';
-
-
 </style>

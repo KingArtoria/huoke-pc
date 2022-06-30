@@ -70,3 +70,13 @@ export const VIP_LEVEL = {
    */
   BVIP: 'bvip',
 }
+
+/**
+ * 发布/订阅事件名称
+ */
+export const EVENT = {
+  /**
+   * 好友请求
+   */
+  FRIEND_REQUEST: 'friend_request'
+}

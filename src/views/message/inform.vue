@@ -38,11 +38,16 @@ import { loadImg } from '@/utils';
 import { manageFriendapplyAPI, agreeFriendapplyAPI, getMessageAPI } from '@/utils/api'
 import { ElMessage, ElMessageBox } from 'element-plus';
 import Empty from '@/components/Empty.vue';
+import { EVENT, HEAD_DOMAIN } from '@/utils/const';
+import { emitter } from '@/utils/index'
 
 // 好友请求
 const friendRequest = ref<any>([])
 const getData = () => {
   manageFriendapplyAPI({ type: 1 }).then(res => {
+    res.data.data.forEach((val: any) => {
+      val.head = /^http(s?):\/\//.test(val.head) ? val.head : HEAD_DOMAIN + val.head
+    })
     friendRequest.value = res.data.data
   })
 }
@@ -61,6 +66,7 @@ const setState = (member_id: number, type: number) => {
       toid: member_id,
       status: type
     }).then(() => {
+      emitter.emit(EVENT.FRIEND_REQUEST)
       ElMessage.success('操作成功')
       loading = false
       // 刷新数据

@@ -21,7 +21,6 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';
-import { HEAD_DOMAIN } from '@/utils/const';
 import { addFriendapplyAPI, getRecommendList } from '@/utils/api';
 import { ElMessage } from 'element-plus';
 import { once } from '@/utils';
@@ -30,7 +29,7 @@ import Empty from '@/components/Empty.vue';
 const friends = ref<any>([])
 // 获取推荐列表
 const getData = () => {
-  getRecommendList().then(res => {
+  getRecommendList({}).then(res => {
     // 只显示状态为未添加，且最多只展示9条数据
     friends.value = res.data.data.filter((v: any) => !v.is_add).slice(0, 9)
   })

@@ -60,7 +60,7 @@ getData()
 const router = useRouter()
 const sendMsg = (id: number) => {
   router.push({
-    path: '/message/chat/',
+    path: '/message/chat',
     query: {
       userId: id
     }

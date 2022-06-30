@@ -76,7 +76,7 @@ const routes: RouteRecordRaw[] = [
   // 人脉列表
   { path: '/contacts-list', component: () => import('@/views/contacts/list.vue') },
   // 他人信息
-  { path: '/contacts-others', component: () => import('@/views/contacts/others.vue') },
+  { path: '/contacts-others/:id', component: () => import('@/views/contacts/others.vue') },
 ];
 
 // 创建路由

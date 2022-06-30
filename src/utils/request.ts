@@ -27,10 +27,10 @@ service.interceptors.response.use(
       return response;
     }
     if (response.data.code !== 1) {
-      // 相同的报错信息，5秒内不重复处理
+      // 相同的报错信息，2秒内不重复处理
       const msg = response.data.msg
       const time = msgHistory.get(msg)
-      if (!time || Dayjs(new Date()).diff(time, 'second') > 5) {
+      if (!time || Dayjs(new Date()).diff(time, 'second') > 2) {
         msgHistory.set(msg, Dayjs().format('YYYY-MM-DD HH:mm:ss'))
         ElMessage.error(msg);
         // 处理错误码
