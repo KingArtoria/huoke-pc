@@ -10,40 +10,17 @@
   <!-- 联系客服 -->
   <div class="concat">
     <ul>
-      <li class="concat-item" @click="signVisible = true">
+      <li class="concat-item" @click="openDialog('sign')">
         <img :src="signImg" alt="" class="normal img">
         <img :src="signImgActive" alt="" class="active img">
         <span>签到</span>
       </li>
-      <!-- <el-popover placement="left" :width="300" trigger="hover">
-        <template #reference>
-          <li class="concat-item">
-            <img :src="concatImg" alt="" class="normal img">
-            <img :src="concatImgActive" alt="" class="active img">
-            <span>客服</span>
-          </li>
-        </template>
-        <div class="p-20">
-          <p class="fs16">技术咨询：<span class="color-066FFF">15190664662</span></p>
-          <p class="fs16 mt-12">商务合作：<span class="color-066FFF">15190664662</span></p>
-          <div class="grid grid-cols-2 gap-x-34 mt-30">
-            <div class="flex flex-col items-center">
-              <img src="" alt="" class="code-img">
-              <span class="mt-14">（技术咨询）</span>
-            </div>
-            <div class="flex flex-col items-center">
-              <img src="" alt="" class="code-img">
-              <span class="mt-14">（商务合作）</span>
-            </div>
-          </div>
-        </div>
-      </el-popover> -->
       <li class="concat-item" @click="navTo('/user/item')">
         <img :src="propImg" alt="" class="normal img">
         <img :src="propImgActive" alt="" class="active img">
         <span>道具</span>
       </li>
-      <li class="concat-item" @click="feedbackVisible = true">
+      <li class="concat-item" @click="openDialog('feedback')">
         <img :src="feedbackImg" alt="" class="normal img">
         <img :src="feedbackImgActive" alt="" class="active img">
         <span>反馈</span>
@@ -71,6 +48,8 @@ import preferenceImg from '@/assets/xianshith@2x.webp'
 import Sign from '@/components/Sign.vue'
 import Feedback from '@/components/Feedback.vue'
 import { useRouter } from 'vue-router';
+import { getUser } from '@/utils';
+import { ElMessage } from 'element-plus';
 
 // 广告
 const isShowLeft = ref(true)
@@ -82,6 +61,24 @@ const feedbackVisible = ref(false)
 const router = useRouter()
 const navTo = (path: string) => {
   router.push(path)
+}
+
+// 检查登录
+const isLogin = getUser()
+const openDialog = (type: string) => {
+  if (!isLogin) {
+    ElMessage.error('请先登录');
+    router.replace('/login')
+    return
+  }
+  switch (type) {
+    case 'sign':
+      signVisible.value = true
+      break
+    case 'sign':
+      feedbackVisible.value = true
+      break
+  }
 }
 </script>
 

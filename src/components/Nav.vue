@@ -82,7 +82,7 @@
           </div>
         </li>
         <li class="nav-item"><span class="item-text" @click="navToBuy('black')">黑卡</span></li>
-        <li class="nav-item"><span class="item-text">帮助中心</span></li>
+        <!-- <li class="nav-item"><span class="item-text">帮助中心</span></li> -->
         <!-- <li class="nav-item"><span class="item-text">APP下载</span></li> -->
         <li class="nav-item dn-app-wrap">
           <span class="item-text">APP下载</span>

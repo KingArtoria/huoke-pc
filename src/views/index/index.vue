@@ -140,7 +140,7 @@
         <div class="recommend">
           <img :src="recommendImg" alt="" class="img">
           <div class="wrap">
-            <div v-for="item in people" class="item">
+            <div v-for="item in people" class="item cursor-pointer" @click="navTo(`/contacts-others/${item.id}`)">
               <div class="flex">
                 <img :src="item.head" alt="" class="photo">
                 <div>
@@ -221,7 +221,7 @@ getHot().then(res => {
 
 // 推荐人脉
 const people = ref<any>([])
-getRecommendList().then(res => {
+getRecommendList({}).then(res => {
   people.value = (res.data.data || []).slice(0, 3).map((v: any) => {
     v.head = 'https://admin.bdhuoke.com/' + v.head
     return v;

@@ -12,7 +12,7 @@ const routes: RouteRecordRaw[] = [
   { path: '/login', component: () => import('@/views/login/index.vue') },
   { path: '/search', component: () => import('@/views/search/index.vue') },
   { path: '/detail/:id', component: () => import('@/views/search/detail.vue'), meta: { authentication: true } },
-  { path: '/publish', component: () => import('@/views/publish/index.vue') },
+  { path: '/publish', component: () => import('@/views/publish/index.vue'), meta: { authentication: true } },
   {
     path: '/user',
     component: () => import('@/views/user/index.vue'),
@@ -68,15 +68,15 @@ const routes: RouteRecordRaw[] = [
   // 平台交易
   { path: '/deal', component: () => import('@/views/deal/index.vue'), meta: { authentication: true } },
   // 发起交易
-  { path: '/deal-form', component: () => import('@/views/deal/form.vue') },
+  { path: '/deal-form', component: () => import('@/views/deal/form.vue'), meta: { authentication: true } },
   // 商务名片
-  { path: '/card', component: () => import('@/views/card/index.vue') },
+  { path: '/card', component: () => import('@/views/card/index.vue'), meta: { authentication: true } },
   // 关于我们
   { path: '/about', component: () => import('@/views/about/index.vue') },
   // 人脉列表
-  { path: '/contacts-list', component: () => import('@/views/contacts/list.vue') },
+  { path: '/contacts-list', component: () => import('@/views/contacts/list.vue'), meta: { authentication: true } },
   // 他人信息
-  { path: '/contacts-others/:id', component: () => import('@/views/contacts/others.vue') },
+  { path: '/contacts-others/:id', component: () => import('@/views/contacts/others.vue'), meta: { authentication: true } },
 ];
 
 // 创建路由

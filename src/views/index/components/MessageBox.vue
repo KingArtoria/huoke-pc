@@ -20,7 +20,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onBeforeUnmount, ref } from 'vue';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { getMemberInfoAPI, manageFriendapplyAPI } from '@/utils/api';
 import Empty from '@/components/Empty.vue';
@@ -47,10 +47,12 @@ const friendRequest = ref<any[]>([])
 // 聊天
 const chatList = ref<IMessage[]>([])
 
+// 更新消息数量
 const updateMessageCount = () => {
   messageList.value = [...friendRequest.value, ...chatList.value]
   call('change', friendRequest.value.length + chatList.value.reduce((sum, val) => { return sum + val.payload.unread }, 0))
 }
+
 
 // 获取好友请求
 const getFriendRequest = () => {
@@ -68,7 +70,8 @@ const goeasy: GoEasy = useGoEasy()
 const im = goeasy.im;
 // 获取自己的账号数据
 const self = ref<IUser>({} as IUser)
-const temp = getUser() as IUser
+
+// 执行会话监听
 const initListen = () => {
   im.on(GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, (result: any) => {
     chatList.value = result.conversations.map((val: any) => {
@@ -84,40 +87,43 @@ const initListen = () => {
     updateMessageCount()
   });
 }
-getMemberInfoAPI({ id: temp.member_id }).then(res => {
-  res.data.data.member_id = temp.member_id
-  self.value = res.data.data
-  // connected disconnected
-  if (goeasy.getConnectionStatus() === 'disconnected') {
-    goeasy.connect({
-      id: self.value.member_id,
-      data: self.value,
-      onSuccess() {
-        console.log('链接成功');
-        initListen()
-      },
-      onFailed(err: any) {
-        console.log(err.code, err.content);
-      },
-      onProgress() {
-        console.log('连接中');
-      }
-    })
-  } else {
-    initListen()
-  }
 
-})
-
-// 每隔30秒执行一次轮询任务
-const { stopPull } = usePull(() => {
-  // 获取好友请求
-  getFriendRequest()
-}, 30 * 1000, true)
-
+let stopPullFn: any = null
 emitter.on(EVENT.FRIEND_REQUEST, getFriendRequest)
+onMounted(() => {
+  const temp = getUser() as IUser
+  if (!temp) return
+  getMemberInfoAPI({ id: temp.member_id }).then(res => {
+    res.data.data.member_id = temp.member_id
+    self.value = res.data.data
+    if (goeasy.getConnectionStatus() === 'disconnected') {
+      goeasy.connect({
+        id: self.value.member_id,
+        data: self.value,
+        onSuccess() {
+          console.log('链接成功');
+          initListen()
+        },
+        onFailed(err: any) {
+          console.log(err.code, err.content);
+        },
+        onProgress() {
+          console.log('连接中');
+        }
+      })
+    } else {
+      initListen()
+    }
+  })
+  // 每隔3分钟执行一次轮询任务
+  const { stopPull } = usePull(() => {
+    // 获取好友请求
+    getFriendRequest()
+  }, 3 * 60 * 1000, true)
+  stopPullFn = stopPull
+})
 onBeforeUnmount(() => {
-  stopPull()
+  if (stopPullFn) stopPullFn()
   emitter.off(EVENT.FRIEND_REQUEST, getFriendRequest)
   //断开连接
   if (goeasy.getConnectionStatus() !== 'disconnected') {

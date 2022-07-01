@@ -307,7 +307,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import Download from '@/components/Download.vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import iconImg from '@/assets/baozhang@2x.webp'
 import { loadImg, once, getUser } from '@/utils'
 import Tip from './components/Tip.vue';
@@ -320,7 +320,6 @@ import dayjs from 'dayjs'
 import { ElMessage } from 'element-plus';
 import Reply from './components/Reply.vue'
 import useTypeOptions from '@/composables/useTypeOptions'
-import Empty from '@/components/Empty.vue';
 import ShareCard from './components/ShareCard.vue';
 import useUser from '@/composables/useUser';
 import { router } from '@/routes';

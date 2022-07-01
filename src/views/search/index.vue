@@ -52,7 +52,7 @@
         <div class="top">
           <div class="top-header">今日推荐</div>
           <div class="top-content">
-            <div v-for="item in todayHot" class="top-item">
+            <div v-for="item in todayHot" class="top-item" @click="router.push(`/detail/${item.id}`)">
               <p class="title">
                 {{ item.title }}
               </p>
@@ -74,7 +74,7 @@
 </template>
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { searchApi, getHot } from '@/utils/api'
 import ListItem from '@/components/ListItem.vue'
 import Download from '@/components/Download.vue';
@@ -152,6 +152,8 @@ const todayHot = ref<any>([])
 getHot().then(res => {
   todayHot.value = (res.data.data || []).slice(0, 2)
 })
+
+const router = useRouter()
 </script>
 
 <style lang="scss" scoped>
