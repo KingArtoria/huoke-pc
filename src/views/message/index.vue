@@ -1,6 +1,6 @@
  <template>
   <div class="app-page flex py-30">
-    <nav class="nav">
+    <nav class="nav mr-24">
       <div class="bg-white px-20 pt-40 pb-6 flex flex-col items-center">
         <img :src="userInfo.head" alt="" class="w-80 h-80 app-round mx-auto">
         <p class="fs-17 m-16 mb-8">{{ userInfo.nick_name }}</p>

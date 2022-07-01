@@ -82,7 +82,7 @@ const fmtType = (val: number) => {
 const fmtArea = (val: string) => {
   return val ? val.replaceAll(':', '-') : ''
 }
-// 条状到详情
+// 跳转到详情
 const nav = (item: any) => {
   router.push(`/detail/${item.id}`)
 }

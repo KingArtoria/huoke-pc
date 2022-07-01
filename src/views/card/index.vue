@@ -8,11 +8,11 @@
     <header class="bg-white flex justify-between header">
       <div class="flex-1 flex justify-between py-10">
         <div class="flex ml-30 items-center">
-          <img :src="loadImg('huoke.png')" class="logo-img" alt="">
+          <img :src="loadImg('huoke.webp')" class="logo-img" alt="">
           <span class="dot ml-10 mr-6"></span>
           <span class="primary fs-20">商务名片</span>
         </div>
-        <img :src="loadImg('nianka.png')" alt="" class="cursor-pointer" @click="nav('/buy')">
+        <img :src="loadImg('nianka.webp')" alt="" class="cursor-pointer" @click="nav('/buy')">
       </div>
       <div class="btn-wrap flex justify-end">
         <button class="btn" @click="submit">保存并下载</button>
@@ -53,7 +53,7 @@
             </div>
           </div>
           <div v-if="uploadImgs.length === 0" class="empty flex flex-col items-center pt-50">
-            <img :src="loadImg('kong.png')" alt="" class="empty-img">
+            <img :src="loadImg('kong.webp')" alt="" class="empty-img">
             <button class="empty-btn mt-10" @click="doUpload">上传图片</button>
           </div>
         </div>
@@ -115,9 +115,9 @@ const navToHome = () => {
   router.push('/')
 }
 const toolbar = ref([
-  { text: '模板', value: 'template', icon: 'muban-l.png', activeIcon: 'muban.png' },
-  { text: '图片', value: 'img', icon: 'tupian.png', activeIcon: 'tupianl.png' },
-  { text: '我的', value: 'user', icon: 'shangchuan.png', activeIcon: 'shangchuan-l.png' },
+  { text: '模板', value: 'template', icon: 'muban-l.webp', activeIcon: 'muban.webp' },
+  { text: '图片', value: 'img', icon: 'tupian.webp', activeIcon: 'tupianl.webp' },
+  { text: '我的', value: 'user', icon: 'shangchuan.webp', activeIcon: 'shangchuan-l.webp' },
 ])
 const activeToolbar = ref('template')
 const switchToolbar = (item: any) => {
@@ -126,14 +126,14 @@ const switchToolbar = (item: any) => {
 
 // 模板
 const templates = ref([
-  { value: 1, component: Template1, preview: 'heng4.png', style: 'horizontal' },
-  { value: 2, component: Template2, preview: 'heng2.png', style: 'horizontal' },
-  { value: 3, component: Template3, preview: 'heng3.png', style: 'horizontal' },
-  { value: 4, component: Template4, preview: 'heng1.png', style: 'horizontal' },
-  { value: 5, component: Template5, preview: 'shu2.png', style: 'vertical' },
-  { value: 6, component: Template6, preview: 'shu3.png', style: 'vertical' },
-  { value: 7, component: Template7, preview: 'shu1.png', style: 'vertical' },
-  { value: 8, component: Template8, preview: 'shu4.png', style: 'vertical' },
+  { value: 1, component: Template1, preview: 'heng4.webp', style: 'horizontal' },
+  { value: 2, component: Template2, preview: 'heng2.webp', style: 'horizontal' },
+  { value: 3, component: Template3, preview: 'heng3.webp', style: 'horizontal' },
+  { value: 4, component: Template4, preview: 'heng1.webp', style: 'horizontal' },
+  { value: 5, component: Template5, preview: 'shu2.webp', style: 'vertical' },
+  { value: 6, component: Template6, preview: 'shu3.webp', style: 'vertical' },
+  { value: 7, component: Template7, preview: 'shu1.webp', style: 'vertical' },
+  { value: 8, component: Template8, preview: 'shu4.webp', style: 'vertical' },
 ])
 const activeTemplate = ref(templates.value[0])
 const templateRef = ref()

@@ -7,7 +7,7 @@
       <div class="grid grid-cols-3 gap-x-16 gap-y-14">
         <div v-for="item in cards" :key="item.id" class="relative cursor-pointer" @click="activeCard = item">
           <img :src="item.url" alt="">
-          <img :src="loadImg(item.id === activeCard.id ? 'xuanzhong.png' : 'weixuan.png')" alt="" class="icon">
+          <img :src="loadImg(item.id === activeCard.id ? 'xuanzhong.webp' : 'weixuan.webp')" alt="" class="icon">
         </div>
       </div>
     </div>

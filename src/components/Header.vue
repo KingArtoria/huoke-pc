@@ -7,7 +7,7 @@
     <!-- 搜索 -->
     <div class="search center">
       <div class="logo">
-        <img :src="loadImg('huoke.png')" alt="" class="logo-img cursor-pointer" @click="navToIndex">
+        <img :src="loadImg('huoke.webp')" alt="" class="logo-img cursor-pointer" @click="navToIndex">
       </div>
       <div class="search-wrap">
         <div class="input-wrap">

@@ -78,5 +78,9 @@ export const EVENT = {
   /**
    * 好友请求
    */
-  FRIEND_REQUEST: 'friend_request'
+  FRIEND_REQUEST: 'friend_request',
+  /**
+   * 会话更新
+   */
+   CONVERSATIONS_UPDATED: 'CONVERSATIONS_UPDATED',
 }

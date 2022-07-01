@@ -50,6 +50,7 @@
             </div>
           </div>
         </div>
+        <Empty v-if="projectList.length === 0" />
       </div>
       <div class="content_3 pb-40">
         <div class="content_3_1">
@@ -89,7 +90,7 @@
         </div>
       </div>
       <div class="pt-40 pb-30 footer">
-        <img :src="loadImg('banner_di.png')" alt="" @click="nav('/buy')">
+        <img :src="loadImg('banner_di.webp')" alt="" @click="nav('/buy')">
       </div>
     </div>
   </div>
@@ -102,6 +103,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { loadImg, once, headPrefix } from '@/utils';
 import networkVue from "@/components/Network.vue";
 import { ElMessage } from 'element-plus';
+import Empty from '@/components/Empty.vue';
 
 const route = useRoute()
 const id = ref()

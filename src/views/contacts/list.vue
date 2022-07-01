@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="content">
-      <img :src="loadImg('banner-huy@2x.png')" class="content_2 cursor-pointer" @click="nav('/buy')">
+      <img :src="loadImg('banner-huy@2x.webp')" class="content_2 cursor-pointer" @click="nav('/buy')">
       <div class="content_3">
         <div class="content_3_1">
           <div class="content_3_1_1">所属行业:</div>

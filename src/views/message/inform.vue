@@ -20,7 +20,7 @@
       </div>
     </div>
     <div v-for="item in notify" :key="item.id" class="item" @click="clickNotify(item.url)">
-      <img src="http://39.106.208.234/pic/img_/zs.png" alt="" class="w-60 h-60 app-round mr-24">
+      <img src="http://39.106.208.234/pic/img_/zs.webp" alt="" class="w-60 h-60 app-round mr-24">
       <div class="flex-1">
         <p class="flex items-end color-989898">
           <span class="fs-16 mr-20">公告</span>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="banner">
-      <img :src="loadImg('guanyuwomen.png')" alt="">
+      <img :src="loadImg('guanyuwomen.webp')" alt="">
       <div class="center absolute">
         <router-link to="/" class="home">回首页</router-link>
       </div>
@@ -13,9 +13,9 @@
         <div class="line"></div>
         <div class="flex mt-100">
           <div class="grid _grid">
-            <img :src="loadImg('tu1.png')" alt="" class="col-span-2">
-            <img :src="loadImg('tu2.png')" alt="">
-            <img :src="loadImg('tu3.png')" alt="">
+            <img :src="loadImg('tu1.webp')" alt="" class="col-span-2">
+            <img :src="loadImg('tu2.webp')" alt="">
+            <img :src="loadImg('tu3.webp')" alt="">
           </div>
           <div class="introduce">
             <p class="introduce-title">徐州星跃联动网络科技有限公司</p>
@@ -38,24 +38,24 @@
       <div class="inline-block mx-auto mt-60 mobile">
         <p class="flex mb-20">
           <span class="app-flex-center">
-            <img :src="loadImg('dianhua.png')" alt="" class="mr-14">
+            <img :src="loadImg('dianhua.webp')" alt="" class="mr-14">
           </span>
           <span>联系电话：0516-8389-8991</span>
         </p>
         <p class="flex mb-20">
           <span class="app-flex-center">
-            <img :src="loadImg('email.png')" alt="" class="mr-14">
+            <img :src="loadImg('email.webp')" alt="" class="mr-14">
           </span>
           <span>电子邮箱：gaojiuan@163.com</span>
         </p>
         <p class="flex">
           <span class="app-flex-center">
-            <img :src="loadImg('wechat.png')" alt="" class="mr-14">
+            <img :src="loadImg('wechat.webp')" alt="" class="mr-14">
           </span>
           <span>微信：18511169119 田先生</span>
         </p>
       </div>
-      <img :src="loadImg('ditu.png')" alt="" class="mt-50">
+      <img :src="loadImg('ditu.webp')" alt="" class="mt-50">
     </div>
   </div>
 </template>

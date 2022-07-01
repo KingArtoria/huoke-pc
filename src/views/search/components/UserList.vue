@@ -6,7 +6,7 @@
     <p class="mb-14">浏览人数：{{ users.length }}</p>
     <div class="grid grid-cols-2 gap-10">
       <div v-for="item in currentData" class="item flex items-center">
-        <img :src="item.head" alt="" class="img">
+        <img :src="headPrefix(item.head)" alt="" class="img">
         <div>
           <p class="flex items-end">
             <span class="mb-10 text">{{ item.nick_name }}</span>
@@ -28,9 +28,8 @@
   </el-dialog>
 </template>
 <script setup lang="ts">
-import { getUser, once } from '@/utils';
+import { getUser, once, headPrefix } from '@/utils';
 import { addFriendapplyAPI } from '@/utils/api';
-import { HEAD_DOMAIN } from '@/utils/const'
 import { ElMessage } from 'element-plus';
 import { ref, watch } from 'vue';
 
@@ -40,6 +39,7 @@ const props = defineProps<{
 }>()
 const call = defineEmits(['update:modelValue'])
 
+// @ts-ignore
 const member_id = getUser().member_id
 
 // 超过一定字数做截取

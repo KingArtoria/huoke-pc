@@ -12,7 +12,7 @@
           <el-input v-model="formData.phone" type="number" style="width: 300px;" />
         </el-form-item>
         <el-form-item label="图片" prop="pic">
-          <el-upload accept=".jpg,.webp,.png,.jpeg,.bmp" class="uploader"
+          <el-upload accept=".jpg,.webp,.webp,.jpeg,.bmp" class="uploader"
             action="http://nad.bdhuoke.com/web_v1/member/upload" :show-file-list="false" :on-success="uploadSuccess">
             <img v-if="formData.pic" :src="formData.pic" class="img" />
             <div v-else class="flex items-center flex-col">

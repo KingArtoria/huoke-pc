@@ -9,7 +9,7 @@
         <el-row :gutter="56">
           <el-col>
             <el-form-item label="头像:" prop="head">
-              <el-upload accept=".jpg,.webp,.png,.jpeg,.bmp" class="uploader" action="http://nad.bdhuoke.com/web_v1/member/upload"
+              <el-upload accept=".jpg,.webp,.webp,.jpeg,.bmp" class="uploader" action="http://nad.bdhuoke.com/web_v1/member/upload"
                 :show-file-list="false" :on-success="uploadSuccess">
                 <img v-if="formData.head" :src="formData.head" class="img" />
                 <div v-else class="flex items-center flex-col">

@@ -1,6 +1,6 @@
 <template>
   <div class="download">
-    <img :src="loadImg('xaizait.png')" alt="">
+    <img :src="loadImg('xaizait.webp')" alt="">
   </div>
 </template>
 <script setup lang="ts">

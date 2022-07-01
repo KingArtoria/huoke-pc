@@ -5,7 +5,7 @@
     </template>
     <div>
       <div class="flex justify-center">
-        <img :src="loadImg('finish.png')" alt="" class=" mt-80">
+        <img :src="loadImg('finish.webp')" alt="" class=" mt-80">
       </div>
       <p class=" text-center my-50 fs-16">{{ tipMap[type] }}</p>
       <div class="flex justify-center mb-20">

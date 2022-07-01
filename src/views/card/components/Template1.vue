@@ -45,7 +45,7 @@ import { loadImg } from '@/utils/index'
 withDefaults(defineProps<{
   src: any, // 图片地址
 }>(), {
-  src: [loadImg('code.png')]
+  src: [loadImg('code.webp')]
 })
 const call = defineEmits(['change'])
 const callImg = (index: number) => {
@@ -62,7 +62,7 @@ defineExpose({
 
 <style lang="scss" scoped>
 .template {
-  background: url('@/assets/mingpian-2.png') no-repeat;
+  background: url('@/assets/mingpian-2.webp') no-repeat;
   width: 990px;
   height: 627px;
   color: #D8AD78;

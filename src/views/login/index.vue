@@ -1,6 +1,8 @@
 <template>
-  <div>
-    <div class="head"></div>
+  <div class="bg-white">
+    <div class="head">
+      <img :src="loadImg('logo_wa.51f4cee0.webp')" alt="">
+    </div>
     <div class="content app-img">
       <div class="box">
         <!-- 登录、注册 -->
@@ -94,6 +96,7 @@ import { ElMessage } from 'element-plus'
 import { TOKEN, USER } from '@/utils/const'
 import Sms from './components/Sms.vue';
 import Protocol from '@/components/Protocol.vue';
+import { loadImg } from '@/utils';
 
 const router = useRouter()
 const route = useRoute()
@@ -232,7 +235,9 @@ const setProtocol = (title: string, url: string) => {
 .head {
   width: 1382px;
   margin: 0 auto;
-  height: 50px;
+  height: 140px;
+  display: flex;
+  align-items: center;
 }
 
 .content {

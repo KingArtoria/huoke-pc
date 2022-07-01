@@ -46,7 +46,7 @@ const call = defineEmits(['change'])
 const callImg = (index: number) => {
   call('change', index)
 }
-const img1 = loadImg('code.png')
+const img1 = loadImg('code.webp')
 const templateRef = ref()
 const img = ref('')
 const { isPrint, save } = useTemplate(templateRef)
@@ -57,7 +57,7 @@ defineExpose({
 
 <style lang="scss" scoped>
 .template {
-  background: url('@/assets/shuban-4.png') no-repeat;
+  background: url('@/assets/shuban-4.webp') no-repeat;
   width: 355px;
   height: 632px;
   color: #fff;

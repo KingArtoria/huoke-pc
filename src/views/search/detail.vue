@@ -30,7 +30,7 @@
             <div class="tag mb-20">{{ fmtType(detailData.type) }}</div>
             <p class="detail-title fs-22 mb-32">{{ detailData.title }}</p>
             <div class="flex items-center div1">
-              <img :src="detailData.head" alt="" class="head-img">
+              <img :src="headPrefix(detailData.head)" alt="" class="head-img">
               <span>{{ detailData.nick_name }}</span>
               <span v-if="detailData.position" class="line"></span>
               <span>{{ detailData.position }}</span>
@@ -198,7 +198,7 @@
 
             <div class="text-center">
               <p class="text1 fs-16 mb-38">扫一扫下方二维码，下载BD火客AP，商务合作更快捷</p>
-              <img :src="loadImg('xiaziaerwem.png')" alt="" class="code-img">
+              <img :src="loadImg('xiaziaerwem.webp')" alt="" class="code-img">
             </div>
           </div>
         </div>
@@ -221,7 +221,7 @@
             <p class="p1 fs-16">全部回复（{{ commentList.length }}）</p>
             <div v-for="item in commentList" class="comment">
               <div class="flex">
-                <img :src="item.head" alt="" class="img">
+                <img :src="headPrefix(item.head)" alt="" class="img">
                 <div class="flex-1">
                   <p class="flex items-end">
                     <span class="mr-10 mb-12 fs-16">{{ item.nick_name }}</span>
@@ -243,7 +243,7 @@
               <div v-if="item.child && item.child.length" class="reply-wrap">
                 <div v-for="reply in item.child" class="reply">
                   <div class="flex">
-                    <img :src="reply.head" alt="" class="img">
+                    <img :src="headPrefix(reply.head)" alt="" class="img">
                     <div class="flex-1">
                       <p class="flex items-end">
                         <span class="mr-10 mb-12 fs-16">{{ reply.nick_name + '（发布人）' }}</span>
@@ -271,7 +271,7 @@
           <p class="p1 py-20 fs-16">浏览用户（{{ visitorList.length }}）</p>
           <div class="pl-16 pr-10">
             <div v-for="item in visitorList.slice(0, 3)" class="py-20 flex visitor-item">
-              <img :src="item.head" alt="" class="img mr-10 app-round">
+              <img :src="headPrefix(item.head)" alt="" class="img mr-10 app-round">
               <div class="flex-1">
                 <p>{{ item.nick_name }}</p>
                 <p class="flex color-949494 fs-14 my-10">
@@ -314,7 +314,7 @@ import Tip from './components/Tip.vue';
 import UserList from './components/UserList.vue';
 import { projectInfoAPI, contactInfoAPI, addTofavoriteAPI, addFriendapplyAPI, setCommentsAPI, getCommentContentAPI } from '@/utils/api'
 import { COOPERATION_TYPES } from '@/utils/const'
-import { matchLabel } from '@/utils/index'
+import { matchLabel, headPrefix } from '@/utils/index'
 import VipIcon from '@/components/VipIcon.vue';
 import dayjs from 'dayjs'
 import { ElMessage } from 'element-plus';

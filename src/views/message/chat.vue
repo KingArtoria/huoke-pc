@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="content ml-24">
+    <div class="content">
       <!-- 聊天区 -->
       <div class="content_1">
         <template v-if="isSessionActive">
@@ -16,7 +16,7 @@
             </div>
             <el-popover placement="bottom" :width="120" trigger="hover">
               <template #reference>
-                <img :src="loadImg('jubao_red.png')" class="content_1_1_3">
+                <img :src="loadImg('jubao_red.webp')" class="content_1_1_3">
               </template>
               <ul class="action-item-wrap">
                 <li class="action-item" @click="reportVisible = true">投诉</li>
@@ -38,7 +38,8 @@
                     :class="item.senderId == self.member_id ? 'self' : 'target'">
                     <div class="w-50 h-50 head">
                       <!-- 判断发送方是不是自己，如果是则用自己的头像，否则用对方的头像 -->
-                      <img :src="headPrefix(item.senderId == self.member_id ? self.head : target.head)" alt="" class="head-img">
+                      <img :src="headPrefix(item.senderId == self.member_id ? self.head : target.head)" alt=""
+                        class="head-img">
                     </div>
                     <div class="text">
                       {{ item.payload.text }}
@@ -72,7 +73,7 @@
                     <el-popover placement="bottom-start" :width="404" trigger="hover">
                       <template #reference>
                         <div class="flex items-center cursor-pointer">
-                          <img :src="loadImg('jingh.png')" alt="">
+                          <img :src="loadImg('jingh.webp')" alt="">
                           <span class="ml-8 mr-20">常用语</span>
                           <div class="line"></div>
                         </div>
@@ -89,7 +90,7 @@
                   <li>
                     <el-tooltip class="box-item" effect="dark" content="点击向对方发送手机号" placement="top" :show-after="500">
                       <div class="flex items-center cursor-pointer" @click="sendPhone">
-                        <img :src="loadImg('dianhua1.png')" alt="">
+                        <img :src="loadImg('dianhua1.webp')" alt="">
                         <span class="ml-8 mr-20">手机</span>
                         <div class="line"></div>
                       </div>
@@ -98,7 +99,7 @@
                   <li>
                     <el-tooltip class="box-item" effect="dark" content="点击向对方发送微信号" placement="top" :show-after="500">
                       <div class="flex items-center cursor-pointer" @click="sendWx">
-                        <img :src="loadImg('weixin.png')" alt="">
+                        <img :src="loadImg('weixin.webp')" alt="">
                         <span class="ml-8 mr-20">微信</span>
                       </div>
                     </el-tooltip>
@@ -121,7 +122,7 @@
               <img :src="headPrefix(item.head)" alt="" class="head-img">
             </div>
             <div class="flex-1">
-              <p class="flex">
+              <p class="flex mt-4">
                 <span class="truncate flex-1">{{ item.nick_name }}</span>
                 <span class="flex-shrink-0 time">{{ item.date }}</span>
               </p>
@@ -139,7 +140,7 @@
 <script setup lang="ts">
 import useGoEasy from '@/composables/useGoEasy'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
-import { getUser, loadImg, getVipLevel, once, headPrefix } from '@/utils';
+import { getUser, loadImg, getVipLevel, once, headPrefix, emitter } from '@/utils';
 import GoEasy from 'goeasy';
 import dayjs from 'dayjs'
 import VipIcon from '@/components/VipIcon.vue'
@@ -149,6 +150,7 @@ import Empty from '@/components/Empty.vue'
 import { ElMessageBox, ElMessage } from 'element-plus';
 import { useClipboard } from '@vueuse/core';
 import Report from './components/Report.vue'
+import { EVENT } from '@/utils/const';
 
 interface IMsg {
   messageId: string; // 消息唯一标识，由goeasy分配
@@ -184,58 +186,60 @@ userInfoAPI().then(res => {
 })
 
 // 初始化GoEasy
-const goeasy = useGoEasy()
+const goeasy: GoEasy = useGoEasy()
 const im = goeasy.im;
+// 处理会话
+const handleSession = (arr: any) => {
+  sessionList.value = arr.map((val: any) => {
+    let content = ''
+    if (val.lastMessage.type === 'text') {
+      content = val.lastMessage.payload.text
+    } else if (val.lastMessage.type === 'phone') {
+      content = val.lastMessage.payload.nick_name + '的' + val.lastMessage.payload.type + '：' + val.lastMessage.payload.value
+    }
+    return {
+      member_id: val.userId,
+      head: val.data.head,
+      nick_name: val.data.nick_name,
+      content,
+      date: dayjs(val.lastMessage.timestamp).format('YYYY/MM/DD HH:mm'),
+      maxvip: val.data.maxvip,
+      company: val.data.company,
+    }
+  })
+  // 如果没有选择会话，默认选中第一个
+  if (!isSessionActive.value && sessionList.value.length) {
+    changeSession(sessionList.value[0])
+  }
+}
+const syncResult = (result: any) => {
+  handleSession(result.conversations)
+}
 // 添加监听
 const initListen = () => {
   // 监听消息
   im.on(GoEasy.IM_EVENT.PRIVATE_MESSAGE_RECEIVED, (message: any) => {
+    // 当收到消息时，判断发送方是否是当前会话对象
+    if (message.senderId != target.value.member_id) {
+      return
+    }
     if (messageList.value.length) {
       const date = dayjs(message.timestamp).format('YYYY-MM-DD')
       const lastMsgDate = messageList.value[messageList.value.length - 1].date
       // 两条消息的发送日期不一样时，插入日期
       if (date !== lastMsgDate) {
         const _message = JSON.parse(JSON.stringify(message))
-        _message.status = message.status === 'success'
         _message.type = 'date'
         _message.payload = dayjs(message.timestamp).format('YYYY/MM/DD')
         pushMessage(_message)
       }
     }
-    message.read = true
-    message.status = true
     pushMessage(message)
     scrollToBottom()
     im.markPrivateMessageAsRead({
-      userId: target.value.member_id,  //聊天对象的userId
-    });
-  })
-  // 处理会话
-  const handleSession = (arr: any) => {
-    sessionList.value = arr.map((val: any) => {
-      let content = ''
-      if (val.lastMessage.type === 'text') {
-        content = val.lastMessage.payload.text
-      } else if (val.lastMessage.type === 'phone') {
-        content = val.lastMessage.payload.nick_name + '的' + val.lastMessage.payload.type + '：' + val.lastMessage.payload.value
-      }
-      return {
-        member_id: val.userId,
-        head: val.data.head,
-        nick_name: val.data.nick_name,
-        content,
-        date: dayjs(val.lastMessage.timestamp).format('YYYY/MM/DD HH:mm'),
-        maxvip: val.data.maxvip,
-        company: val.data.company,
-      }
+      userId: '' + target.value.member_id,  //聊天对象的userId
     })
-    // 如果没有选择会话，默认选中第一个
-    if (!isSessionActive.value && sessionList.value.length) {
-      changeSession(sessionList.value[0])
-    } else if (isSessionActive.value && targetUserId) {
-      changeSession(target.value)
-    }
-  }
+  })
   // 获取最新的100条会话记录
   im.latestConversations({
     onSuccess: function (result: any) {
@@ -246,6 +250,9 @@ const initListen = () => {
   im.on(GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, (result: any) => {
     handleSession(result.conversations)
   });
+  // goeasy同一个事件只能监听一次，由于会话更新事件已在消息盒监听，故此处的事件监听会不生效
+  // 同步更新内容
+  emitter.on(EVENT.CONVERSATIONS_UPDATED, syncResult)
 }
 
 // 用户输入的消息
@@ -306,13 +313,11 @@ const sendMessage = (messagePayload: any) => {
         // 两条消息的发送日期不一样时，插入日期
         if (date !== lastMsgDate) {
           const _message = JSON.parse(JSON.stringify(message))
-          _message.status = message.status === 'success'
           _message.type = 'date'
           _message.payload = dayjs(message.timestamp).format('YYYY/MM/DD')
           pushMessage(_message)
         }
       }
-      message.status = message.status === 'success'
       pushMessage(message)
       scrollToBottom()
     },
@@ -395,10 +400,12 @@ const changeSession = (item: IUser) => {
   isSessionActive.value = true
   // 拉取和这个用户的聊天记录
   im.history({
-    userId: target.value.member_id,  //对方userId
+    userId: '' + target.value.member_id,  //对方userId
     // lastTimestamp: lastMessage.timestamp, //上次查询结果里最后一条消息的时间戳，首次查询传入null即可
     // limit: 10, //可选项，返回的消息条数，默认为10条，最多30条
     onSuccess: function (result: any) {
+      console.log(result);
+
       if (result.content.length) {
         let lastMsgDate = dayjs(result.content[0].timestamp).format('YYYY-MM-DD')
         result.content.forEach((val: any) => {
@@ -406,21 +413,17 @@ const changeSession = (item: IUser) => {
           if (date !== lastMsgDate) {
             lastMsgDate = date
             const _message = JSON.parse(JSON.stringify(val))
-            _message.receiverId = ''
-            _message.status = true
             _message.type = 'date'
             _message.payload = dayjs(val.timestamp).format('YYYY/MM/DD')
             pushMessage(_message)
           }
-          val.receiverId = ''
-          val.status = true
           pushMessage(val)
         })
       }
       scrollToBottom()
       im.markPrivateMessageAsRead({
-        userId: target.value.member_id,  //聊天对象的userId
-      });
+        userId: '' + target.value.member_id,  //聊天对象的userId
+      })
     },
   });
 }
@@ -465,6 +468,7 @@ onBeforeUnmount(() => {
   if (goeasy.getConnectionStatus() !== 'disconnected') {
     goeasy.disconnect({});
   }
+  emitter.off(EVENT.CONVERSATIONS_UPDATED, syncResult)
 })
 </script>
 

@@ -77,26 +77,33 @@ const getFriendRequest = () => {
 // 监听好友请求消息变更
 emitter.on(EVENT.FRIEND_REQUEST, getFriendRequest)
 
+let updateChatTimer: any = null
 // 监听会话变更，实时更新消息盒
 const initListen = () => {
   im.on(GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, (result: any) => {
-    chatList.value = result.conversations.map((val: any) => {
-      let content = `${val.data.nick_name}：${val.lastMessage.payload.text}`
-      // 手机号和微信号类型消息
-      if (val.lastMessage.type === 'phone') {
-        const { nick_name, type, value } = val.lastMessage.payload
-        content = `${val.data.nick_name}：${nick_name}的${type}：${value}`
-      }
-      return {
-        type: '聊天',
-        payload: {
-          userId: val.userId,
-          unread: val.unread
-        },
-        content
-      }
-    })
-    updateMessageCount()
+    emitter.emit(EVENT.CONVERSATIONS_UPDATED, result)
+    // 延迟更新未读数量
+    // 因为回调会在【收到消息】和【标记已读】时分别触发一次，会导致前一秒出现未读数量，后一秒又消失，造成闪烁效果
+    clearTimeout(updateChatTimer)
+    updateChatTimer = setTimeout(() => {
+      chatList.value = result.conversations.filter((val: any) => val.unread > 0).map((val: any) => {
+        let content = `${val.data.nick_name}：${val.lastMessage.payload.text}`
+        // 手机号和微信号类型消息
+        if (val.lastMessage.type === 'phone') {
+          const { nick_name, type, value } = val.lastMessage.payload
+          content = `${val.data.nick_name}：${nick_name}的${type}：${value}`
+        }
+        return {
+          type: '聊天',
+          payload: {
+            userId: val.userId,
+            unread: val.unread
+          },
+          content
+        }
+      })
+      updateMessageCount()
+    }, 1000);
   });
 }
 
