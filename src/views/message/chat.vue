@@ -151,6 +151,7 @@ import { ElMessageBox, ElMessage } from 'element-plus';
 import { useClipboard } from '@vueuse/core';
 import Report from './components/Report.vue'
 import { EVENT } from '@/utils/const';
+import { useStore } from '@/store'
 
 interface IMsg {
   messageId: string; // 消息唯一标识，由goeasy分配
@@ -169,6 +170,8 @@ const route = useRoute()
 const router = useRouter()
 // 尝试从路由参数里获取聊天对象id
 const targetUserId = route.query.userId
+
+const store = useStore()
 
 // 自己
 const self = ref<IUser>({} as IUser)
@@ -207,39 +210,45 @@ const handleSession = (arr: any) => {
       company: val.data.company,
     }
   })
-  // 如果没有选择会话，默认选中第一个
-  if (!isSessionActive.value && sessionList.value.length) {
-    changeSession(sessionList.value[0])
+  // 在未选择会话的情况下，如果有用户id，就选择用户，否则默认选择会话列表第一个
+  if (!isSessionActive.value) {
+    if (targetUserId) {
+      changeSession(target.value)
+    } else if (sessionList.value.length) {
+      changeSession(sessionList.value[0])
+    }
   }
 }
 const syncResult = (result: any) => {
   handleSession(result.conversations)
 }
+const handleMessageReceived = (message: any) => {
+  if (store.offLine) return
+  // 当收到消息时，判断发送方是否是当前会话对象
+  if (message.senderId != target.value.member_id) {
+    return
+  }
+  if (messageList.value.length) {
+    const date = dayjs(message.timestamp).format('YYYY-MM-DD')
+    const lastMsgDate = messageList.value[messageList.value.length - 1].date
+    // 两条消息的发送日期不一样时，插入日期
+    if (date !== lastMsgDate) {
+      const _message = JSON.parse(JSON.stringify(message))
+      _message.type = 'date'
+      _message.payload = dayjs(message.timestamp).format('YYYY/MM/DD')
+      pushMessage(_message)
+    }
+  }
+  pushMessage(message)
+  scrollToBottom()
+  im.markPrivateMessageAsRead({
+    userId: '' + target.value.member_id,  //聊天对象的userId
+  })
+}
 // 添加监听
 const initListen = () => {
   // 监听消息
-  im.on(GoEasy.IM_EVENT.PRIVATE_MESSAGE_RECEIVED, (message: any) => {
-    // 当收到消息时，判断发送方是否是当前会话对象
-    if (message.senderId != target.value.member_id) {
-      return
-    }
-    if (messageList.value.length) {
-      const date = dayjs(message.timestamp).format('YYYY-MM-DD')
-      const lastMsgDate = messageList.value[messageList.value.length - 1].date
-      // 两条消息的发送日期不一样时，插入日期
-      if (date !== lastMsgDate) {
-        const _message = JSON.parse(JSON.stringify(message))
-        _message.type = 'date'
-        _message.payload = dayjs(message.timestamp).format('YYYY/MM/DD')
-        pushMessage(_message)
-      }
-    }
-    pushMessage(message)
-    scrollToBottom()
-    im.markPrivateMessageAsRead({
-      userId: '' + target.value.member_id,  //聊天对象的userId
-    })
-  })
+  im.on(GoEasy.IM_EVENT.PRIVATE_MESSAGE_RECEIVED, handleMessageReceived)
   // 获取最新的100条会话记录
   im.latestConversations({
     onSuccess: function (result: any) {
@@ -247,9 +256,9 @@ const initListen = () => {
     },
   });
   //监听会话列表更新
-  im.on(GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, (result: any) => {
-    handleSession(result.conversations)
-  });
+  // im.on(GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, (result: any) => {
+  //   handleSession(result.conversations)
+  // });
   // goeasy同一个事件只能监听一次，由于会话更新事件已在消息盒监听，故此处的事件监听会不生效
   // 同步更新内容
   emitter.on(EVENT.CONVERSATIONS_UPDATED, syncResult)
@@ -294,7 +303,7 @@ const send = () => {
     text: message.value, //消息内容
     to: {
       type: GoEasy.IM_SCENE.PRIVATE,   //私聊还是群聊，群聊为GoEasy.IM_SCENE.GROUP
-      id: target.value.member_id,
+      id: '' + target.value.member_id,
       data: target.value //好友扩展数据, 任意格式的字符串或者对象，用于更新会话列表conversation.data
     }
   });
@@ -339,7 +348,7 @@ const sendPhone = once((done: Function) => {
     },
     to: {
       type: GoEasy.IM_SCENE.PRIVATE,   //私聊还是群聊，群聊为GoEasy.IM_SCENE.GROUP
-      id: target.value.member_id,
+      id: '' + target.value.member_id,
       data: target.value //好友扩展数据, 任意格式的字符串或者对象，用于更新会话列表conversation.data
     }
   })
@@ -361,7 +370,7 @@ const sendWx = once((done: Function) => {
     },
     to: {
       type: GoEasy.IM_SCENE.PRIVATE,   //私聊还是群聊，群聊为GoEasy.IM_SCENE.GROUP
-      id: target.value.member_id,
+      id: '' + target.value.member_id,
       data: target.value //好友扩展数据, 任意格式的字符串或者对象，用于更新会话列表conversation.data
     }
   })
@@ -388,7 +397,7 @@ const delSession = () => {
   }).then(() => {
     isSessionActive.value = false
     im.removePrivateConversation({
-      userId: target.value.member_id,
+      userId: '' + target.value.member_id,
     });
   }).catch(() => {
   })
@@ -404,8 +413,6 @@ const changeSession = (item: IUser) => {
     // lastTimestamp: lastMessage.timestamp, //上次查询结果里最后一条消息的时间戳，首次查询传入null即可
     // limit: 10, //可选项，返回的消息条数，默认为10条，最多30条
     onSuccess: function (result: any) {
-      console.log(result);
-
       if (result.content.length) {
         let lastMsgDate = dayjs(result.content[0].timestamp).format('YYYY-MM-DD')
         result.content.forEach((val: any) => {
@@ -437,12 +444,13 @@ const scrollToBottom = () => {
 }
 
 onMounted(async () => {
+  store.offLine = false
   // 获取聊天对象信息（如果有）
   if (targetUserId) {
     const res = await getMemberInfoAPI({ id: targetUserId })
     res.data.data.member_id = targetUserId
     target.value = res.data.data
-    isSessionActive.value = true
+    // isSessionActive.value = true
   }
   // 获取自己的账号数据
   const temp = getUser() as IUser
@@ -464,10 +472,7 @@ onMounted(async () => {
 })
 
 onBeforeUnmount(() => {
-  //断开连接
-  if (goeasy.getConnectionStatus() !== 'disconnected') {
-    goeasy.disconnect({});
-  }
+  store.offLine = true
   emitter.off(EVENT.CONVERSATIONS_UPDATED, syncResult)
 })
 </script>
