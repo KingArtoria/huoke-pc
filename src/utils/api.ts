@@ -523,3 +523,11 @@ export const feedbackAPI = (data: any): AxiosPromise<any> => {
     data
   });
 };
+// 举报用户
+export const reportSetAPI = (data: any): AxiosPromise<any> => {
+  return request({
+    method: 'POST',
+    url: 'web_v1/friend/reportSet',
+    data
+  });
+};

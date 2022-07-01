@@ -46,15 +46,23 @@ const messageList = ref<IMessage[]>([])
 const friendRequest = ref<any[]>([])
 // 聊天
 const chatList = ref<IMessage[]>([])
+// 获取私聊接口
+const goeasy: GoEasy = useGoEasy()
+const im = goeasy.im;
+// 用户信息
+const self = ref<IUser>({} as IUser)
+// 销毁轮询定时器
+let stopPullFn: any = null
 
 // 更新消息数量
 const updateMessageCount = () => {
   messageList.value = [...friendRequest.value, ...chatList.value]
-  call('change', friendRequest.value.length + chatList.value.reduce((sum, val) => { return sum + val.payload.unread }, 0))
+  // 私聊未读消息数
+  const unRead = chatList.value.reduce((sum, val) => { return sum + val.payload.unread }, 0)
+  call('change', friendRequest.value.length + unRead)
 }
 
-
-// 获取好友请求
+// 获取和更新好友请求
 const getFriendRequest = () => {
   manageFriendapplyAPI({ type: 1 }).then(res => {
     friendRequest.value = res.data.data.map((val: any) => {
@@ -66,32 +74,36 @@ const getFriendRequest = () => {
     updateMessageCount()
   })
 }
-const goeasy: GoEasy = useGoEasy()
-const im = goeasy.im;
-// 获取自己的账号数据
-const self = ref<IUser>({} as IUser)
+// 监听好友请求消息变更
+emitter.on(EVENT.FRIEND_REQUEST, getFriendRequest)
 
-// 执行会话监听
+// 监听会话变更，实时更新消息盒
 const initListen = () => {
   im.on(GoEasy.IM_EVENT.CONVERSATIONS_UPDATED, (result: any) => {
     chatList.value = result.conversations.map((val: any) => {
+      let content = `${val.data.nick_name}：${val.lastMessage.payload.text}`
+      // 手机号和微信号类型消息
+      if (val.lastMessage.type === 'phone') {
+        const { nick_name, type, value } = val.lastMessage.payload
+        content = `${val.data.nick_name}：${nick_name}的${type}：${value}`
+      }
       return {
         type: '聊天',
         payload: {
           userId: val.userId,
           unread: val.unread
         },
-        content: `${val.data.nick_name}：${val.lastMessage.payload.text}`
+        content
       }
     })
     updateMessageCount()
   });
 }
 
-let stopPullFn: any = null
-emitter.on(EVENT.FRIEND_REQUEST, getFriendRequest)
 onMounted(() => {
+  // 获取用户信息和建立webscoket链接
   const temp = getUser() as IUser
+  // 判断是否登录
   if (!temp) return
   getMemberInfoAPI({ id: temp.member_id }).then(res => {
     res.data.data.member_id = temp.member_id
@@ -101,15 +113,8 @@ onMounted(() => {
         id: self.value.member_id,
         data: self.value,
         onSuccess() {
-          console.log('链接成功');
           initListen()
         },
-        onFailed(err: any) {
-          console.log(err.code, err.content);
-        },
-        onProgress() {
-          console.log('连接中');
-        }
       })
     } else {
       initListen()
@@ -117,7 +122,6 @@ onMounted(() => {
   })
   // 每隔3分钟执行一次轮询任务
   const { stopPull } = usePull(() => {
-    // 获取好友请求
     getFriendRequest()
   }, 3 * 60 * 1000, true)
   stopPullFn = stopPull
@@ -127,14 +131,7 @@ onBeforeUnmount(() => {
   emitter.off(EVENT.FRIEND_REQUEST, getFriendRequest)
   //断开连接
   if (goeasy.getConnectionStatus() !== 'disconnected') {
-    goeasy.disconnect({
-      onSuccess: function () {
-        console.log("GoEasy disconnect successfully.")
-      },
-      onFailed: function (error: any) {
-        console.log("Failed to disconnect GoEasy, code:" + error.code + ",error:" + error.content);
-      }
-    });
+    goeasy.disconnect({});
   }
 })
 // 清空所有消息

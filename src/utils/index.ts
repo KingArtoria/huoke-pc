@@ -1,5 +1,5 @@
 /* 工具类 */
-import { TOKEN, USER } from './const';
+import { TOKEN, USER, HEAD_DOMAIN } from './const';
 import { ElLoading } from 'element-plus';
 import mitt from 'mitt'
 
@@ -142,3 +142,11 @@ export const removeNullField = (object: Object) => {
  * 发布/订阅
  */
 export const emitter = mitt()
+
+/**
+ * 给用户头像添加域名前缀
+ * @param imgUrl 
+ */
+export const headPrefix = (imgUrl: string) => {
+  return /^http(s?):\/\//.test(imgUrl) ? imgUrl : HEAD_DOMAIN + imgUrl
+}

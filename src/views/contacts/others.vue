@@ -99,10 +99,9 @@
 import { getFriendHomeAPI, friend_projectAPI, getRecommendList, addFriendapplyAPI } from '@/utils/api'
 import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { loadImg, once } from '@/utils';
+import { loadImg, once, headPrefix } from '@/utils';
 import networkVue from "@/components/Network.vue";
 import { ElMessage } from 'element-plus';
-import { HEAD_DOMAIN } from '@/utils/const';
 
 const route = useRoute()
 const id = ref()
@@ -122,7 +121,7 @@ const recommend = ref<any[]>([])
 const getData = () => {
   id.value = route.params.id
   getFriendHomeAPI({ toid: id.value }).then(res => {
-    res.data.data.head = /^http(s?):\/\//.test(res.data.data.head) ? res.data.data.head : HEAD_DOMAIN + res.data.data.head
+    res.data.data.head = headPrefix(res.data.data.head)
     userInfo.value = res.data.data
   })
   friend_projectAPI({ id: id.value, type: 0 }).then(res => {

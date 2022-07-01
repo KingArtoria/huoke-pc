@@ -77,7 +77,7 @@
 
     .contacts-item {
       color: #1B1B1B;
-      padding: 4px 20px 14px 16px;
+      padding: 10px 20px 14px 16px;
       border-bottom: 1px solid #f3f3f3;
       cursor: pointer;
       transition: all 0.3s;
@@ -199,6 +199,13 @@
 
 .head {
   border-radius: 50%;
+  overflow: hidden;
+
+  .head-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }
 
 .action-item-wrap {
@@ -212,7 +219,7 @@
 
   &:hover {
     background: #1F73F1;
-      color: white;
+    color: white;
   }
 
 }

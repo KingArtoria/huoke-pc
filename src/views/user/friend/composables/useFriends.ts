@@ -1,4 +1,4 @@
-import { once } from '@/utils';
+import { once, headPrefix } from '@/utils';
 import { getFriendListAPI, putDelFriendAPI } from '@/utils/api';
 import { ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
@@ -15,9 +15,7 @@ const useFriends = () => {
         data = data.concat(v.data)
       })
       data.forEach((val: any) => {
-        if (!/^http(s?):\/\//.test(val.head)) {
-          val.head = HEAD_DOMAIN + val.head
-        }
+        val.head = headPrefix(val.head)
       })
       friends.value = data
     })

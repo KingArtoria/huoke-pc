@@ -31,8 +31,9 @@
 import { ref } from 'vue';
 import Empty from '@/components/Empty.vue';
 import { manageFriendapplyAPI, agreeFriendapplyAPI } from '@/utils/api'
-import { HEAD_DOMAIN } from '@/utils/const';
+import { EVENT, HEAD_DOMAIN } from '@/utils/const';
 import { ElMessage, ElMessageBox } from 'element-plus';
+import { emitter } from '@/utils/index'
 
 const listData = ref<any>([])
 const getData = () => {
@@ -55,6 +56,7 @@ const setState = (member_id: number, type: number) => {
       toid: member_id,
       status: type
     }).then(() => {
+      emitter.emit(EVENT.FRIEND_REQUEST)
       ElMessage.success('操作成功')
       loading = false
       // 刷新数据
