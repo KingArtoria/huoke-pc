@@ -1,7 +1,7 @@
 /* 常量 */
-export const TOKEN = "token"
+export const TOKEN = "token_v2"
 // 用户信息
-export const USER = "user"
+export const USER = "user_v2"
 // 合作种类
 export const COOPERATION_TYPES = [
   { label: '供应', value: 1 },
