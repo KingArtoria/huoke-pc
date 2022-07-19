@@ -72,7 +72,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, nextTick } from 'vue';
 import { loadImg, once, getVipLevel, removeToekn } from '@/utils';
 import { useRouter } from 'vue-router';
 import { userInfoAPI, memberInfoEditAPI } from '@/utils/api'
@@ -81,6 +81,7 @@ import CommonList from '../record/components/CommonList.vue';
 import Publish from '@/components/Publish.vue';
 import { ElMessageBox } from 'element-plus';
 import VipIcon from '@/components/VipIcon.vue';
+import { useStore } from '@/store'
 
 const router = useRouter()
 // 跳转到编辑资料页面
@@ -89,6 +90,7 @@ const navToForm = () => {
     path: '/user/profile-form'
   })
 }
+const store = useStore()
 // 退出登录
 const logout = once((done: Function) => {
   ElMessageBox.confirm('确定退出登录吗？', '提示', {
@@ -99,8 +101,15 @@ const logout = once((done: Function) => {
     done()
     // 移除缓存
     removeToekn()
+    // 刷新nav组件
+    store.refreshNav = false
+    setTimeout(() => {
+      nextTick(() => {
+        store.refreshNav = true
+      })
+    }, 100);
     router.replace({
-      path: '/login'
+      path: '/'
     })
   }).catch(() => {
     done()

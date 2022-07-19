@@ -31,9 +31,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { loadImg } from '@/utils';
+import { loadImg, getUser } from '@/utils';
 import Publish from '@/components/Publish.vue';
 import { memberInfoEditAPI, userInfoAPI } from '@/utils/api';
+import { HEAD_DOMAIN } from '@/utils/const'
 
 const route = useRoute()
 const router = useRouter()
@@ -49,15 +50,17 @@ const publishRef = ref()
 const openPublish = () => {
   publishRef.value.open()
 }
-
+const loginInfo = getUser()
 Promise.all([
   userInfoAPI(),
   memberInfoEditAPI({ type: 'get' })
 ]).then(([res1, res2]) => {
   res1.data.data.user_info.phone = res1.data.data.user_info.phone.replace(/^(\d{3})\d{4}(\d{4})$/, "$1****$2");
-  userInfo.value = Object.assign(res2.data.data || {}, res1.data.data.user_info)
+  userInfo.value = Object.assign(res2.data.data || {}, res1.data.data.user_info, loginInfo)
   if (!userInfo.value.head) {
     userInfo.value.head = loadImg('default.webp')
+  } else {
+    userInfo.value.head = HEAD_DOMAIN + userInfo.value.head
   }
 })
 

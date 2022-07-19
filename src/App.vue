@@ -1,6 +1,6 @@
 <template>
   <!-- 导航栏 -->
-  <Nav v-if="isShowNav" />
+  <Nav v-if="isShowNav && store.refreshNav" />
   <!-- 通知栏 -->
   <Header v-if="isShowHeader" />
 
@@ -21,9 +21,10 @@ import Header from './components/Header.vue';
 import Footer from './components/Footer.vue';
 import Aside from './components/Aside.vue';
 import Nav from './components/Nav.vue';
-import { computed, onMounted } from 'vue';
+import { computed } from 'vue';
 import { useRoute } from 'vue-router'
-import { getUser } from '@/utils';
+import { useStore } from '@/store'
+
 const route = useRoute()
 // 通知栏在某些页面不显示
 const isShowHeader = computed(() => {
@@ -32,18 +33,7 @@ const isShowHeader = computed(() => {
 const isShowNav = computed(() => {
   return !['/login', '/card', '/about'].includes(route.path)
 })
-// const goEasy = GoEasy.getGoEasy()
-// const im = goEasy.im
-// const userInfo = getUser()
-// onMounted(() => {
-//   goEasy.connect({
-//     id: userInfo.member_id,
-//     data: { "avatar": `https://admin.bdhuoke.com${userInfo.head}`, "nickname": userInfo.nick_name },
-//     onSuccess: () => {
-//       console.log('链接成功')
-//     }
-//   })
-// })
+const store = useStore()
 </script>
 <script lang="ts">
 let temp = null;

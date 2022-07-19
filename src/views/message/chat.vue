@@ -179,6 +179,8 @@ const self = ref<IUser>({} as IUser)
 const target = ref<IUser>({} as IUser)
 // 是否有正在进行中的会话
 const isSessionActive = ref(false)
+// targetUserId对象的会话否被删除
+const isRemoveSession = ref(false)
 // 投诉表单
 const reportVisible = ref(false)
 
@@ -213,7 +215,11 @@ const handleSession = (arr: any) => {
   // 在未选择会话的情况下，如果有用户id，就选择用户，否则默认选择会话列表第一个
   if (!isSessionActive.value) {
     if (targetUserId) {
-      changeSession(target.value)
+      if (!isRemoveSession.value) {
+        changeSession(target.value)
+      } else {
+        isRemoveSession.value = false
+      }
     } else if (sessionList.value.length) {
       changeSession(sessionList.value[0])
     }
@@ -396,6 +402,7 @@ const delSession = () => {
     type: 'warning'
   }).then(() => {
     isSessionActive.value = false
+    isRemoveSession.value = true
     im.removePrivateConversation({
       userId: '' + target.value.member_id,
     });

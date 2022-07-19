@@ -4,6 +4,10 @@
     <div v-if="type === 'super'" class="super flex items-center">
       <img :src="superImg" alt="" class="img">
     </div>
+    <!-- 推广广告 -->
+    <div class="ad-img">
+      <img v-if="type === 'ad'" :src="loadImg('tuiguanggg.png')" alt="">
+    </div>
     <div class="flex content">
       <div class="photo-wrap">
         <el-image :src="host + item.head" class="photo">
@@ -44,6 +48,7 @@
         </div>
 
       </div>
+      <!-- 普通置顶 -->
       <img v-if="type === 'normal'" :src="normalImg" alt="" class="top-img">
     </div>
   </div>
@@ -51,7 +56,7 @@
 <script setup lang="ts">
 import dayjs from 'dayjs'
 import { COOPERATION_TYPES } from '@/utils/const'
-import { matchLabel } from '@/utils/index'
+import { matchLabel, loadImg } from '@/utils/index'
 import superImg from '@/assets/cjzhiding.webp'
 import normalImg from '@/assets/zhiding.webp'
 import { useRouter } from 'vue-router'
@@ -109,6 +114,11 @@ const nav = (item: any) => {
     position: absolute;
     right: 0;
     top: 0;
+  }
+
+  .ad-img {
+    padding-top: 14px;
+    margin-bottom: -10px;
   }
 
   .photo-wrap {

@@ -162,6 +162,7 @@ const msgChange = (msgCount: number) => {
   font-weight: 400;
   color: #5C5C5C;
   background: #F8F8F8;
+  border: 1px solid #E7E7E7;
 
   .center {
     display: flex;

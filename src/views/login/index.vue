@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white">
     <div class="head">
-      <img :src="loadImg('logo_wa.51f4cee0.webp')" alt="">
+      <img :src="loadImg('logo_wa.51f4cee0.webp')" alt="" class=" cursor-pointer" @click="router.push('/')">
     </div>
     <div class="content app-img">
       <div class="box">
@@ -55,12 +55,13 @@
             <input type="password" v-model="registerForm.invitationCode" placeholder="请输入邀请码(选填)"
               class="box_tabs_login_input" />
             <div class="text-wrap">
-              <div>
-                <el-checkbox v-model="isReceive" class="check">
-                  <span class="text whitespace-normal">我已阅读并接受<span class="light"><span
-                        @click="setProtocol('《BD火客用户服务协议》', 'http://fw.bdhuoke.com')">《BD火客用户服务协议》</span><span
-                        @click="setProtocol('《隐私政策》', 'http://app.bdhuoke.com')">《隐私政策》</span></span></span>
-                </el-checkbox>
+              <div class="flex">
+                <div>
+                  <el-checkbox v-model="isReceive" class="check"></el-checkbox>
+                </div>
+                <span class="text whitespace-normal">我已阅读并接受<span class="light"><span
+                      @click="setProtocol('《BD火客用户服务协议》', 'http://fw.bdhuoke.com')">《BD火客用户服务协议》</span><span
+                      @click="setProtocol('《隐私政策》', 'http://app.bdhuoke.com')">《隐私政策》</span></span></span>
               </div>
             </div>
             <div class="box_tabs_login_btn" @click="sign">注册</div>
@@ -380,9 +381,11 @@ const setProtocol = (title: string, url: string) => {
 .text-wrap {
   display: flex;
   margin-top: 25px;
+  line-height: 1.5;
 
   .check {
-    margin-top: -5px;
+    margin-top: 5px;
+    height: auto;
   }
 }
 

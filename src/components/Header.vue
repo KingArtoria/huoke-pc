@@ -92,7 +92,7 @@ const nav = (path: string) => {
 }
 
 .banner {
-  margin: 10px auto;
+  padding: 10px 0;
 
   .banner-img {
     width: 100%;

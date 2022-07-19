@@ -116,7 +116,7 @@
               </li>
             </ul>
           </div>
-          <img :src="vipImg" alt="" class="vip-img">
+          <img :src="vipImg" alt="" class="vip-img cursor-pointer" @click="router.push('/buy')">
         </div>
         <!-- 今日热门 -->
         <div class="top">
@@ -183,7 +183,7 @@ import Download from '@/components/Download.vue'
 import { useRouter } from 'vue-router'
 import { getUser, getVipLevel } from '@/utils'
 import VipIcon from '@/components/VipIcon.vue';
-import { VIP_LEVEL } from '@/utils/const'
+import { VIP_LEVEL, HEAD_DOMAIN } from '@/utils/const'
 
 const router = useRouter()
 // 分类菜单
@@ -268,6 +268,9 @@ if (loginInfo) {
     memberInfoEditAPI({ type: 'get' })
   ]).then(([res1, res2]) => {
     userInfo.value = Object.assign(res2.data.data || {}, res1.data.data.user_info, loginInfo)
+    if (userInfo.value.head) {
+      userInfo.value.head = HEAD_DOMAIN + userInfo.value.head
+    }
     vipLevel.value = getVipLevel(userInfo.value.maxvip)
   })
 }

@@ -10,7 +10,7 @@ const useGoEasy = () => {
   if (instance) return instance
   instance = goEasy.getInstance({
     host: 'hangzhou.goeasy.io',
-    appkey: DEV,
+    appkey: PROD,
     modules: ['pubsub', 'im'],
   });
   return instance
