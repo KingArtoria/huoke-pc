@@ -25,6 +25,17 @@
         <img :src="feedbackImgActive" alt="" class="active img">
         <span>反馈</span>
       </li>
+      <el-popover placement="left">
+        <template #reference>
+          <li class="concat-item" @click="openDialog('feedback')">
+            <img :src="loadImg('gongzhongh.png')" alt="" class="normal img">
+            <img :src="loadImg('gongzhongh-bai.png')" alt="" class="active img">
+            <span>公众号</span>
+          </li>
+        </template>
+        <img :src="loadImg('public-code.jpg')" alt="">
+      </el-popover>
+
     </ul>
     <img :src="preferenceImg" alt="" class="vip-img" @click="navTo('/buy')">
   </div>
@@ -48,7 +59,7 @@ import preferenceImg from '@/assets/xianshith@2x.webp'
 import Sign from '@/components/Sign.vue'
 import Feedback from '@/components/Feedback.vue'
 import { useRouter } from 'vue-router';
-import { getUser } from '@/utils';
+import { getUser, loadImg } from '@/utils';
 import { ElMessage } from 'element-plus';
 
 // 广告

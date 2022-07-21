@@ -25,7 +25,7 @@ const useTemplate = (templateRef: any) => {
           canvas.toBlob((blob: any) => {
             const file = new File([blob], '名片.jpg', { type: 'image/jpg' })
             // 将生成的图片下载到本地
-            downloadImg(file)
+            downloadImg(file)  
             const formData = new FormData()
             formData.append('file', file)
             // 上传图片

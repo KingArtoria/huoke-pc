@@ -63,6 +63,8 @@ const routes: RouteRecordRaw[] = [
       { path: 'friends', component: () => import('@/views/message/friends.vue') },
       // 聊天
       { path: 'chat', component: () => import('@/views/message/chat.vue') },
+      // 私信列表
+      { path: 'chat-list', component: () => import('@/views/message/chat-list.vue') }
     ],
     meta: { authentication: true },
   },

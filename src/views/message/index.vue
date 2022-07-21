@@ -41,7 +41,7 @@ const router = useRouter()
 const routes = [
   { text: '好友列表', path: '/message/friends' },
   { text: '通知', path: '/message/inform' },
-  { text: '私信', path: '/message/chat' },
+  { text: '私信', path: '/message/chat-list' },
 ]
 
 const userInfo = ref<any>({})

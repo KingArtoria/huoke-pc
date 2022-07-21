@@ -94,7 +94,7 @@ defineExpose({
     font-family: PingFang SC;
     font-weight: 500;
     color: #1A1A1A;
-    margin-bottom: 8px;
+    margin-bottom: 7px;
   }
 
   .desc {
@@ -102,6 +102,7 @@ defineExpose({
     font-family: PingFang SC;
     font-weight: 400;
     color: #858585;
+    line-height: 16px;
   }
 }
 
