@@ -1,7 +1,10 @@
 /* 工具类 */
 import { TOKEN, USER, HEAD_DOMAIN } from './const';
-import { ElLoading } from 'element-plus';
+import { ElLoading, ElMessageBox } from 'element-plus';
 import mitt from 'mitt'
+import { router } from '@/routes';
+import { useStore } from '@/store'
+import { nextTick } from 'vue';
 
 /**
  * 根据数值从数组里招到对应的文本名称
@@ -150,3 +153,34 @@ export const emitter = mitt()
 export const headPrefix = (imgUrl: string) => {
   return /^http(s?):\/\//.test(imgUrl) ? imgUrl : HEAD_DOMAIN + imgUrl
 }
+
+/**
+ * 退出登录
+ */
+export const logout = once((done: Function) => {
+  const store = useStore()
+  ElMessageBox.confirm('确定退出登录吗？', '提示', {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: 'warning'
+  }).then(() => {
+    done()
+    // 移除缓存
+    removeToekn()
+    // 刷新nav组件
+    store.refreshNav = false
+    setTimeout(() => {
+      nextTick(() => {
+        store.refreshNav = true
+      })
+    }, 100);
+    router.replace({
+      path: '/index',
+      query: {
+        t: new Date().getTime()
+      }
+    })
+  }).catch(() => {
+    done()
+  })
+})

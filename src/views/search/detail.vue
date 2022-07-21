@@ -1,7 +1,8 @@
 <template>
   <div class="app-page">
     <header class="nav py-20 fs-14">
-      <span>当前位置：首页 > 合作信息 > {{ shortTitle }}</span>
+
+      <span>当前位置：<router-link to="/" class="link">首页</router-link> > 合作信息 > {{ shortTitle }}</span>
     </header>
 
     <div class="content-wrap">
@@ -166,7 +167,7 @@
                   <span>{{ contactInfo.qq }}</span>
                 </div>
               </div>
-              <span class="text">联系我时请说明是从<span class="light">BD火客</span>上看到的（未经授权严禁转载和使用）</span>
+              <span class="text">联系我时请说明是从<span class="light">火客</span>上看到的（未经授权严禁转载和使用）</span>
             </div>
             <!-- 4渠道简介 6可互换位置 7加盟扶持政策 -->
             <template v-if="[4, 6, 7].includes(detailData.type)">
@@ -519,6 +520,13 @@ const cardVisible = ref(false)
 
 .nav {
   color: #202020;
+
+  .link {
+    &:hover {
+      text-decoration: underline;
+      color: #0074FF;
+    }
+  }
 }
 
 .color-B4B4B4 {

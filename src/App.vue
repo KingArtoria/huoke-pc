@@ -5,7 +5,7 @@
   <Header v-if="isShowHeader" />
 
   <div id="main">
-    <router-view v-slot="{ Component }">
+    <router-view v-slot="{ Component }" :key="key">
       <component :is="Component" />
     </router-view>
   </div>
@@ -34,6 +34,10 @@ const isShowNav = computed(() => {
   return !['/login', '/card', '/about'].includes(route.path)
 })
 const store = useStore()
+
+const key = computed(() => {
+  return route.fullPath
+})
 </script>
 <script lang="ts">
 let temp = null;

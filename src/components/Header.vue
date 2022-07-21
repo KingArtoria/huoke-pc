@@ -11,6 +11,19 @@
       </div>
       <div class="search-wrap">
         <div class="input-wrap">
+          <div class="select" @mouseover="searchTypeVisible = true" @mouseleave="searchTypeVisible = false">
+            <div class="trigger">
+              <span>{{ searchType }}</span>
+              <el-icon class="icon">
+                <ArrowDown />
+              </el-icon>
+            </div>
+            <div v-show="searchTypeVisible" class="select-area">
+              <div v-for="item in typeOptions.filter(v => !v.isSelect)" class="option" @click="setSearchType(item)">{{
+                  item.label
+              }}</div>
+            </div>
+          </div>
           <input v-model="keyword" type="text" class="input" placeholder="输入关键词进行搜索" @keyup.enter="doSearch">
           <div class="search-btn app-flex-center" @click="doSearch">搜索</div>
         </div>
@@ -36,10 +49,10 @@ const router = useRouter()
 // 搜索类型
 const searchType = ref('找项目')
 const typeOptions = ref([
-  { label: '找项目', value: 'project', isSelect: true },
-  { label: '找人脉', value: 'people', isSelect: false },
-  { label: '查企业', value: 'company', isSelect: false },
+  { label: '找项目', value: '/search', isSelect: true },
+  { label: '找人脉', value: '/contacts-list', isSelect: false },
 ])
+const searchTypeVisible = ref(false)
 // 关键词
 const keyword = ref('')
 // 快捷搜索关键词
@@ -49,14 +62,16 @@ const handleLink = (text: string) => {
   doSearch()
 }
 const setSearchType = (item: any) => {
+  searchTypeVisible.value = false
   typeOptions.value.forEach(v => v.isSelect = false)
   item.isSelect = true
   searchType.value = item.label
 }
 // 搜索
 const doSearch = () => {
+  const select = typeOptions.value.find((v: any) => v.isSelect)
   router.push({
-    path: '/search',
+    path: select ? select.value : '/search',
     query: {
       keyword: keyword.value
     }
@@ -199,12 +214,6 @@ const nav = (path: string) => {
   line-height: 40px;
   text-align: center;
 
-  &:hover {
-    .select-area {
-      display: block;
-    }
-  }
-
   .trigger {
     font-size: 14px;
     font-family: PingFang SC;
@@ -219,7 +228,6 @@ const nav = (path: string) => {
   }
 
   .select-area {
-    display: none;
     position: absolute;
     width: 94px;
     background: white;

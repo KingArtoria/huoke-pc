@@ -9,6 +9,7 @@ import { ElMessage } from 'element-plus';
 
 const routes: RouteRecordRaw[] = [
   { path: '/', component: () => import('@/views/index/index.vue') },
+  { path: '/index', component: () => import('@/views/index/index.vue') },
   { path: '/login', component: () => import('@/views/login/index.vue') },
   { path: '/search', component: () => import('@/views/search/index.vue') },
   { path: '/detail/:id', component: () => import('@/views/search/detail.vue'), meta: { authentication: true } },

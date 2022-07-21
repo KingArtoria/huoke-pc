@@ -2,7 +2,7 @@
   <div class="app-page">
 
     <div v-if="keyword" class="tip">
-      结果：招到"<span class="light">{{ keyword }}</span>"相关内容{{ total }}个
+      结果：找到"<span class="light">{{ keyword }}</span>"相关内容{{ total }}个
     </div>
     <!-- 搜索条件 -->
     <div class="search-wrap">
@@ -10,17 +10,17 @@
       <div class="grid">
         <!-- 一级分类 -->
         <div class="flex">
-          <div class="flex-shrink-0 type-title">
+          <div class="flex-shrink-0 type-title" :style="{ width: labelWidth }">
             <span>项目分类：</span>
           </div>
           <div class="flex flex-wrap flex-1">
             <div v-for="item in primaryTypes" class="item" :class="{ active: params.type === item.value }"
-              @click="params.type = item.value">{{ item.label }}</div>
+              @click="changePrimaryType(item.value)">{{ item.label }}</div>
           </div>
         </div>
         <!-- 次级分类（一级分类下可能会有多个次级分类） -->
         <div class="flex" v-for="(second, index) in secondTypes">
-          <div class="flex-shrink-0 type-title">
+          <div class="flex-shrink-0 type-title" :style="{ width: labelWidth }">
             <span>{{ second.name }}：</span>
           </div>
           <div class="flex flex-wrap flex-1">
@@ -73,7 +73,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { searchApi, getHot } from '@/utils/api'
 import ListItem from '@/components/ListItem.vue'
@@ -154,6 +154,27 @@ getHot().then(res => {
 })
 
 const router = useRouter()
+
+const labelWidth = computed(() => {
+  const arr = ['项目分类'].concat(secondTypes.value.map((v: any) => v.name))
+  // 找出字最多的
+  let maxIndex = 0
+  for (let i = 1; i < arr.length; i++) {
+    if (arr[i].length > arr[maxIndex].length) {
+      maxIndex = i
+    }
+  }
+  // 1个字大约占据17px
+  return arr[maxIndex].length * 17 + 'px'
+})
+
+const changePrimaryType = (value: string | number) => {
+  params.value.type = value
+  // 重置secondTypes选中项
+  secondTypes.value.forEach((v: any, index: number) => {
+    params.value['search' + (index + 1)] = v.items[0].id
+  })
+}
 </script>
 
 <style lang="scss" scoped>

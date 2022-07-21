@@ -10,8 +10,15 @@
           <span>请<a href="javascript:;" class="link mr-26" @click="navToLogin('login')">登录</a><a href="javascript:;"
               class="link mr-20" @click="navToLogin('register')">注册</a></span>
         </li>
-        <li class="nav-item">
+        <li class="nav-item relative" @mouseover="optionsVisible = true" @mouseleave="optionsVisible = false">
           <span class="item-text" @click="navToUser">个人中心</span>
+          <Transition name="fade">
+            <ul v-show="optionsVisible" class="profile-options">
+              <li v-for="item in profileOptions" :key="item.path" class="option" @click="clickOption(item)">{{
+                  item.label
+              }}</li>
+            </ul>
+          </Transition>
         </li>
         <!-- 普通会员 -->
         <li class="nav-item drop">
@@ -102,7 +109,7 @@
 </template>
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-import { getUser } from '@/utils/index'
+import { getUser, logout } from '@/utils/index'
 import MessageBox from '@/views/index/components/MessageBox.vue';
 import { computed, ref } from 'vue';
 import Download from './Download.vue';
@@ -146,11 +153,30 @@ const messageCount = ref(0)
 // 跳转到消息页面
 const navToMessage = () => {
   router.push({
-    path: '/message/friends'
+    path: '/message/inform'
   })
 }
 const msgChange = (msgCount: number) => {
   messageCount.value = msgCount
+}
+
+// 个人中心下拉选项
+const profileOptions = computed(() => {
+  const options = [
+    { label: '会员特权', path: '/user/vip' },
+    { label: '我的道具', path: '/user/item' },
+    { label: '我的好友', path: '/user/friend' },
+  ]
+  return options.concat(isLogin.value ? [{ label: '退出', path: 'logout' }] : [])
+})
+const optionsVisible = ref(false)
+const clickOption = (item: any) => {
+  optionsVisible.value = false
+  if (item.path === 'logout') {
+    logout()
+  } else {
+    router.push(item.path)
+  }
 }
 </script>
 
@@ -427,5 +453,29 @@ const msgChange = (msgCount: number) => {
 ::v-deep(.el-badge__content.is-fixed) {
   top: 20px;
   right: 20px;
+}
+
+.profile-options {
+  position: absolute;
+  background: #FFFFFF;
+  box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.2000);
+  padding: 0 14px;
+  overflow: hidden;
+
+  .option {
+    padding: 14px 4px;
+    border-bottom: 1px solid #F0F0F0;
+    color: #232323;
+    font-size: 14px;
+    cursor: pointer;
+
+    &:last-of-type {
+      border-bottom: 0;
+    }
+
+    &:hover {
+      color: #0076FF;
+    }
+  }
 }
 </style>

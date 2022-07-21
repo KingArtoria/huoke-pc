@@ -41,7 +41,7 @@
         <div v-if="activeToolbar === 'img'">
           <div class="grid grid-cols-2 gap-x-4 gap-y-10 px-10 py-20">
             <div v-for="item in uploadImgs" class="img-wrap flex items-center justify-center">
-              <img :src="item.src" alt="">
+              <img :src="item.src" alt="" class="img1">
               <div :style="{ display: isShowSelect ? 'flex' : 'none' }" class="mask app-flex-center">
                 <button class="change-btn" @click="setActiveImg(item)">替换</button>
               </div>
@@ -372,6 +372,11 @@ const nav = (path: string) => {
   padding: 4px;
   position: relative;
   cursor: pointer;
+
+  .img1 {
+    max-width: 100%;
+    max-height: 100%;
+  }
 }
 
 .add-icon {

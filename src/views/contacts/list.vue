@@ -42,12 +42,11 @@ import networkVue from "@/components/Network.vue";
 import { ElMessage } from "element-plus";
 import { loadImg } from "@/utils";
 
-const title = ref('')
+const title = useRoute().query.keyword as string
 const province = ref([])
 const industry = ref([])
 const recommend = ref([])
-const params = ref({ limit: 15, industry_one: 0, city: 0 })
-title.value = useRoute().query.title as string
+const params = ref({ limit: 15, industry_one: 0, city: 0, title })
 provinceAPI().then(res => {
   res.data.data.unshift({ id: 0, name: '全部' })
   res.data.data.forEach((item: any) => {

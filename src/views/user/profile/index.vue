@@ -37,10 +37,10 @@
     </div>
     <!-- 联系方式 -->
     <div class="contact flex items-center my-16">
-      <span class="color-1B1B1B mr-50 ml-10">联系方式：</span>
-      <div class="grid grid-cols-3 gap-x-80">
-        <span class="color-818181">手机号：{{ userInfo.phone }}</span>
-        <span v-if="userInfo.wx" class="color-818181">微信号：{{ userInfo.wx }}</span>
+      <span class="color-1B1B1B mr-50 ml-10 flex-shrink-0">联系方式：</span>
+      <div class="flex">
+        <span class="color-818181 mr-70">手机号：{{ userInfo.phone }}</span>
+        <span v-if="userInfo.wx" class="color-818181 mr-70">微信号：{{ userInfo.wx }}</span>
         <span>
           <span class="color-1B1B1B mr-30">邀请码：</span>
           <span class="color-1F73F1">{{ userInfo.Invitation_code }}</span>
@@ -72,16 +72,14 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, ref, nextTick } from 'vue';
-import { loadImg, once, getVipLevel, removeToekn } from '@/utils';
+import { computed, ref } from 'vue';
+import { loadImg, getVipLevel, logout } from '@/utils';
 import { useRouter } from 'vue-router';
 import { userInfoAPI, memberInfoEditAPI } from '@/utils/api'
 import Owner from '../item/components/Owner.vue';
 import CommonList from '../record/components/CommonList.vue';
 import Publish from '@/components/Publish.vue';
-import { ElMessageBox } from 'element-plus';
 import VipIcon from '@/components/VipIcon.vue';
-import { useStore } from '@/store'
 
 const router = useRouter()
 // 跳转到编辑资料页面
@@ -90,31 +88,6 @@ const navToForm = () => {
     path: '/user/profile-form'
   })
 }
-const store = useStore()
-// 退出登录
-const logout = once((done: Function) => {
-  ElMessageBox.confirm('确定退出登录吗？', '提示', {
-    confirmButtonText: "确定",
-    cancelButtonText: "取消",
-    type: 'warning'
-  }).then(() => {
-    done()
-    // 移除缓存
-    removeToekn()
-    // 刷新nav组件
-    store.refreshNav = false
-    setTimeout(() => {
-      nextTick(() => {
-        store.refreshNav = true
-      })
-    }, 100);
-    router.replace({
-      path: '/'
-    })
-  }).catch(() => {
-    done()
-  })
-})
 
 // 用户信息
 const userInfo = ref<any>({})

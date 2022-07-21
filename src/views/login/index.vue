@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white">
     <div class="head">
-      <img :src="loadImg('logo_wa.51f4cee0.webp')" alt="" class=" cursor-pointer" @click="router.push('/')">
+      <img :src="loadImg('logo_wa@2x.png')" alt="" class="logo cursor-pointer" @click="router.push('/')">
     </div>
     <div class="content app-img">
       <div class="box">
@@ -182,7 +182,6 @@ const doLogin = () => {
   }
   promise.then(res => {
     loading = false
-    ElMessage.success(res.data.msg)
     sessionStorage.setItem(TOKEN, res.data.data.token);
     // 记住密码
     if (isRemember.value) localStorage.setItem(TOKEN, res.data.data.token);
@@ -236,7 +235,7 @@ const setProtocol = (title: string, url: string) => {
 .head {
   width: 1382px;
   margin: 0 auto;
-  height: 140px;
+  height: 120px;
   display: flex;
   align-items: center;
 }
@@ -414,5 +413,10 @@ const setProtocol = (title: string, url: string) => {
   &:hover {
     color: #0071fb;
   }
+}
+
+.logo {
+  width: 172px;
+  height: 66px;
 }
 </style>   
