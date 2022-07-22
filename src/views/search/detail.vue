@@ -272,9 +272,9 @@
           <p class="p1 py-20 fs-16">浏览用户（{{ visitorList.length }}）</p>
           <div class="pl-16 pr-10">
             <div v-for="item in visitorList.slice(0, 3)" class="py-20 flex visitor-item">
-              <img :src="headPrefix(item.head)" alt="" class="img mr-10 app-round">
+              <img :src="headPrefix(item.head)" alt="" class="img mr-10 app-round cursor-pointer" @click="router.push(`/contacts-others/${item.member_id}`)">
               <div class="flex-1">
-                <p>{{ item.nick_name }}</p>
+                <p class="visitor-name cursor-pointer" @click="router.push(`/contacts-others/${item.member_id}`)">{{ item.nick_name }}</p>
                 <p class="flex color-949494 fs-14 my-10">
                   <span>{{ item.position || '暂未填写' }}</span>
                   <span class="line"></span>
@@ -362,6 +362,7 @@ const getProjectInfo = () => {
   projectInfoAPI({ fid: id }).then(res => {
     detailData.value = res.data.data
     commentList.value = detailData.value.comment
+    // @ts-ignore
     isCreator.value = detailData.value.member_id === userInfo.member_id
     visitorList.value = detailData.value.visitors || []
     updateTypeOptions(detailData.value.type)
@@ -863,6 +864,14 @@ const cardVisible = ref(false)
 
     &:last-of-type {
       border-bottom: 0;
+    }
+
+    .visitor-name {
+      transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+
+      &:hover {
+        color: #0076FF;
+      }
     }
   }
 

@@ -93,6 +93,10 @@ const nav = (path: string) => {
             font-weight: bold;
             color: #303030;
             margin-right: 16px;
+            transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+            &:hover {
+              color: #0076FF;
+            }
           }
         }
 

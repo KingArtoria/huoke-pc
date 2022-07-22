@@ -6,10 +6,10 @@
     <p class="mb-14">浏览人数：{{ users.length }}</p>
     <div class="grid grid-cols-2 gap-10">
       <div v-for="item in currentData" class="item flex items-center">
-        <img :src="headPrefix(item.head)" alt="" class="img">
+        <img :src="headPrefix(item.head)" alt="" class="img cursor-pointer" @click="router.push(`/contacts-others/${item.member_id}`)">
         <div>
           <p class="flex items-end">
-            <span class="mb-10 text">{{ item.nick_name }}</span>
+            <span class="mb-10 text cursor-pointer" @click="router.push(`/contacts-others/${item.member_id}`)">{{ item.nick_name }}</span>
           </p>
           <p class="desc flex items-center">
             <span>{{ item.position || '暂未填写' }}</span>
@@ -17,7 +17,8 @@
             <span>{{ companyShort(item.company || '暂未填写') }}</span>
           </p>
         </div>
-        <button v-if="member_id !== item.member_id" class="btn app-flex-center" @click="addFriend({ id: item.member_id || item.id })">加好友</button>
+        <button v-if="member_id !== item.member_id" class="btn app-flex-center"
+          @click.stop="addFriend({ id: item.member_id || item.id })">加好友</button>
       </div>
     </div>
     <!-- 分页 -->
@@ -32,6 +33,7 @@ import { getUser, once, headPrefix } from '@/utils';
 import { addFriendapplyAPI } from '@/utils/api';
 import { ElMessage } from 'element-plus';
 import { ref, watch } from 'vue';
+import { useRouter } from 'vue-router'
 
 const props = defineProps<{
   users: any[],
@@ -39,6 +41,7 @@ const props = defineProps<{
 }>()
 const call = defineEmits(['update:modelValue'])
 
+const router = useRouter()
 // @ts-ignore
 const member_id = getUser().member_id
 
@@ -138,6 +141,11 @@ const addFriend = once((done: Function, payload?: any) => {
 
   .text {
     color: #303030;
+    transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+
+    &:hover {
+      color: #0076FF;
+    }
   }
 
   .btn {

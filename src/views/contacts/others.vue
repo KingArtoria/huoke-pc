@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="content">
-      <div class="content_1">当前位置：首页 > 资料详情 > {{ userInfo.nick_name }}</div>
+      <div class="content_1">当前位置：<router-link to="/" class="link">首页</router-link> > 资料详情 > {{ userInfo.nick_name }}</div>
       <div class="content_2">
         <div class="content_2_1">
           <div class="content_2_1_1">

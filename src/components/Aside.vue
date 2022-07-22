@@ -49,8 +49,6 @@ import { ref } from 'vue';
 import adImg from '@/assets/guangg@2x.webp';
 import signImg from '@/assets/qiandoa_lan@2x.webp';
 import signImgActive from '@/assets/qiandoa_bai@2x.webp';
-import concatImg from '@/assets/kefu_lan@2x.webp';
-import concatImgActive from '@/assets/kefu_bai@2x.webp';
 import propImg from '@/assets/daoju_lan@2x.webp';
 import propImgActive from '@/assets/daoju_bai@2x.webp';
 import feedbackImg from '@/assets/fankui_lan@2x.webp';
@@ -75,9 +73,8 @@ const navTo = (path: string) => {
 }
 
 // 检查登录
-const isLogin = getUser()
 const openDialog = (type: string) => {
-  if (!isLogin) {
+  if (!getUser()) {
     ElMessage.error('请先登录');
     router.replace('/login')
     return

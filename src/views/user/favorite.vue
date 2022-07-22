@@ -22,13 +22,12 @@
   </div>
 </template>
 <script setup lang="ts">
-import { favoriteAPI } from '@/utils/api';
+import { favoriteAPI, addTofavoriteAPI } from '@/utils/api';
 import { ElMessage } from 'element-plus';
 import { ref } from 'vue';
 import KindTab from '@/components/KindTab.vue';
 import Empty from '@/components/Empty.vue';
 import { COOPERATION_TYPES } from '@/utils/const'
-import { computed } from '@vue/reactivity';
 import Dayjs from 'dayjs';
 import { useRouter } from 'vue-router';
 
@@ -73,19 +72,28 @@ const isCheckAll = ref(false)
 let loading = false
 const doDel = () => {
   if (loading) return
-  const delIds = listData.filter((v: any) => v.isCheck).map((v: any) => v.id)
+  const delIds = currentData.value.filter((v: any) => v.isCheck).map((v: any) => v.id)
   if (delIds.length === 0) return ElMessage.error('请选择要删除的数据')
   // 删除
   loading = true
-  loading = false
-  getFavorite()
+  Promise.all(delIds.map((id: number) => {
+    return addTofavoriteAPI({
+      fid: id,
+      type: activeType
+    })
+  })).then(() => {
+    loading = false
+    getFavorite()
+  }).catch(() => {
+    loading = false
+  })
 }
 // 全选/取消全选
 const isCheckAllChange = () => {
-  listData.value.forEach((v: any) => v.isCheck = isCheckAll.value)
+  currentData.value.forEach((v: any) => v.isCheck = isCheckAll.value)
 }
 const itemChange = () => {
-  isCheckAll.value = listData.value.every((v: any) => v.isCheck)
+  isCheckAll.value = currentData.value.every((v: any) => v.isCheck)
 }
 // 格式化日期
 const fmtDate = (str: string) => {

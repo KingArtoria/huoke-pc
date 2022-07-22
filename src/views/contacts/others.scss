@@ -8,6 +8,12 @@
     font-family: PingFang SC;
     font-weight: 400;
     color: #202020;
+    .link {
+      &:hover {
+        text-decoration: underline;
+        color: #0074FF;
+      }
+    }
   }
 
   .content_2 {
