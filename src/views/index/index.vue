@@ -162,6 +162,7 @@
         <Download class="download" />
       </aside>
     </div>
+    <LoginVue v-if="loginVisible" v-model="loginVisible" />
   </div>
 
 </template>
@@ -184,6 +185,7 @@ import { useRouter } from 'vue-router'
 import { getUser, getVipLevel } from '@/utils'
 import VipIcon from '@/components/VipIcon.vue';
 import { VIP_LEVEL, HEAD_DOMAIN } from '@/utils/const'
+import LoginVue from './components/Login.vue'
 
 const router = useRouter()
 // 分类菜单
@@ -262,6 +264,7 @@ const handleAll = () => {
 const userInfo = ref<any>({})
 const vipLevel = ref<any>({})
 const loginInfo = getUser()
+const loginVisible = ref(false)
 if (loginInfo) {
   Promise.all([
     userInfoAPI(),
@@ -273,6 +276,9 @@ if (loginInfo) {
     }
     vipLevel.value = getVipLevel(userInfo.value.maxvip)
   })
+} else {
+  // 弹出登录窗口
+  loginVisible.value = true
 }
 
 // 已开通的vip人数

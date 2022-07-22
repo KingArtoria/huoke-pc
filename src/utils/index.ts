@@ -155,10 +155,29 @@ export const headPrefix = (imgUrl: string) => {
 }
 
 /**
+ * 重置到首页
+ */
+export const relunch = () => {
+  const store = useStore()
+  // 刷新nav组件
+  store.refreshNav = false
+  setTimeout(() => {
+    nextTick(() => {
+      store.refreshNav = true
+    }) 
+  }, 50);
+  router.replace({
+    path: '/index',
+    query: {
+      t: new Date().getTime()
+    }
+  })
+}
+
+/**
  * 退出登录
  */
 export const logout = once((done: Function) => {
-  const store = useStore()
   ElMessageBox.confirm('确定退出登录吗？', '提示', {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
@@ -167,19 +186,7 @@ export const logout = once((done: Function) => {
     done()
     // 移除缓存
     removeToekn()
-    // 刷新nav组件
-    store.refreshNav = false
-    setTimeout(() => {
-      nextTick(() => {
-        store.refreshNav = true
-      })
-    }, 100);
-    router.replace({
-      path: '/index',
-      query: {
-        t: new Date().getTime()
-      }
-    })
+    relunch()
   }).catch(() => {
     done()
   })

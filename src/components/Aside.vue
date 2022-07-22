@@ -27,7 +27,7 @@
       </li>
       <el-popover placement="left">
         <template #reference>
-          <li class="concat-item" @click="openDialog('feedback')">
+          <li class="concat-item">
             <img :src="loadImg('gongzhongh.png')" alt="" class="normal img">
             <img :src="loadImg('gongzhongh-bai.png')" alt="" class="active img">
             <span>公众号</span>
@@ -86,7 +86,7 @@ const openDialog = (type: string) => {
     case 'sign':
       signVisible.value = true
       break
-    case 'sign':
+    case 'feedback':
       feedbackVisible.value = true
       break
   }
