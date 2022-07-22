@@ -11,7 +11,9 @@
 <script setup lang="ts">
 import { loadImg } from '@/utils';
 import Login from './components/Login.vue';
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 </script>
 
 <style lang="scss" scoped>

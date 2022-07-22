@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-model="modelValue" width="800px" :close-on-click-modal="false" :before-close="close">
+  <el-dialog v-model="modelValue" width="800px" :close-on-click-modal="false" :before-close="close" append-to-body>
     <template #header>
       <p class="title">{{ title }}</p>
     </template>

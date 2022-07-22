@@ -1,86 +1,81 @@
 <template>
-  <div>
-    <div class="box">
-      <!-- 登录、注册 -->
-      <el-tabs v-show="!isFoundPwd" v-model="activeTab" class="box_tabs">
-        <el-tab-pane label="登录" name="login" class="box_tabs_login">
-          <div class="tip-wrap">
-            <img :src="tipImg" alt="" class="img">
-            <span>登陆账号，完成微信绑定，如没有账号，请注册</span>
-          </div>
-          <input type="text" maxlength="11" v-model="loginForm.phone" placeholder="请输入手机号"
+  <div class="box">
+    <!-- 登录、注册 -->
+    <el-tabs v-show="!isFoundPwd" v-model="activeTab" class="box_tabs">
+      <el-tab-pane label="登录" name="login" class="box_tabs_login">
+        <div class="tip-wrap">
+          <img :src="tipImg" alt="" class="img">
+          <span>登陆账号，完成微信绑定，如没有账号，请注册</span>
+        </div>
+        <input type="text" maxlength="11" v-model="loginForm.phone" placeholder="请输入手机号" class="box_tabs_login_input" />
+        <div class="code-wrap">
+          <!-- 密码 -->
+          <input v-if="loginType == 'pass'" type="password" maxlength="12" v-model="loginForm.pass" placeholder="请输入密码"
             class="box_tabs_login_input" />
-          <div class="code-wrap">
-            <!-- 密码 -->
-            <input v-if="loginType == 'pass'" type="password" maxlength="12" v-model="loginForm.pass"
-              placeholder="请输入密码" class="box_tabs_login_input" />
-            <!-- 验证码 -->
-            <input v-if="loginType == 'code'" type="text" maxlength="6" v-model="loginForm.code" placeholder="请输入验证码"
-              class="box_tabs_login_input" />
-            <Sms v-show="loginType === 'code'" :phone="loginForm.phone" type="login" />
-          </div>
+          <!-- 验证码 -->
+          <input v-if="loginType == 'code'" type="text" maxlength="6" v-model="loginForm.code" placeholder="请输入验证码"
+            class="box_tabs_login_input" />
+          <Sms v-show="loginType === 'code'" :phone="loginForm.phone" type="login" />
+        </div>
 
-          <div class="box_tabs_login_text" @click="loginType = 'code'" v-if="loginType == 'pass'">手机验证码登录</div>
-          <div class="box_tabs_login_text" @click="loginType = 'pass'" v-if="loginType == 'code'">密码登录</div>
-          <div class="box_tabs_login_btn" @click="doLogin">登录</div>
+        <div class="box_tabs_login_text" @click="loginType = 'code'" v-if="loginType == 'pass'">手机验证码登录</div>
+        <div class="box_tabs_login_text" @click="loginType = 'pass'" v-if="loginType == 'code'">密码登录</div>
+        <div class="box_tabs_login_btn" @click="doLogin">登录</div>
 
-          <div class="box_tabs_login_link">
-            <el-checkbox v-model="isRemember">记住登录状态</el-checkbox>
-            <div class="box_tabs_login_link_text" @click="isFoundPwd = true">忘记密码</div>
-          </div>
-          <!-- <div class="third">
+        <div class="box_tabs_login_link">
+          <el-checkbox v-model="isRemember">记住登录状态</el-checkbox>
+          <div class="box_tabs_login_link_text" @click="isFoundPwd = true">忘记密码</div>
+        </div>
+        <!-- <div class="third">
               <span>第三方账号登录</span>
               <img :src="wxImg" alt="" class="img">
             </div> -->
-        </el-tab-pane>
-        <el-tab-pane label="注册" name="register" class="box_tabs_login">
-          <div class="tip-wrap">
-            <img :src="tipImg" alt="" class="img">
-            <span>登陆账号，完成微信绑定，如没有账号，请注册</span>
-          </div>
-          <input type="text" maxlength="11" v-model="registerForm.phone" placeholder="请输入手机号"
+      </el-tab-pane>
+      <el-tab-pane label="注册" name="register" class="box_tabs_login">
+        <div class="tip-wrap">
+          <img :src="tipImg" alt="" class="img">
+          <span>登陆账号，完成微信绑定，如没有账号，请注册</span>
+        </div>
+        <input type="text" maxlength="11" v-model="registerForm.phone" placeholder="请输入手机号"
+          class="box_tabs_login_input" />
+        <div class="code-wrap">
+          <input type="text" maxlength="6" v-model="registerForm.code" placeholder="请输入验证码"
             class="box_tabs_login_input" />
-          <div class="code-wrap">
-            <input type="text" maxlength="6" v-model="registerForm.code" placeholder="请输入验证码"
-              class="box_tabs_login_input" />
-            <Sms :phone="registerForm.phone" type="sign" />
-          </div>
-          <input type="password" v-model="registerForm.pass" placeholder="请输入密码" class="box_tabs_login_input" />
-          <input type="password" v-model="registerForm.againPass" placeholder="请输入确认密码" class="box_tabs_login_input" />
-          <input type="password" v-model="registerForm.invitationCode" placeholder="请输入邀请码(选填)"
-            class="box_tabs_login_input" />
-          <div class="text-wrap">
-            <div class="flex">
-              <div>
-                <el-checkbox v-model="isReceive" class="check"></el-checkbox>
-              </div>
-              <span class="text whitespace-normal">我已阅读并接受<span class="light"><span
-                    @click="setProtocol('《BD火客用户服务协议》', 'http://fw.bdhuoke.com')">《BD火客用户服务协议》</span><span
-                    @click="setProtocol('《隐私政策》', 'http://app.bdhuoke.com')">《隐私政策》</span></span></span>
+          <Sms :phone="registerForm.phone" type="sign" />
+        </div>
+        <input type="password" v-model="registerForm.pass" placeholder="请输入密码" class="box_tabs_login_input" />
+        <input type="password" v-model="registerForm.againPass" placeholder="请输入确认密码" class="box_tabs_login_input" />
+        <input type="password" v-model="registerForm.invitationCode" placeholder="请输入邀请码(选填)"
+          class="box_tabs_login_input" />
+        <div class="text-wrap">
+          <div class="flex">
+            <div>
+              <el-checkbox v-model="isReceive" class="check"></el-checkbox>
             </div>
+            <span class="text whitespace-normal">我已阅读并接受<span class="light cursor-pointer"><span
+                  @click="setProtocol('《BD火客用户服务协议》', 'http://fw.bdhuoke.com')">《BD火客用户服务协议》</span><span
+                  @click="setProtocol('《隐私政策》', 'http://app.bdhuoke.com')">《隐私政策》</span></span></span>
           </div>
-          <div class="box_tabs_login_btn" @click="sign">注册</div>
-        </el-tab-pane>
-      </el-tabs>
-      <!-- 找回密码 -->
-      <div v-show="isFoundPwd" class="back" @click="isFoundPwd = false">返回上一页</div>
-      <el-tabs v-show="isFoundPwd" class="box_tabs">
-        <el-tab-pane label="手机号找回" class="box_tabs_login">
-          <input type="text" maxlength="11" v-model="foundForm.phone" placeholder="请输入手机号"
-            class="box_tabs_login_input" />
-          <div class="code-wrap">
-            <input type="text" maxlength="6" v-model="foundForm.code" placeholder="请输入验证码"
-              class="box_tabs_login_input" />
-            <Sms :phone="foundForm.phone" type="uppass" />
-          </div>
-          <input type="password" v-model="foundForm.pass" placeholder="请输入新密码" class="box_tabs_login_input" />
-          <input type="password" v-model="foundForm.againPass" placeholder="请输入确认密码" class="box_tabs_login_input" />
-          <div class="box_tabs_login_btn" @click="reLogin">登录</div>
-        </el-tab-pane>
-      </el-tabs>
-    </div>
-    <Protocol v-if="protocolVisible" v-model="protocolVisible" :title="protocolTitle" :url="protocolUrl" />
+        </div>
+        <div class="box_tabs_login_btn" @click="sign">注册</div>
+      </el-tab-pane>
+    </el-tabs>
+    <!-- 找回密码 -->
+    <div v-show="isFoundPwd" class="back" @click="isFoundPwd = false">返回上一页</div>
+    <el-tabs v-show="isFoundPwd" class="box_tabs">
+      <el-tab-pane label="手机号找回" class="box_tabs_login">
+        <input type="text" maxlength="11" v-model="foundForm.phone" placeholder="请输入手机号" class="box_tabs_login_input" />
+        <div class="code-wrap">
+          <input type="text" maxlength="6" v-model="foundForm.code" placeholder="请输入验证码" class="box_tabs_login_input" />
+          <Sms :phone="foundForm.phone" type="uppass" />
+        </div>
+        <input type="password" v-model="foundForm.pass" placeholder="请输入新密码" class="box_tabs_login_input" />
+        <input type="password" v-model="foundForm.againPass" placeholder="请输入确认密码" class="box_tabs_login_input" />
+        <div class="box_tabs_login_btn" @click="reLogin">登录</div>
+      </el-tab-pane>
+    </el-tabs>
   </div>
+  <Protocol v-if="protocolVisible" v-model="protocolVisible" :title="protocolTitle" :url="protocolUrl" />
 </template>
 <script setup lang="ts">
 import { ref } from 'vue';

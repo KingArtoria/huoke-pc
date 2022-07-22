@@ -41,12 +41,12 @@ const call = defineEmits(['update:modelValue'])
     font-size: 30px;
     cursor: pointer;
   }
-}
 
-::v-deep(.box) {
-  position: relative;
-  top: 0;
-  right: 0;
-  padding-top: 1px;
+  ::v-deep(.box) {
+    position: relative;
+    top: 0;
+    right: 0;
+    padding-top: 1px;
+  }
 }
 </style>   

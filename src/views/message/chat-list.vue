@@ -1,17 +1,27 @@
 <template>
   <div class="bg-white">
-    <p class="title">全部私信</p>
-    <div v-for="item in contractList" :key="item.member_id" class="item">
-      <img :src="headPrefix(item.head)" alt="" class="w-60 h-60 app-round mr-24">
-      <div class="flex-1">
-        <div>
-          <span>{{ item.nick_name }}</span>
-          <VipIcon :item="getVipLevel(item.maxvip)" />
-          <span>与你的私信</span>
-          <span>{{ item.date }}</span>
-        </div>
-        <p>{{ item.content }}</p>
+    <div class="flex justify-between pt-18">
+      <p class="title">全部私信</p>
+      <span class="color-A9A9A9 fs-15 mr-32 cursor-pointer light" @click="setRead">全部标为已读</span>
+    </div>
+    <div v-for="item in contractList" :key="item.member_id" class="item cursor-pointer"
+      @click="sendMsg(item.member_id)">
+      <div class="mr-24 relative">
+        <img :src="headPrefix(item.head)" alt="" class="w-60 h-60 app-round">
+        <div v-if="item.unread" class="count">{{ item.unread }}</div>
       </div>
+      <div class="flex-1 mt-4">
+        <div class="flex items-center">
+          <span class="fs-16 mr-2">{{ item.nick_name }}</span>
+          <div>
+            <VipIcon :item="getVipLevel(item.maxvip)" />
+          </div>
+          <span class="ml-14 fs-15">与你的私信</span>
+          <span class="ml-20 color-ABABAB">{{ item.date }}</span>
+        </div>
+        <p class="mt-10 content fs-15">{{ item.content }}</p>
+      </div>
+      <img :src="loadImg('close_sl.png')" alt="" class="close" @click.stop="delSession(item.member_id)">
     </div>
     <Empty v-if="contractList.length === 0" />
   </div>
@@ -21,10 +31,12 @@ import { onMounted, ref } from 'vue';
 import Empty from '@/components/Empty.vue';
 import useGoEasy from '@/composables/useGoEasy'
 import GoEasy from 'goeasy';
-import { getUser, headPrefix, getVipLevel } from '@/utils';
+import { getUser, headPrefix, getVipLevel, once, loadImg } from '@/utils';
 import { getMemberInfoAPI } from '@/utils/api';
 import dayjs from 'dayjs'
 import VipIcon from '@/components/VipIcon.vue';
+import { useRouter } from 'vue-router'
+import { ElMessageBox } from 'element-plus';
 
 interface IContract {
   member_id: number, // 用户id
@@ -34,6 +46,7 @@ interface IContract {
   date: string, // 消息发送时间
   maxvip: string, // vip等级
   company: string, // 公司
+  unread: number, // 未读消息数量
 }
 
 // 私信列表
@@ -63,11 +76,13 @@ const initListen = () => {
           date: dayjs(val.lastMessage.timestamp).format('YYYY/MM/DD HH:mm'),
           maxvip: val.data.maxvip,
           company: val.data.company,
+          unread: val.unread
         }
       })
     },
   });
 }
+
 onMounted(async () => {
   // 获取自己的账号数据
   const temp = getUser() as IUser
@@ -87,6 +102,46 @@ onMounted(async () => {
     initListen()
   }
 })
+
+// 标为已读
+const setRead = once((done: Function) => {
+  contractList.value.forEach((val: IContract) => {
+    val.unread = 0
+    im.markPrivateMessageAsRead({
+      userId: '' + val.member_id,  //聊天对象的userId
+    })
+  })
+  setTimeout(() => {
+    done()
+  }, 200);
+})
+// 移除会话
+const delSession = (member_id: number) => {
+  ElMessageBox.confirm('确定删除吗？', '提示', {
+    confirmButtonText: "确定",
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    im.removePrivateConversation({
+      userId: '' + member_id,
+    });
+    const index = contractList.value.findIndex((v: IContract) => v.member_id === member_id)
+    if (index !== -1) {
+      contractList.value.splice(index, 1)
+    }
+  }).catch(() => {
+  })
+}
+// 进入会话详情
+const router = useRouter()
+const sendMsg = (member_id: number) => {
+  router.push({
+    path: '/message/chat',
+    query: {
+      userId: member_id
+    }
+  })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -94,42 +149,50 @@ onMounted(async () => {
   padding: 28px 60px 40px 46px;
   border-bottom: 1px solid #f3f3f3;
   display: flex;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
 
-  .right {
-    position: absolute;
-    right: 60px;
-  }
+  &:hover {
+    background: #FAFAFA;
 
-  .right-item {
-    width: 47px;
-    height: 31px;
-    background: #F6F6F6;
-    border-radius: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
-
-    &:hover {
-      background: #e9e9e9;
+    .close {
+      display: block;
     }
   }
 
-  .check-icon {
-    width: 15px;
-    height: 11px;
+  .content {
+    color: #1B1B1B;
+    line-height: 29px;
   }
 
-  .x-icon {
-    width: 12px;
-    height: 11px;
+  .close {
+    position: absolute;
+    top: 50px;
+    right: 37px;
+    display: none;
+    cursor: pointer;
+  }
+
+  .count {
+    position: absolute;
+    right: -14px;
+    top: -2px;
+    font-size: 12px;
+    color: #FFFFFF;
+    background: #FF0000;
+    border-radius: 7px;
+    height: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 3px;
   }
 }
 
 .title {
   font-size: 16px;
   color: #393939;
-  padding: 18px 0 20px 46px;
+  padding: 0 0 20px 46px;
   position: relative;
 
   &::before {
@@ -142,15 +205,23 @@ onMounted(async () => {
   }
 }
 
-.color-989898 {
-  color: #989898;
+.fs-15 {
+  font-size: 15px;
 }
 
-.color-1b1b1b {
-  color: #1b1b1b;
+.color-ABABAB {
+  color: #ABABAB;
+}
+
+.color-A9A9A9 {
+  color: #A9A9A9;
 }
 
 .light {
-  color: #1F73F1;
+  transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+
+  &:hover {
+    color: #0076FF;
+  }
 }
 </style>
