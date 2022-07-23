@@ -198,7 +198,7 @@
             </template>
 
             <div class="text-center">
-              <p class="text1 fs-16 mb-38">扫一扫下方二维码，下载BD火客AP，商务合作更快捷</p>
+              <p class="text1 fs-16 mb-38">扫一扫下方二维码，下载BD火客APP，商务合作更快捷</p>
               <img :src="loadImg('xiaziaerwem.webp')" alt="" class="code-img">
             </div>
           </div>

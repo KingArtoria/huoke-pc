@@ -32,8 +32,8 @@ const close = () => {
   visible.value = false
 }
 const items = [
-  { img: loadImg('ggjf@2x.webp'), title: '需求', desc: '我是广告甲方，寻CPS、CPA、CPC等合作', type: 1 },
-  { img: loadImg('llyf@2x.webp'), title: '供应', desc: '我是流量乙方，自有渠道，寻广告甲方', type: 2 },
+  { img: loadImg('ggjf@2x.webp'), title: '需求', desc: '我是广告甲方，寻CPS、CPA、CPC等合作', type: 2 },
+  { img: loadImg('llyf@2x.webp'), title: '供应', desc: '我是流量乙方，自有渠道，寻广告甲方', type: 1 },
   { img: loadImg('yzhy_@2x.webp'), title: '优质货源', desc: '我有优质货源，寻销售渠道合作', type: 3 },
   { img: loadImg('xsqd@2x.webp'), title: '销售渠道', desc: '我有销售渠道，寻优质货源', type: 4 },
   { img: loadImg('zyhh@2x.webp'), title: '资源互换', desc: '善用彼此资源，创造共同利益', type: 5 },

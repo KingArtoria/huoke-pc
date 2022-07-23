@@ -13,9 +13,7 @@
         <el-image :src="host + item.head" class="photo">
           <template #error>
             <div class="image-slot">
-              <el-icon>
-                <PictureFilled />
-              </el-icon>
+              <img :src="loadImg('default.webp')" alt="">
             </div>
           </template>
         </el-image>
