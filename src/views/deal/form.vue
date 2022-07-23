@@ -1,6 +1,6 @@
 <template>
   <div class="app-page pb-30">
-    <nav class="py-20">当前位置：首页 > 平台交易 > 发起交易</nav>
+    <nav class="py-20">当前位置：<router-link to="/" class="nav-link">首页</router-link> > 平台交易 > 发起交易</nav>
     <div class="flex">
       <div class="bg-white py-30 flex-1 mr-14">
         <p class="title mb-30">平台交易</p>
@@ -235,5 +235,12 @@ const back = () => {
 
 .color-8D8D8D {
   color: #8D8D8D;
+}
+
+.nav-link {
+  &:hover {
+    text-decoration: underline;
+    color: #0074FF;
+  }
 }
 </style>

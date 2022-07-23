@@ -1,6 +1,6 @@
 <template>
   <div class="app-page">
-    <nav class="nav">当前位置：首页 > 需求发布 >发布合作信息</nav>
+    <nav class="nav">当前位置：<router-link to="/" class="link">首页</router-link> > 需求发布 >发布合作信息</nav>
     <section class="content">
       <div class="tip">
         <p>1、严禁发布各类违法、违禁信息；严禁在非指定区域输入任何联系方式，一旦发现，将做封号处理。</p>
@@ -54,34 +54,41 @@
           </el-form-item>
           <!-- 3产品名称 7项目名称 -->
           <el-form-item v-if="[3, 7].includes(type)" :label="productNameLabelMap[type].label" prop="product_name">
-            <el-input type="textarea" :rows="5" v-model="formData.product_name" :placeholder="productNameLabelMap[type].placeholder" />
+            <el-input type="textarea" :rows="5" v-model="formData.product_name"
+              :placeholder="productNameLabelMap[type].placeholder" />
           </el-form-item>
           <!-- 3一件代发 4一件代发 9场地所在区域 -->
           <el-form-item v-if="[3, 4, 9].includes(type)" :label="issuingLabelMap[type].label" prop="issuing">
-            <el-input type="textarea" :rows="5" v-model="formData.issuing" :placeholder="issuingLabelMap[type].placeholder" />
+            <el-input type="textarea" :rows="5" v-model="formData.issuing"
+              :placeholder="issuingLabelMap[type].placeholder" />
           </el-form-item>
           <!-- 3产品优势 4产品要求 5提供的资源 6流量载体类型 10资源描述 -->
           <el-form-item v-if="[3, 4, 5, 6, 10].includes(type)" :label="productAdvantageLabelMap[type].label"
             prop="product_advantage">
-            <el-input type="textarea" :rows="5" v-model="formData.product_advantage" :placeholder="productAdvantageLabelMap[type].placeholder" />
+            <el-input type="textarea" :rows="5" v-model="formData.product_advantage"
+              :placeholder="productAdvantageLabelMap[type].placeholder" />
           </el-form-item>
           <!-- 3相关资质 4其他补充 5其他补充 6其他补充 7其他要求 9场地概况 10其他补充 -->
           <el-form-item v-if="[3, 4, 5, 6, 7, 9, 10].includes(type)" :label="supplementLabelMap[type].label"
             prop="supplement">
-            <el-input type="textarea" :rows="5" v-model="formData.supplement" :placeholder="supplementLabelMap[type].placeholder" />
+            <el-input type="textarea" :rows="5" v-model="formData.supplement"
+              :placeholder="supplementLabelMap[type].placeholder" />
           </el-form-item>
           <!-- 4渠道简介 6可互换位置 7加盟扶持政策 -->
           <el-form-item v-if="[4, 6, 7].includes(type)" :label="introduceLabelMap[type].label" prop="introduce">
-            <el-input type="textarea" :rows="5" v-model="formData.introduce" :placeholder="introduceLabelMap[type].placeholder" />
+            <el-input type="textarea" :rows="5" v-model="formData.introduce"
+              :placeholder="introduceLabelMap[type].placeholder" />
           </el-form-item>
           <!-- 4销货能力 5合作要求 6合作要求 8广告位资源描述 10合作要求 -->
           <el-form-item v-if="[4, 5, 6, 8, 10].includes(type)" :label="assessmentLabelMap[type].label"
             prop="assessment">
-            <el-input type="textarea" :rows="5" v-model="formData.assessment" :placeholder="assessmentLabelMap[type].placeholder" />
+            <el-input type="textarea" :rows="5" v-model="formData.assessment"
+              :placeholder="assessmentLabelMap[type].placeholder" />
           </el-form-item>
           <!-- 4合作模式 6合作模式 7加盟条件 8合作要求 10合作模式 -->
           <el-form-item v-if="[4, 6, 7, 8, 10].includes(type)" :label="allianceLabelMap[type].label" prop="alliance">
-            <el-input type="textarea" :rows="5" v-model="formData.alliance" :placeholder="allianceLabelMap[type].placeholder" />
+            <el-input type="textarea" :rows="5" v-model="formData.alliance"
+              :placeholder="allianceLabelMap[type].placeholder" />
           </el-form-item>
           <!-- 7预计年利润 -->
           <el-form-item v-if="[7].includes(type)" label="预计年利润" prop="profits">
@@ -341,6 +348,13 @@ updateTypeOptions(type.value)
 
 .nav {
   padding: 20px 0;
+
+  .link {
+    &:hover {
+      text-decoration: underline;
+      color: #0074FF;
+    }
+  }
 }
 
 .content {
