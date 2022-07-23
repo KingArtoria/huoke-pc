@@ -60,7 +60,7 @@
           </div>
         </div>
         <!-- 列表 -->
-        <List />
+        <!-- <List /> -->
         <!-- 底部 -->
         <div class="main-bottom">
           <img :src="bottomImg1" alt="" class="img">
