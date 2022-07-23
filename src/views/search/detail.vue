@@ -285,7 +285,7 @@
           </div>
           <p class="more cursor-pointer" @click="userListVisible = true">查看更多 >></p>
         </div>
-        <Download class="download" />
+        <!-- <Download class="download" /> -->
       </aside>
       <div class="side">
         <div class="side-item" @click="doFavorite">

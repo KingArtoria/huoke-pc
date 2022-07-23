@@ -60,7 +60,7 @@
         </div>
       </div>
       <aside class="aside">
-        <Download class="download" />
+        <!-- <Download class="download" /> -->
       </aside>
     </div>
   </div>

@@ -91,10 +91,10 @@
         <li class="nav-item"><span class="item-text" @click="navToBuy('black')">黑卡</span></li>
         <!-- <li class="nav-item"><span class="item-text">帮助中心</span></li> -->
         <!-- <li class="nav-item"><span class="item-text">APP下载</span></li> -->
-        <li class="nav-item dn-app-wrap">
+        <!-- <li class="nav-item dn-app-wrap">
           <span class="item-text">APP下载</span>
           <Download class="dn-app" />
-        </li>
+        </li> -->
         <li class="nav-item relative" @mouseover="messageBoxVisible = true" @mouseleave="messageBoxVisible = false">
           <el-badge :value="messageCount" :hidden="messageCount === 0" class="h-full">
             <span class="item-text" @click="navToMessage">消息</span>

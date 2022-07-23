@@ -27,11 +27,11 @@
     <div>
       <!-- 置顶 -->
       <!-- 1、广告置顶 -->
-      <ListItem v-for="item in advertTop" :item="item" type="ad" />
+      <!-- <ListItem v-for="item in advertTop" :item="item" type="ad" /> -->
       <!-- 2、黑卡置顶 -->
       <ListItem v-for="item in blackTop" :item="item" type="black" />
       <!-- 3、超级置顶 -->
-      <ListItem v-for="item in superTop" :item="item" type="super" />
+      <!-- <ListItem v-for="item in superTop" :item="item" type="super" /> -->
       <!-- 4、普通置顶 -->
       <ListItem v-for="item in ordinaryTop" :item="item" type="normal" />
 

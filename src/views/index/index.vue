@@ -159,7 +159,7 @@
           </div>
         </div>
         <!-- 下载app -->
-        <Download class="download" />
+        <!-- <Download class="download" /> -->
       </aside>
     </div>
     <LoginVue v-if="loginVisible" v-model="loginVisible" />
