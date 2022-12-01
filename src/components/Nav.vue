@@ -7,23 +7,20 @@
       </slot>
       <ul class="flex nav-items">
         <li v-if="!isLogin" class="nav-item flex items-center">
-          <span>请<a href="javascript:;" class="link mr-26" @click="navToLogin('login')">登录</a><a href="javascript:;"
-              class="link mr-20" @click="navToLogin('register')">注册</a></span>
+          <span>请<a href="javascript:;" class="link mr-26" @click="navToLogin('login')">登录</a><a href="javascript:;" class="link mr-20" @click="navToLogin('register')">注册</a></span>
         </li>
         <li class="nav-item relative" @mouseover="optionsVisible = true" @mouseleave="optionsVisible = false">
           <span class="item-text" @click="navToUser">个人中心</span>
           <Transition name="fade">
             <ul v-show="optionsVisible" class="profile-options">
-              <li v-for="item in profileOptions" :key="item.path" class="option" @click="clickOption(item)">{{
-                  item.label
-              }}</li>
+              <li v-for="item in profileOptions" :key="item.path" class="option" @click="clickOption(item)">{{ item.label }}</li>
             </ul>
           </Transition>
         </li>
         <!-- 普通会员 -->
         <li class="nav-item drop">
           <span class="item-text">普通会员</span>
-          <div class="vip-wrap super normal">
+          <div class="vip-wrap super">
             <div class="top">
               <p class="title">限时抢购</p>
               <div class="flex justify-between content">
@@ -35,7 +32,7 @@
               </div>
               <p class="present ml">每月赠送道具卡（置顶卡*1、变色卡*1）</p>
             </div>
-            <div class="more">
+            <!-- <div class="more">
               <p class="more-text ml">更多会员套餐</p>
               <div class="meal-list">
                 <div class="meal">
@@ -53,7 +50,7 @@
                   </p>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
         </li>
         <!-- 超级会员 -->
@@ -109,56 +106,56 @@
 </template>
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-import { getUser, logout } from '@/utils/index'
+import { getUser, logout } from '@/utils/index';
 import MessageBox from '@/views/index/components/MessageBox.vue';
 import { computed, ref } from 'vue';
 import Download from './Download.vue';
 
-const router = useRouter()
+const router = useRouter();
 const isLogin = computed(() => {
-  return !!getUser()
-})
+  return !!getUser();
+});
 // 跳转到购买页面
 const navToBuy = (tab: string) => {
   router.push({
     path: '/buy',
     query: {
-      tab
-    }
-  })
-}
+      tab,
+    },
+  });
+};
 // 跳转到个人中心
 const navToUser = () => {
   router.push({
-    path: `/user/profile`
-  })
-}
+    path: `/user/profile`,
+  });
+};
 // 跳转到登录
 const navToLogin = (tab: string) => {
   router.push({
     path: '/login',
     query: {
-      tab
-    }
-  })
-}
+      tab,
+    },
+  });
+};
 // 回到首页
 const navToIndex = () => {
-  router.push('/')
-}
+  router.push('/');
+};
 
-const messageBoxVisible = ref(false)
+const messageBoxVisible = ref(false);
 // 是否有消息
-const messageCount = ref(0)
+const messageCount = ref(0);
 // 跳转到消息页面
 const navToMessage = () => {
   router.push({
-    path: '/message/inform'
-  })
-}
+    path: '/message/inform',
+  });
+};
 const msgChange = (msgCount: number) => {
-  messageCount.value = msgCount
-}
+  messageCount.value = msgCount;
+};
 
 // 个人中心下拉选项
 const profileOptions = computed(() => {
@@ -166,18 +163,18 @@ const profileOptions = computed(() => {
     { label: '会员特权', path: '/user/vip' },
     { label: '我的道具', path: '/user/item' },
     { label: '我的好友', path: '/user/friend' },
-  ]
-  return options.concat(isLogin.value ? [{ label: '退出', path: 'logout' }] : [])
-})
-const optionsVisible = ref(false)
+  ];
+  return options.concat(isLogin.value ? [{ label: '退出', path: 'logout' }] : []);
+});
+const optionsVisible = ref(false);
 const clickOption = (item: any) => {
-  optionsVisible.value = false
+  optionsVisible.value = false;
   if (item.path === 'logout') {
-    logout()
+    logout();
   } else {
-    router.push(item.path)
+    router.push(item.path);
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -186,9 +183,9 @@ const clickOption = (item: any) => {
   font-size: 14px;
   font-family: PingFang SC;
   font-weight: 400;
-  color: #5C5C5C;
-  background: #F8F8F8;
-  border: 1px solid #E7E7E7;
+  color: #5c5c5c;
+  background: #f8f8f8;
+  border: 1px solid #e7e7e7;
 
   .center {
     display: flex;
@@ -210,10 +207,9 @@ const clickOption = (item: any) => {
       align-items: center;
 
       &:hover {
-        color: #0076FF;
-        border-color: #0071FA;
+        color: #0076ff;
+        border-color: #0071fa;
       }
-
     }
   }
 
@@ -221,7 +217,7 @@ const clickOption = (item: any) => {
     cursor: pointer;
 
     &:hover {
-      color: #0076FF;
+      color: #0076ff;
       text-decoration: underline;
     }
   }
@@ -255,7 +251,7 @@ const clickOption = (item: any) => {
         font-size: 14px;
         font-family: PingFang SC;
         font-weight: 500;
-        color: #FFFFFF;
+        color: #ffffff;
         margin: 3px 0 0 7px;
       }
 
@@ -267,7 +263,7 @@ const clickOption = (item: any) => {
         font-size: 20px;
         font-family: PingFang SC;
         font-weight: 400;
-        color: #4E4E4E;
+        color: #4e4e4e;
         margin-right: 26px;
       }
 
@@ -275,7 +271,7 @@ const clickOption = (item: any) => {
         font-size: 20px;
         font-family: PingFang SC;
         font-weight: 500;
-        color: #FF7200;
+        color: #ff7200;
       }
 
       .money {
@@ -285,12 +281,12 @@ const clickOption = (item: any) => {
       .btn {
         width: 89px;
         height: 31px;
-        background: linear-gradient(90deg, #FF934C 0%, #F05555 98%);
+        background: linear-gradient(90deg, #ff934c 0%, #f05555 98%);
         border-radius: 5px;
         font-size: 14px;
         font-family: PingFang SC;
         font-weight: 500;
-        color: #FFFFFF;
+        color: #ffffff;
         text-align: center;
         line-height: 31px;
         cursor: pointer;
@@ -300,7 +296,7 @@ const clickOption = (item: any) => {
         font-size: 13px;
         font-family: PingFang SC;
         font-weight: 400;
-        color: #AF7237;
+        color: #af7237;
         margin-top: 15px;
       }
 
@@ -308,7 +304,7 @@ const clickOption = (item: any) => {
         font-size: 15px;
         font-family: PingFang SC;
         font-weight: 400;
-        color: #FD4E25;
+        color: #fd4e25;
         margin-top: 36px;
       }
     }
@@ -318,15 +314,15 @@ const clickOption = (item: any) => {
       background-size: contain;
 
       .price {
-        color: #0078FF;
+        color: #0078ff;
       }
 
       .btn {
-        background: linear-gradient(90deg, #015EEA 0%, #188AFF 100%);
+        background: linear-gradient(90deg, #015eea 0%, #188aff 100%);
       }
 
       .desc {
-        color: #0E76F6;
+        color: #0e76f6;
       }
     }
 
@@ -346,8 +342,8 @@ const clickOption = (item: any) => {
         margin: 0 20px 20px 0;
         width: 180px;
         height: 79px;
-        background: #FFFFFF;
-        border: 1px solid #EBE8E9;
+        background: #ffffff;
+        border: 1px solid #ebe8e9;
         border-radius: 5px;
         color: #767376;
         font-size: 16px;
@@ -373,12 +369,12 @@ const clickOption = (item: any) => {
       .tag {
         width: 58px;
         height: 19px;
-        background: #F66161;
+        background: #f66161;
         border-radius: 5px 0px 5px 0px;
         font-size: 12px;
         font-family: PingFang SC;
         font-weight: 500;
-        color: #FFFFFF;
+        color: #ffffff;
         margin-left: -12px;
       }
 
@@ -411,7 +407,7 @@ const clickOption = (item: any) => {
 }
 
 .link {
-  color: #0071FA;
+  color: #0071fa;
 }
 
 .fade-enter-from,
@@ -457,14 +453,14 @@ const clickOption = (item: any) => {
 
 .profile-options {
   position: absolute;
-  background: #FFFFFF;
-  box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.2000);
+  background: #ffffff;
+  box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.2);
   padding: 0 14px;
   overflow: hidden;
 
   .option {
     padding: 14px 4px;
-    border-bottom: 1px solid #F0F0F0;
+    border-bottom: 1px solid #f0f0f0;
     color: #232323;
     font-size: 14px;
     cursor: pointer;
@@ -474,7 +470,7 @@ const clickOption = (item: any) => {
     }
 
     &:hover {
-      color: #0076FF;
+      color: #0076ff;
     }
   }
 }

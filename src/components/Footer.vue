@@ -56,6 +56,7 @@
         </div>
       </div>
       <div class="line"></div>
+      <div class="info">苏ICP备2021020707号-1</div>
       <div class="info">徐州星跃联动网络科技有限公司版权所有 Copyright 2021-2031 silatech All Rseerved</div>
     </div>
 
@@ -67,7 +68,7 @@ import { ref } from 'vue';
 
 <style lang="scss" scoped>
 .footer {
-  height: 430px;
+  height: 460px;
   background-color: #33383E;
 
   .main {

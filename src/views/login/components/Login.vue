@@ -57,7 +57,7 @@
                   @click="setProtocol('《隐私政策》', 'http://app.bdhuoke.com')">《隐私政策》</span></span></span>
           </div>
         </div>
-        <div class="box_tabs_login_btn" @click="sign">注册</div>
+        <div class="box_tabs_login_btn" @click="sign" data-agl-cvt="6">注册</div>
       </el-tab-pane>
     </el-tabs>
     <!-- 找回密码 -->
@@ -87,6 +87,7 @@ import { TOKEN, USER } from '@/utils/const'
 import Sms from './Sms.vue';
 import Protocol from '@/components/Protocol.vue';
 import { relunch } from '@/utils';
+import axios from 'axios';
 
 const route = useRoute()
 // 登录选项卡
@@ -140,17 +141,24 @@ const sign = () => {
     pass: registerForm.value.pass,
     againpass: registerForm.value.againPass,
     code: registerForm.value.code,
-    source: 'web',
+    source: '360PC',
     Invitation_code: registerForm.value.invitationCode
-  }).then(() => {
+  }).then(res => {
+    setKeyWord(res.data.data, sessionStorage.getItem('_keyWord'))
     registerLoading = false
     ElMessage.success('注册成功，请登录')
     activeTab.value = 'login'
+    // window._agl && window._agl.push(['track', ['success', { t: 3 }]])
   }).catch(() => {
     registerLoading = false
   })
 }
 
+const setKeyWord = (id, keyWord) => {
+  console.log(id, keyWord)
+  axios.post('http://node.bdhuoke.com/member/setKeyWord', { id, keyWord });
+  // this.downloadAPP();
+}
 /* 密码登录 */
 let loading = false
 const doLogin = () => {

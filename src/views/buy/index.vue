@@ -70,7 +70,7 @@ if (tab && tabItems.value.map(v => v.value).includes(tab)) {
 
 // 普通会员套餐
 const normalService = ref<any>([
-  { duration: '3个月', price: 298, prop: '每月送道具卡(置顶卡*1、变色卡*1)', tag: '超值优惠', id: 26 },
+  // { duration: '3个月', price: 298, prop: '每月送道具卡(置顶卡*1、变色卡*1)', tag: '超值优惠', id: 26 },
   { duration: '12个月', price: 998, prop: '每月送道具卡(置顶卡*1、变色卡*1)', tag: '超值优惠', id: 27 },
 ])
 // 超级会员套餐 

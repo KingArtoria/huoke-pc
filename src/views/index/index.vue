@@ -60,7 +60,7 @@
           </div>
         </div>
         <!-- 列表 -->
-        <List />
+        <List v-if="_audit == '1'" />
         <!-- 底部 -->
         <div class="main-bottom">
           <img :src="bottomImg1" alt="" class="img">
@@ -159,7 +159,7 @@
           </div>
         </div>
         <!-- 下载app -->
-        <Download class="download" />
+        <Download class="download" v-if="_audit == '1'" />
       </aside>
     </div>
     <LoginVue v-if="loginVisible" v-model="loginVisible" />
@@ -186,7 +186,7 @@ import { getUser, getVipLevel } from '@/utils'
 import VipIcon from '@/components/VipIcon.vue';
 import { VIP_LEVEL, HEAD_DOMAIN } from '@/utils/const'
 import LoginVue from './components/Login.vue'
-
+const _audit = sessionStorage.getItem('_audit')
 const router = useRouter()
 // 分类菜单
 const navItems = ref<any>([])
